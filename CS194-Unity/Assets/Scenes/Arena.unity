@@ -523,9 +523,11 @@ MonoBehaviour:
   player1BodyBox: {fileID: 2128659011}
   player1HitBox: {fileID: 1650472670}
   player1BlockBox: {fileID: 1462290824}
+  player1AI: 0
   player2BodyBox: {fileID: 1156852457}
   player2HitBox: {fileID: 1251206883}
   player2BlockBox: {fileID: 1937297595}
+  player2AI: 0
   forwardVelocity: 2.5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 2
