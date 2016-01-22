@@ -4,30 +4,27 @@ using System.Collections;
 
 public class DebugTextController : MonoBehaviour {
 	private Text debugText;
-	private bool inDebugMode;
 	private bool displayDebugText;
+	private string message;
 	void Start () {
 		debugText = GameObject.Find ("DebugText").GetComponent<Text> ();
-		inDebugMode = false;
 		displayDebugText = false;
 		debugText.text = "";
 	}
 	void LateUpdate () {
-		if(inDebugMode) {
-			// Set debug text to display in paused debug mode.
-			debugText.text = "";
-		} else if (displayDebugText) {
-			// Set debug text to display in unpaused debug mode.
+		if (displayDebugText) {
+			debugText.text = message;
+		} else {
 			debugText.text = "";
 		}
-	}
-	public bool toggleDebugMode() {
-		inDebugMode = !inDebugMode;
-		debugText.text = "";
-		return inDebugMode;
 	}
 	public void toggleDebugText() {
 		displayDebugText = !displayDebugText;
 		debugText.text = "";
+	}
+	public void setMessage(float player1HP, float player2HP) {
+		message =
+			"Player1: " + player1HP.ToString () + "\n" +
+			"Player2: " + player2HP.ToString () ;
 	}
 }

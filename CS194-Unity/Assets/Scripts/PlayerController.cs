@@ -2,10 +2,12 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	// AI
+	AI playerAI;
 	// HITBOX VARIABLES
-	public GameObject playerBodyBox;
-	public GameObject playerHitBox;
-	public GameObject playerBlockBox;
+	private GameObject playerBodyBox;
+	private GameObject playerHitBox;
+	private GameObject playerBlockBox;
 	// STAT VARIABLES
 	private float health;
 	public bool player1;
@@ -20,13 +22,7 @@ public class PlayerController : MonoBehaviour {
 	private KeyCode Run;
 	private KeyCode Attack1;
 	private KeyCode Attack2;
-	// MOVEMENT VARIABLES
-	private bool running;
-	private bool movingLeft;
-	private bool movingRight;
-	private bool movingAway;
-	private float distanceMoved;
-	private float oldXPosition;
+	private KeyCode Block;
 	// ANIMATION VARIABLES
 	private float timeEnds;
 	private float timeAttackBegins;
@@ -39,6 +35,8 @@ public class PlayerController : MonoBehaviour {
 	private bool attackWasThrown;
 	private bool attackWasFinished;
 	private bool attackHit;
+	private bool blocking;
+	private bool lowBlocking;
 	// --------------------------------------------------------------------------------
 	// PLAYER.UPDATE();
 	// In this function, player status that is not dependant upon input, such as in-
@@ -67,100 +65,102 @@ public class PlayerController : MonoBehaviour {
 	}
 	// --------------------------------------------------------------------------------
 	// PLAYER.QUERYINPUT();
-	// queryInput() takes some limited game state data and determines based on input
-	// for the frame how the player is to behave. Player behavior is
-	// actually handled in handleInput(), which contains a collision resolution
-	// algorithm.
+	// Determines the action for the player to peform this frame, either by querying
+	// keyboard input or the AI.
 	// --------------------------------------------------------------------------------
-	/*public void queryInput(bool player1, bool isAI, float otherPlayerXPos, float fv, float bvf, float rvf) {
-		if (!inputHold) {
-			Action action = new Action ();
-			if (isAI) {
-				GameState state = new GameState (); 
-			} else {
-				return;
+	public Action queryInput(float otherPlayerXPos) {
+		Action action = new Action();
+		if (isAI) {
+			GameState state = new GameState ();
+			// TODO: Build the state here.
+			action = playerAI.queryAction (state);
+			if (inputHold) {
+				action = new Action ();
 			}
-		}
-	}*/
-	public void queryInput(float otherPlayerXPos) {
-		bool lowMod = false;
-		running = false;
-		movingLeft = false;
-		movingRight = false;
-		movingAway = false;
-		distanceMoved = 0.0f;
-		oldXPosition = playerBodyBox.transform.position.x;
-		if (!inputHold) {
-			if (isAI) {
-				// QUERY AI INPUT
-				// TODO: Query the AI for input.
-			} else {
+		} else {
+			if (!inputHold) {
 				// QUERY KEYBOARD INPUT
-				lowMod = Input.GetKey(Down);
-				if (Input.GetKeyDown (Attack1)) {
+				bool lowMod = Input.GetKey (Down);
+				if (Input.GetKey (Block)) {
 					if (lowMod) {
+						action.actionType = ActionType.blockDown;
+					} else {
+						action.actionType = ActionType.blockUp;
+					}
+				} else if (Input.GetKeyDown (Attack1)) {
+					if (lowMod) {
+						action.actionType = ActionType.attack;
+						action.attackType = AttackType.attack3;
 						// Do a weak lower attack
-						initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, true);
+						// initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, true);
 					} else {
+						action.actionType = ActionType.attack;
+						action.attackType = AttackType.attack1;
 						// Do a weak upper attack
-						initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, false);
+						// initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, false);
 					}
-					return;
-				}
-				if (Input.GetKeyDown (Attack2)) {
+				} else if (Input.GetKeyDown (Attack2)) {
 					if (lowMod) {
+						action.actionType = ActionType.attack;
+						action.attackType = AttackType.attack4;
 						// Do a strong lower attack
-						initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, true);
+						// initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, true);
 					} else {
+						action.actionType = ActionType.attack;
+						action.attackType = AttackType.attack2;
 						// Do a strong upper attack
-						initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, false);
+						// initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, false);
 					}
-					return;
-				}
-				running = Input.GetKey (Run);
-				movingLeft = Input.GetKey (Left);
-				movingRight = Input.GetKey (Right);
-				if ((movingLeft == movingRight) && (movingLeft == true)) {
-					movingLeft = false;
-					movingRight = false;
-					running = false;
+				} else if (lowMod) {
+					action.actionType = ActionType.crouch;
+				} else {
+					bool running = Input.GetKey (Run);
+					bool movingLeft = Input.GetKey (Left);
+					bool movingRight = Input.GetKey (Right);
+					bool movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+					bool moving = movingLeft || movingRight;
+					if (((movingLeft == movingRight) && (movingLeft == true)) || lowMod) {
+						movingLeft = false;
+						movingRight = false;
+						running = false;
+					}
+					if (moving) {
+						if (movingAway) {
+							action.actionType = ActionType.moveAway;
+							action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
+						} else if (running) {
+							action.actionType = ActionType.runTowards;
+							action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
+						} else {
+							action.actionType = ActionType.walkTowards;
+							action.distanceMoved = forwardVelocity * Time.deltaTime;
+						}
+					}
+					if (movingLeft) {
+						action.distanceMoved = action.distanceMoved * -1.0f;
+					}
 				}
 			}
 		}
-		movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
-		if (movingLeft) {
-			distanceMoved = -1.0f * forwardVelocity;
-		}
-		if (movingRight) {
-			distanceMoved = forwardVelocity;
-		}
-		if (movingAway) {
-			running = false;
-			distanceMoved = distanceMoved * backwardVelocityFactor;
-		}
-		if (running) {
-			distanceMoved = distanceMoved * runningVelocityFactor;
-		}
-		distanceMoved = distanceMoved * Time.deltaTime;
+		action.oldXPosition = playerBodyBox.transform.position.x;
+		return action;
 	}
 	// --------------------------------------------------------------------------------
 	// PLAYER.HANDLEINPUT();
-	// Based on limited game state data, handleInput() handles the movement that was
-	// planned to be performed in the queryInput() phase. This function contains
-	// collision detection algorithms, ensuring that when players move their body boxes
-	// never intersect with one another.
+	// Handles the action queried earlier. Uses collision detection for movements to
+	// ensure player's do not overlap.
 	// --------------------------------------------------------------------------------
-	public void handleInput(float otherOldXPos, float otherDistanceMoved, bool otherMovingAway) {
-		if (getIsMoving ()) {
-			float projectedXPos = oldXPosition + distanceMoved;
-			float projectedOtherXPos = otherOldXPos + otherDistanceMoved;
+	public void handleInput(Action myAction, Action theirAction) {
+		if (myAction.actionType == ActionType.walkTowards || myAction.actionType == ActionType.runTowards || myAction.actionType == ActionType.moveAway) {
+			float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
+			float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
 			float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
 			// If there is going to be a collision and moving towards...
-			if (!movingAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+			if (myAction.actionType != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 				// If the other is moving away....
-				if (otherMovingAway) {
+				if (theirAction.actionType == ActionType.moveAway) {
 					// Move right up to the other's projected position.
-					if (movingLeft) {
+					if (myAction.distanceMoved < 0.0f) {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 					} else {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
@@ -168,17 +168,48 @@ public class PlayerController : MonoBehaviour {
 				} else {
 					// They are both moving towards one another.
 					// Move a ratio of the distance between them based on how much each was supposed to move.
-					float distanceRatio = Mathf.Abs(distanceMoved) / (Mathf.Abs(distanceMoved) + Mathf.Abs(otherDistanceMoved));
-					float distanceAway = Mathf.Abs (oldXPosition - otherOldXPos) - playerBodyBox.transform.localScale.x;
+					float distanceRatio = Mathf.Abs (myAction.distanceMoved) / (Mathf.Abs (myAction.distanceMoved) + Mathf.Abs (theirAction.distanceMoved));
+					float distanceAway = Mathf.Abs (myAction.oldXPosition - theirAction.oldXPosition) - playerBodyBox.transform.localScale.x;
 					float actualDistance = distanceAway * distanceRatio;
-					if (movingLeft) {
+					if (myAction.distanceMoved < 0.0f) {
 						actualDistance = actualDistance * -1.0f;
 					}
 					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + actualDistance, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 				}
 			} else {
-				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
+		} else if (myAction.actionType == ActionType.attack) {
+			if (myAction.attackType == AttackType.attack1) {
+				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+			} else if (myAction.attackType == AttackType.attack2) {
+				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+			} else if (myAction.attackType == AttackType.attack3) {
+				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+			} else if (myAction.attackType == AttackType.attack4) {
+				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+			}
+		}
+		bool facingLeft = (myAction.oldXPosition > theirAction.oldXPosition);
+		float blockBoxOffset = (playerBodyBox.transform.localScale.x + playerBlockBox.transform.localScale.x) * 0.5f;
+		if (facingLeft) {
+			blockBoxOffset = blockBoxOffset * -1.0f;
+		}
+		blockBoxOffset = playerBodyBox.transform.position.x + blockBoxOffset;
+		if (myAction.actionType == ActionType.blockUp) {
+			playerBlockBox.SetActive (true);
+			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
+			blocking = true;
+			lowBlocking = false;
+		} else if (myAction.actionType == ActionType.blockDown) {
+			playerBlockBox.SetActive (true);
+			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
+			blocking = true;
+			lowBlocking = true;
+		} else {
+			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
+			blocking = false;
+			lowBlocking = false;
 		}
 	}
 	// --------------------------------------------------------------------------------
@@ -221,10 +252,15 @@ public class PlayerController : MonoBehaviour {
 	// The player receives an attack for the given amount of damage. This function
 	// should define the behavior a player goes through when they are hit by an attack.
 	// --------------------------------------------------------------------------------
-	public void receiveAttack(float damage) {
+	public void receiveAttack(float damage, bool blocked) {
 		health = health - damage;
-		inputHold = false;
-		finishAttack ();
+		if (blocked) {
+			// TODO: Handle behavior if hit while blocking.
+		} else {
+			inputHold = false;
+			finishAttack ();
+			// TODO: Handle behavior if hit while not blocking.
+		}
 	}
 	// --------------------------------------------------------------------------------
 	// PLAYER.INITIATEACTION();
@@ -266,32 +302,23 @@ public class PlayerController : MonoBehaviour {
 	public float getXPos() {
 		return playerBodyBox.transform.position.x;
 	}
-	public float getOldXPos() {
-		return oldXPosition;
-	}
 	public float getYPos() {
 		return playerBodyBox.transform.position.y;
 	}
-	public float getDistanceMoved() {
-		return distanceMoved;
-	}
-	public bool getIsMoving() {
-		return (movingLeft || movingRight);
-	}
-	public bool getIsMovingAway() {
-		return movingAway;
-	}
-	public float getHeath() {
+	public float getHealth() {
 		return health;
+	}
+	public bool isHighAttack() {
+		return !lowAttack;
+	}
+	public bool isHighBlocking() {
+		return (blocking && !lowBlocking);
+	}
+	public bool isLowBlocking() {
+		return (blocking && lowBlocking);
 	}
 	void Start () {
 		health = 1000.0f;
-		running = false;
-		movingLeft = false;
-		movingRight = false;
-		movingAway = false;
-		distanceMoved = 0.0f;
-		oldXPosition = 0.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
 		timeAttackEnds = 0.0f;
@@ -302,20 +329,31 @@ public class PlayerController : MonoBehaviour {
 		attackWasThrown = false;
 		attackWasFinished = false;
 		attackHit = false;
+		blocking = false;
+		lowBlocking = false;
 		if (player1) {
+			playerBodyBox = GameObject.Find ("Player1BodyBox");
+			playerHitBox = GameObject.Find ("Player1HitBox");
+			playerBlockBox = GameObject.Find ("Player1BlockBox");
 			Down = KeyCode.S;
 			Left = KeyCode.A;
 			Right = KeyCode.D;
 			Run = KeyCode.LeftShift;
 			Attack1 = KeyCode.Q;
 			Attack2 = KeyCode.E;
+			Block = KeyCode.F;
 		} else {
+			playerBodyBox = GameObject.Find ("Player2BodyBox");
+			playerHitBox = GameObject.Find ("Player2HitBox");
+			playerBlockBox = GameObject.Find ("Player2BlockBox");
 			Down = KeyCode.K;
 			Left = KeyCode.J;
 			Right = KeyCode.L;
 			Run = KeyCode.RightShift;
 			Attack1 = KeyCode.U;
 			Attack2 = KeyCode.O;
+			Block = KeyCode.H;
 		}
+		playerAI = new AI ();
 	}
 }

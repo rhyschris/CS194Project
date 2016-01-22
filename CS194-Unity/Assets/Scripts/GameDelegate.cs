@@ -1,33 +1,39 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameDelegate : MonoBehaviour {
-	private bool debugging;
+	public float blockDamageModifier;
+	private bool paused;
 	// CONTROLLERS
 	private CameraController mainCamera;
 	private PlayerController player1;
 	private PlayerController player2;
 	private DebugTextController debugText;
+	private Text winText;
 	// KEYBOARD INPUTS
 	private KeyCode Quit;
 	private KeyCode Reset;
-	private KeyCode ToggleDebugMode;
+	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
 	void Start ()
 	{
-		debugging = false;
+		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject player1Obj = GameObject.Find ("Player1");
 		GameObject player2Obj = GameObject.Find ("Player2");
 		GameObject debugTextObj = GameObject.Find ("DebugText");
+		GameObject winTextObj = GameObject.Find ("WinText");
 		mainCamera = mainCameraObj.GetComponent<CameraController> ();
 		player1 = player1Obj.GetComponent<PlayerController> ();
 		player2 = player2Obj.GetComponent<PlayerController> ();
 		debugText = debugTextObj.GetComponent<DebugTextController> ();
+		winText = winTextObj.GetComponent<Text> ();
 		Quit = KeyCode.Escape;
 		Reset = KeyCode.Semicolon;
-		ToggleDebugMode = KeyCode.BackQuote;
+		TogglePause = KeyCode.BackQuote;
 		ToggleDebugText = KeyCode.Quote;
+		winText.text = "";
 	}
 	void Update()
 	{
@@ -36,10 +42,11 @@ public class GameDelegate : MonoBehaviour {
 			Application.Quit ();
 		}
 		// ENTER DEBUGGING MODE
-		if (Input.GetKeyDown (ToggleDebugMode)) {
-			debugging = debugText.toggleDebugMode ();
+		if (Input.GetKeyDown (TogglePause)) {
+			paused = !paused;
+			debugText.toggleDebugText();
 		}
-		if (debugging) {
+		if (paused) {
 			// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
 			if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
 				mainCamera.modAngle (-0.5f);
@@ -71,14 +78,15 @@ public class GameDelegate : MonoBehaviour {
 			player1.handleAutomaticUpdates (player2.getXPos ());
 			player2.handleAutomaticUpdates (player1.getXPos ());
 			// QUERY PLAYER INPUT
-			player1.queryInput (player2.getXPos ());
-			player2.queryInput (player1.getXPos ());
+			Action player1Action = player1.queryInput (player2.getXPos ());
+			Action player2Action = player2.queryInput (player1.getXPos ());
 			// HANDLE PLAYER INPUT
-			player1.handleInput (player2.getOldXPos (), player2.getDistanceMoved (), player2.getIsMovingAway());
-			player2.handleInput (player1.getOldXPos (), player1.getDistanceMoved (), player1.getIsMovingAway());
+			player1.handleInput (player1Action, player2Action);
+			player2.handleInput (player2Action, player1Action);
 			// DO HIT DETECTION
 			handlePlayerHit (player1, player2);
 			handlePlayerHit (player2, player1);
+			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
 	}
 	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
@@ -89,9 +97,18 @@ public class GameDelegate : MonoBehaviour {
 			distance = distance - attacker.getHitHalfWidth() - defender.getHalfWidth();
 			if (distance <= 0.0f) {
 				// This was a hit. Handle it.
-				Debug.Log("Hit!");
-				attacker.tellHit();
-				defender.receiveAttack (attacker.getAttackDamage ());
+				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
+					Debug.Log ("Blocked!");
+					attacker.tellHit ();
+					defender.receiveAttack (attacker.getAttackDamage () * blockDamageModifier, true);
+				} else {
+					Debug.Log ("Hit!");
+					attacker.tellHit ();
+					defender.receiveAttack (attacker.getAttackDamage (), false);
+				}
+				if(defender.getHealth() <= 0.0f) {
+					winText.text = "Victory!";
+				}
 			}
 		}
 	}
