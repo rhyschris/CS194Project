@@ -14,7 +14,12 @@ public class PlayerController : MonoBehaviour {
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
 	// KEYBOARD INPUT
-	KeyCode /*Up, */Down, Left, Right, Run, Attack1, Attack2/*, Attack3, Attack4*/;
+	private KeyCode Down;
+	private KeyCode Left;
+	private KeyCode Right;
+	private KeyCode Run;
+	private KeyCode Attack1;
+	private KeyCode Attack2;
 	// MOVEMENT VARIABLES
 	private bool running;
 	private bool movingLeft;
@@ -34,70 +39,6 @@ public class PlayerController : MonoBehaviour {
 	private bool attackWasThrown;
 	private bool attackWasFinished;
 	private bool attackHit;
-	// --------------------------------------------------------------------------------
-	// PLAYER.THROWATTACK();
-	// Throws up the attack hitbox, but only if it needs to be thrown up.
-	// Tells the player that its attack hitbox was thrown up.
-	// --------------------------------------------------------------------------------
-	private void throwAttack(float otherPlayerXPos) {
-		if (!attackWasThrown) {
-			bool facingRight = (playerBodyBox.transform.position.x < otherPlayerXPos);
-			float height = 0.5f;
-			float playerWidth = playerBodyBox.transform.localScale.x * 0.5f;
-			float reachWidth = reach * 0.5f;
-			if (!lowAttack) {
-				height = 1.5f;
-			}
-			if (facingRight) {
-				playerHitBox.transform.position = new Vector3 (getXPos () + playerWidth + reachWidth, height, 0.0f);
-			} else {
-				playerHitBox.transform.position = new Vector3 (getXPos () - playerWidth - reachWidth, height, 0.0f);
-			}
-			attackWasThrown = true;
-		}
-	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.FINISHATTACK();
-	// Throws down the attack hitbox, but only if it needs to be thrown down.
-	// Tells the player that its attack hitbox was thrown down.
-	// --------------------------------------------------------------------------------
-	private void finishAttack() {
-		if (!attackWasFinished) {
-			playerHitBox.SetActive (false);
-			playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
-			playerHitBox.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-			attackWasFinished = true;
-		}
-	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.RECEIVEATTACK();
-	// The player receives an attack for the given amount of damage. This function
-	// should define the behavior a player goes through when they are hit by an attack.
-	// --------------------------------------------------------------------------------
-	public void receiveAttack(float damage) {
-		health = health - damage;
-		inputHold = false;
-		finishAttack ();
-	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.INITIATEACTION();
-	// Initates a new attack action with the provided attributes.
-	// --------------------------------------------------------------------------------
-	private void initiateAction(float duration, float attackBegin, float attackDuration, float newReach, float newDamage, bool newLow) {
-		inputHold = true;
-		attackWasThrown = false;
-		attackWasFinished = false;
-		attackHit = false;
-		timeEnds = Time.time + duration;
-		timeAttackBegins = Time.time + attackBegin;
-		timeAttackEnds = Time.time + attackBegin + attackDuration;
-		reach = newReach;
-		attackDamage = newDamage;
-		lowAttack = newLow;
-		playerHitBox.SetActive (true);
-		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
-		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
-	}
 	// --------------------------------------------------------------------------------
 	// PLAYER.UPDATE();
 	// In this function, player status that is not dependant upon input, such as in-
@@ -240,6 +181,70 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
+	// --------------------------------------------------------------------------------
+	// PLAYER.THROWATTACK();
+	// Throws up the attack hitbox, but only if it needs to be thrown up.
+	// Tells the player that its attack hitbox was thrown up.
+	// --------------------------------------------------------------------------------
+	private void throwAttack(float otherPlayerXPos) {
+		if (!attackWasThrown) {
+			bool facingRight = (playerBodyBox.transform.position.x < otherPlayerXPos);
+			float height = 0.5f;
+			float playerWidth = playerBodyBox.transform.localScale.x * 0.5f;
+			float reachWidth = reach * 0.5f;
+			if (!lowAttack) {
+				height = 1.5f;
+			}
+			if (facingRight) {
+				playerHitBox.transform.position = new Vector3 (getXPos () + playerWidth + reachWidth, height, 0.0f);
+			} else {
+				playerHitBox.transform.position = new Vector3 (getXPos () - playerWidth - reachWidth, height, 0.0f);
+			}
+			attackWasThrown = true;
+		}
+	}
+	// --------------------------------------------------------------------------------
+	// PLAYER.FINISHATTACK();
+	// Throws down the attack hitbox, but only if it needs to be thrown down.
+	// Tells the player that its attack hitbox was thrown down.
+	// --------------------------------------------------------------------------------
+	private void finishAttack() {
+		if (!attackWasFinished) {
+			playerHitBox.SetActive (false);
+			playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
+			playerHitBox.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+			attackWasFinished = true;
+		}
+	}
+	// --------------------------------------------------------------------------------
+	// PLAYER.RECEIVEATTACK();
+	// The player receives an attack for the given amount of damage. This function
+	// should define the behavior a player goes through when they are hit by an attack.
+	// --------------------------------------------------------------------------------
+	public void receiveAttack(float damage) {
+		health = health - damage;
+		inputHold = false;
+		finishAttack ();
+	}
+	// --------------------------------------------------------------------------------
+	// PLAYER.INITIATEACTION();
+	// Initates a new attack action with the provided attributes.
+	// --------------------------------------------------------------------------------
+	private void initiateAction(float duration, float attackBegin, float attackDuration, float newReach, float newDamage, bool newLow) {
+		inputHold = true;
+		attackWasThrown = false;
+		attackWasFinished = false;
+		attackHit = false;
+		timeEnds = Time.time + duration;
+		timeAttackBegins = Time.time + attackBegin;
+		timeAttackEnds = Time.time + attackBegin + attackDuration;
+		reach = newReach;
+		attackDamage = newDamage;
+		lowAttack = newLow;
+		playerHitBox.SetActive (true);
+		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
+		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
+	}
 	public bool attackHandle() {
 		return (attackWasThrown && !attackWasFinished && !attackHit);
 	}
@@ -279,9 +284,6 @@ public class PlayerController : MonoBehaviour {
 	public float getHeath() {
 		return health;
 	}
-	void Awake () {
-		
-	}
 	void Start () {
 		health = 1000.0f;
 		running = false;
@@ -301,7 +303,6 @@ public class PlayerController : MonoBehaviour {
 		attackWasFinished = false;
 		attackHit = false;
 		if (player1) {
-			//Up = KeyCode.W; 
 			Down = KeyCode.S;
 			Left = KeyCode.A;
 			Right = KeyCode.D;
@@ -309,7 +310,6 @@ public class PlayerController : MonoBehaviour {
 			Attack1 = KeyCode.Q;
 			Attack2 = KeyCode.E;
 		} else {
-			//Up = KeyCode.I;
 			Down = KeyCode.K;
 			Left = KeyCode.J;
 			Right = KeyCode.L;
