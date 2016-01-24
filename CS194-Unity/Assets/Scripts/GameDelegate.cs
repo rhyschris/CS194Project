@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
+using AssemblyCSharp;
+
 public class GameDelegate : MonoBehaviour {
 	public float blockDamageModifier;
 	private bool paused;
@@ -16,8 +18,21 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode Reset;
 	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
+
+
+	void Awake(){
+		// Test the AsyncAIClient implementation.
+		AsyncAIClient aiClient = new AsyncAIClient(5001);
+		Debug.Log("HI from Delegate!");
+		if (!aiClient.connectAsync ()) {
+			Debug.Log ("Note: AI Server was not set up");
+		}
+
+	}
+
 	void Start ()
 	{
+
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject player1Obj = GameObject.Find ("Player1");
