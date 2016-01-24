@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: 0
-  isAI: 0
+  isAI: 1
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5

@@ -20,19 +20,9 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode ToggleDebugText;
 
 
-	void Awake(){
-		// Test the AsyncAIClient implementation.
-		AsyncAIClient aiClient = new AsyncAIClient(5001);
-		Debug.Log("HI from Delegate!");
-		if (!aiClient.connectAsync ()) {
-			Debug.Log ("Note: AI Server was not set up");
-		}
-
-	}
-
 	void Start ()
 	{
-
+		
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject player1Obj = GameObject.Find ("Player1");
@@ -49,6 +39,7 @@ public class GameDelegate : MonoBehaviour {
 		TogglePause = KeyCode.BackQuote;
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
+
 	}
 	void Update()
 	{

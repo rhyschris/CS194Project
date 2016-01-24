@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Action.cs" />
      <Compile Include="Assets\Scripts\AsyncAIClient.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\DebugTextController.cs" />
      <Compile Include="Assets\Scripts\GameDelegate.cs" />
      <Compile Include="Assets\Scripts\GameState.cs" />

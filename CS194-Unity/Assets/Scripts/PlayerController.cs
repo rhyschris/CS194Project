@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour {
 						movingRight = false;
 						running = false;
 					}
+				
 					if (moving) {
 						if (movingAway) {
 							action.actionType = ActionType.moveAway;
@@ -354,6 +355,10 @@ public class PlayerController : MonoBehaviour {
 			Attack2 = KeyCode.O;
 			Block = KeyCode.H;
 		}
-		playerAI = new AI ();
+	
+		if (isAI) {
+			playerAI = new AI (4998, 4999);
+			playerAI.verifyNetwork ();
+		}
 	}
 }
