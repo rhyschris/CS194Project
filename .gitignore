@@ -3,7 +3,8 @@
 \#*\#
 *.log
 *.txt
-.userprefs
+*.userprefs
+
 # Unity generated #
 Temp/
 Obj/
