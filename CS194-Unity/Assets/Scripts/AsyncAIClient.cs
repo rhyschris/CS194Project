@@ -133,9 +133,37 @@ namespace AssemblyCSharp {
 				Debug.Log ("Completed connection to localhost on (port unknown - update msg state");
 				connectedSignal.Set ();
 
-			/* TODO: More verbose exception handling (i.e. for ConnectionRefused) */
-			} catch (Exception unexpected){
-				Debug.Log (unexpected);
+			} catch (Exception unexpected) {
+				if (unexpected is ObjectDisposedException) {
+					Debug.Log ("Socket has been closed");
+				} else if (unexpected is InvalidOperationException) {
+					Debug.Log ("EndConnect was previously called for the asynchronous connection.");
+				} else if (unexpected is SocketException) {
+					SocketError errcode = (SocketError)((SocketException)unexpected).ErrorCode;
+					switch (errcode) {
+					case(SocketError.AccessDenied):
+						Debug.Log ("Access Denied to socket");
+						break;
+					case(SocketError.ConnectionRefused):
+						Debug.Log ("Connection Refused: Remote host refusing connection");
+						break;
+					case(SocketError.ConnectionReset):
+						Debug.Log ("Connection Reset");
+						break;
+					case(SocketError.HostUnreachable):
+						Debug.Log ("Host Unreachable: No route to remote host");
+						break;
+					case(SocketError.NetworkUnreachable):
+						Debug.Log ("Network Unreachable: No route to remote host");
+						break;
+					default:
+						Debug.Log ("Socket Error. Error Code: " + errcode.ToString ());
+						break;
+					}
+				} else {
+					Debug.Log ("Unexpected Error");
+					Debug.Log (unexpected);
+				}
 			}
 		}
 	
