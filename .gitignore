@@ -4,6 +4,7 @@
 *.log
 *.txt
 *.userprefs
+*.o
 
 # Unity generated #
 Temp/
