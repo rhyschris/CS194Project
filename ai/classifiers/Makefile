@@ -8,14 +8,14 @@ CXX = clang++
 #  -pedantic                  require compliance with ANSI standard                                                                                                                                                         
 #  -O0                        do not optimize generated code                                                                                                                                                                
 #  -std=c++0x                 go with the c++0x extensions for thread support, unordered maps, etc                                                                                                                          
-#  -D_GLIBCXX_USE_NANOSLEEP   included for this_thread::sleep_for and this_thread::sleep_until support                                                                                                                      
-#  -D_GLIBCXX_USE_SCHED_YIELD included for this_thread::yield support                                                                                                                                                       
-CXXFLAGS = -g -Wall -pedantic -O0 -std=c++0x -D_GLIBCXX_USE_NANOSLEEP -D_GLIBCXX_USE_SCHED_YIELD 
+
+CXXFLAGS = -g -Wall -pedantic -O0 -std=c++0x -I /opt/OpenBLAS/include/ 
 
 # The LDFLAGS variable sets flags for linker                                                                                                                                                                                
 #  -lm       link in libm (math library)                                                                                                                                                                                    
 #  -framework Accelerate: Accelerate for vector linear algebra.
-LDFLAGS = -lm -lpthread -framework Accelerate
+#  -lopenblas
+LDFLAGS = -lm -lpthread -framework Accelerate -L/opt/OpenBLAS/lib -lopenblas
 
 # In this section, you list the files that are part of the project.                                                                                                                                                         
 # If you add/change names of header/source files, here is where you                                                                                                                                                         
