@@ -15,18 +15,24 @@ using namespace std;
  * Calculates scaled softmax on the output matrix.
  */
 static void softmax (double *output, double *max_minus, int n){
-
-	// max(output)
-	double max = cblas_idamax (n, output, 1);
+	//max(output)
+	
+	double max = output[ cblas_idamax (n, output, 1) ];
+	
 	// broadcast max to an array
 	catlas_dset (n, max, max_minus, 1);
-	// output -= max_minus
-	catlas_daxpby (n, -1, max_minus, 1, 1, output, 1);
+	cblas_daxpy (n, -1, max_minus, 1, output, 1);
 	// output = exp(output)
-	vvexp (output, output, (const int *)&n );
+
+	cout << output[0] << ", " << output[1] << endl;
+
+	vvexp (output, output, (const int *)&n);
+	cout << output[0] << ", " << output[1] << endl;
 	// num = sum(output)
 	double num = cblas_dasum (n, output, 1);
+	cout << "Num: " << num << endl;
 	cblas_dscal (n, 1.0 / num, output, 1);
+	cout << output[0] << ", " << output[1] << endl;
 }
 
 
@@ -41,81 +47,73 @@ static void train(double *W, int num_feat, int num_class, double *X,
 	double loss = 0.0;
 	double reg = 1.0;
 
+	int out_sz = num_train * num_class;
+
 	double *dW = new double[num_feat * num_class];
-	double *output = new double[num_train * num_class];
-	//double *max_minus = new double[num_class];
+	double *output = new double[out_sz];
+	double *max_minus = new double[out_sz];
+
 
 	// create y_hot for each iteration
-	int *y_hot = new int[num_class * num_train]; 
+	double *y_hot = new double[out_sz];
+	double *d_sigmoid = new double[out_sz]; 
 	double frac_const = 1.0/num_train;
 
 	// set to 0
 	memset (dW, 0, num_feat * num_class * sizeof(double));
-	memset (output, 0, num_class * num_train * sizeof(double));
-	memset (y_hot, 0, num_class * num_train * sizeof(int));
-	
+	memset (output, 0, out_sz * sizeof(double));
+	memset (y_hot, 0, out_sz * sizeof(double));
+	memset (max_minus, 0, out_sz * sizeof(double));
+
 	// set y_hot to 1's in the gold label class.
 	for (int i = 0; i < num_train; i++){
 		y_hot[i*num_class + Y[i]] = 1;
 	}
+	// make copy for later.
+	cblas_dcopy (out_sz, y_hot, 1, d_sigmoid, 1);
+
 	// Operation: output = X.dot(W)
 	// A --> X:		(num_feat, num_train)
 	// B --> W:   		(num_class, num_feat)
 	// output --> C: 	(num_class, num_train)
-	
+	// M, N: first dimension is across 
 	cblas_dgemm (CblasRowMajor, CblasNoTrans, CblasNoTrans,
 				num_train, num_class, num_feat, 
 				1, X, num_feat, W, num_class, 1, output, num_class);				
 
-	// for (int i = 0; i < num_class; i++){
-	// 	for (int j = 0; j < num_train; j++){
-	// 		double output_sum = 0.0;
-	// 		for (int k = 0; k < num_feat; k++){
-	// 			output_sum += X[i*num_train + k] * W[num_class*k + i]; 
-	// 		}
-	// 		cout << output_sum << endl;
-	// 	}
-	// }
-
-	for (int i = 0; i < num_class * num_train; i++){
-		cout << output[i] << endl;
+	//	batched up softmax calc.
+	for (int i = 0; i < num_train; i++){
+		softmax (output + (i*num_class),
+			max_minus + (i*num_class), num_class);
 	}
-	
-	// 	cout << output[0] << " " << output[1] << endl;
-	// 	softmax (output, max_minus, wr);
-	// 	cout << output[0] << ", " << output[1] << endl;
+	// outer activation: d_sigmoid = y_hot - output
+	cblas_daxpy (out_sz, -1.0, output, 1, 
+ 			   d_sigmoid, 1);	
+	// elt-wise log of output
+	vvlog (output, output, (const int *)&out_sz);
 
-	// 	loss -= log (output[ Y[i] ]);
-	// 	cout << "loss: " << loss << endl;
-	// 	// activation = y_hot - class_prob
-	// 	catlas_daxpby (wc, -1.0, output, 1, 
-	// 				   1.0, y_hot, 1);
+	loss -= cblas_ddot (out_sz, output, 1, y_hot, 1);
+	loss /= num_train;
+	// loss += 0.5 * reg * np.sum(W ** 2)
+	loss += 0.5 * reg * cblas_ddot (num_feat * num_class, W, 1, W, 1);
+	cout << "loss: " << loss << endl;
 
-	// 	cout << " activation: " << y_hot[0] << ", " << y_hot[1] << endl;
-	// 	// dW -= outer(X[i], activation)
-	// 	cblas_dgemm (CblasRowMajor, CblasTrans, CblasNoTrans,
-	// 				 wc, wr, wr, -1.0, y_hot, wr, 
-	// 				 X + (i*wc), wc, 1, dW, wc);
+	// dW -= X.T * d_sigmoid
+	cblas_dgemm (CblasRowMajor, CblasTrans, CblasNoTrans,
+				 num_feat, num_class, num_train, 
+				 1, X, num_feat, d_sigmoid, num_class, -1, dW, num_class);
 
-	// }
-	// loss /= num_train;
+	// dW / num_train, dW += reg * W
+	cblas_dscal (num_class * num_feat, frac_const, dW, 1);
 
-	// // loss += 0.5 * reg * np.sum(W ** 2)
-	// loss += 0.5 * reg * cblas_ddot (wr * wc, W, 1, W, 1);
-	// // dW /= num_train
-	// cblas_dscal (wr * wc, frac_const, dW, 1);
-	// //dW += reg * W
-	// cblas_daxpy (wr * wc, reg, W, 1, dW, 1);
+	cblas_daxpy (num_class * num_feat, -reg, W, 1, dW, 1);
 
-	// // print loss to compare against python version.
-	// cout << loss << endl;
-	// cout << "dW: ";
-	// for (int j = 0; j < wr * wc; j++){
-	// 	cout << dW[j] << endl;
-	// }
 
 	delete (dW);	
 	delete (output);
+	delete (max_minus);
+	delete (y_hot);
+	delete (d_sigmoid);
 }
 
 int main(int argc, char *argv[]){
@@ -127,8 +125,8 @@ int main(int argc, char *argv[]){
 	// Row major: W: (num_classes x num_features) : 
 	// Y: (num_examples,)
 	
-	double W[6] = {0, 1, 0, 1, 0, 1};
-	double X[12] = {2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4};
+	double W[6] = {1, 2, 3, 4, 5, 6};
+	double X[12] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 	int Y[4] = {1, 0, 0, 1};
 	
 	int num_feat = 3;

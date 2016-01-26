@@ -1,7 +1,7 @@
 #                                                                                                                                                                                                                          
 # Based on Makefiles previously written by Julie Zelenski.                                                                                                                                                                 
 #                                                                                                                                                                                                                          
-CXX = g++
+CXX = clang++
 # The CXXFLAGS variable sets compile flags for gcc:                                                                                                                                                                        
 #  -g                         compile with debug information                                                                                                                                                               
 #  -Wall                      give all diagnostic warnings                                                                                                                                                                  
