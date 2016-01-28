@@ -74,11 +74,12 @@ public class AI {
 		/* Current behavior doesn't allow attacking during movement.  
 		 * FIXME: Delete next line when this is no longer true.
 		 */
-		if ((actionFlags & Action.IS_ATTACK_MASK) != 0) {
+		/*if ((actionFlags & Action.IS_ATTACK_MASK) != 0) {
 			action.actionType = ActionType.attack;
 		}	
+	   */
 		action.oldXPosition = (float)(actionFlags & Action.XPOS_MASK);
-		action.attackType = (AttackType)(actionFlags & Action.ATTACK_MASK);
+		//action.attackType = (AttackType)(actionFlags & Action.ATTACK_MASK);
 		return action;
 	}
 }

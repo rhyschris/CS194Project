@@ -13,7 +13,7 @@
 
 	public Action() {
 		actionType = ActionType.doNothing;
-		attackType = AttackType.noAttack;
+		//attackType = AttackType.noAttack;
 		oldXPosition = 0.0f;
 		distanceMoved = 0.0f;
 	}
@@ -34,7 +34,10 @@ public enum ActionType : long {
 	blockUp,
 	blockDown,
 	crouch,
-	attack = (0x1 << 3)
+	attack1,
+	attack2,
+	attack3,
+	attack4
 };
 
 public enum AttackType : long {
