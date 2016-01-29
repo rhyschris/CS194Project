@@ -7,9 +7,9 @@
 	public const long XPOS_MASK = 0x1fffffffe00; // 10th - 42nd bits
 
 	public ActionType actionType;
-	//public AttackType attackType;
 	public float oldXPosition;
 	public float distanceMoved;
+
 
 	public Action() {
 		actionType = ActionType.doNothing;

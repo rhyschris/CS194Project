@@ -179,24 +179,24 @@ public class PlayerController : MonoBehaviour {
 			}
 		} else{
 			switch (myAction.actionType){
-				case ActionType.attack1:
-					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
-					break;
-				case ActionType.attack2:
-					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
-					break;
-				case ActionType.attack3:
-					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
-					break;
-				case ActionType.attack4:
-					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
-					break;
-				case ActionType.jump:
-					if (!isJumping) {/* Just started jump, need to note end of jump time*/
-						isJumping = true;
-						timeJumpUpEnds = Time.time + JUMP_TIME_CONST;
-					}
-					break;
+			case ActionType.attack1:
+				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+				break;
+			case ActionType.attack2:
+				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+				break;
+			case ActionType.attack3:
+				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+				break;
+			case ActionType.attack4:
+				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+				break;
+			case ActionType.jump:
+				if (!isJumping) {/* Just started jump, need to note end of jump time*/
+					isJumping = true;
+					timeJumpUpEnds = Time.time + JUMP_TIME_CONST;
+				}
+				break;
 			}
 		}
 
@@ -244,12 +244,12 @@ public class PlayerController : MonoBehaviour {
 	// --------------------------------------------------------------------------------
 	private void throwAttack(float otherPlayerXPos) {
 		if (!attackWasThrown) {
-			bool facingRight = (playerBodyBox.transform.position.x < otherPlayerXPos);
-			float height = 0.5f;
-			float playerWidth = playerBodyBox.transform.localScale.x * 0.5f;
+			bool facingRight = (this.getXPos() < otherPlayerXPos);
+			float height = this.getYPos() -this.getHalfWidth();
+			float playerWidth = this.getHalfWidth();
 			float reachWidth = reach * 0.5f;
 			if (!lowAttack) {
-				height = 1.5f;
+				height = this.getYPos() + this.getHalfWidth();
 			}
 			if (facingRight) {
 				playerHitBox.transform.position = new Vector3 (getXPos () + playerWidth + reachWidth, height, 0.0f);
@@ -312,14 +312,22 @@ public class PlayerController : MonoBehaviour {
 	public float getHitXPos() {
 		return playerHitBox.transform.position.x;
 	}
+	public float getHitYPos() {
+		return playerHitBox.transform.position.y;
+	}
+
 	public float getHalfHeight() {
 		return playerBodyBox.transform.localScale.y * 0.5f;
 	}
 	public float getHalfWidth() {
 		return playerBodyBox.transform.localScale.x * 0.5f;
 	}
+
 	public float getHitHalfWidth() {
 		return playerHitBox.transform.localScale.x * 0.5f;
+	}
+	public float getHitHalfHeight() {
+		return playerHitBox.transform.localScale.y * 0.5f;
 	}
 	public void tellHit() {
 		attackHit = true;

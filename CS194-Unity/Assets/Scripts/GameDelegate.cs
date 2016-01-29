@@ -22,7 +22,7 @@ public class GameDelegate : MonoBehaviour {
 
 	void Start ()
 	{
-		
+
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject player1Obj = GameObject.Find ("Player1");
@@ -99,9 +99,11 @@ public class GameDelegate : MonoBehaviour {
 		// If the attacker is engaged in an attack that needs to be handled:
 		if (attacker.attackHandle ()) {
 			// See if the attack box is in the body box.
-			float distance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
-			distance = distance - attacker.getHitHalfWidth() - defender.getHalfWidth();
-			if (distance <= 0.0f) {
+			float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
+			xdistance -= attacker.getHitHalfWidth() - defender.getHalfWidth();
+			float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
+			ydistance -= (defender.getYPos()+defender.getHalfHeight());
+			if (xdistance <= 0.0f && ydistance<=0.0f) {
 				// This was a hit. Handle it.
 				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
 					Debug.Log ("Blocked!");
@@ -109,6 +111,7 @@ public class GameDelegate : MonoBehaviour {
 					defender.receiveAttack (attacker.getAttackDamage () * blockDamageModifier, true);
 				} else {
 					Debug.Log ("Hit!");
+					Debug.Log("Health: "+defender.getHealth().ToString());
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
 				}
