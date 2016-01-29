@@ -6,6 +6,10 @@
 *.userprefs
 *.o
 
+# Datasets
+*adult/*train*
+*adult/*test*
+
 # Unity generated #
 Temp/
 Obj/
