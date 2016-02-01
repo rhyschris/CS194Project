@@ -15,7 +15,11 @@ public class PlayerController : MonoBehaviour {
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
+	public float upwardVelocity;
+	public float downwardVelocity;
+	public float JUMP_TIME_CONST;	
 	// KEYBOARD INPUT
+	private KeyCode Up; 
 	private KeyCode Down;
 	private KeyCode Left;
 	private KeyCode Right;
@@ -27,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 	private float timeEnds;
 	private float timeAttackBegins;
 	private float timeAttackEnds;
+	private float timeJumpUpEnds;
 	private float reach;
 	private float attackDamage;
 	private bool lowAttack;
@@ -37,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 	private bool attackHit;
 	private bool blocking;
 	private bool lowBlocking;
+	private bool isJumping;
 	// --------------------------------------------------------------------------------
 	// PLAYER.UPDATE();
 	// In this function, player status that is not dependant upon input, such as in-
@@ -81,50 +87,38 @@ public class PlayerController : MonoBehaviour {
 			if (!inputHold) {
 				// QUERY KEYBOARD INPUT
 				bool lowMod = Input.GetKey (Down);
-				if (Input.GetKey (Block)) {
-					if (lowMod) {
-						action.actionType = ActionType.blockDown;
-					} else {
-						action.actionType = ActionType.blockUp;
-					}
-				} else if (Input.GetKeyDown (Attack1)) {
-					if (lowMod) {
-						action.actionType = ActionType.attack;
-						action.attackType = AttackType.attack3;
-						// Do a weak lower attack
-						// initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, true);
-					} else {
-						action.actionType = ActionType.attack;
-						action.attackType = AttackType.attack1;
-						// Do a weak upper attack
-						// initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 50.0f, false);
-					}
-				} else if (Input.GetKeyDown (Attack2)) {
-					if (lowMod) {
-						action.actionType = ActionType.attack;
-						action.attackType = AttackType.attack4;
-						// Do a strong lower attack
-						// initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, true);
-					} else {
-						action.actionType = ActionType.attack;
-						action.attackType = AttackType.attack2;
-						// Do a strong upper attack
-						// initiateAction (2.0f, 1.25f, 0.5f, 1.0f, 50.0f, false);
-					}
-				} else if (lowMod) {
+
+				/*Do a block */
+				if (Input.GetKey (Block)){
+					action.actionType = lowMod? ActionType.blockDown:ActionType.blockUp;
+				}
+				/*Do a weak attack*/
+				else if (Input.GetKeyDown (Attack1)){
+					action.actionType = lowMod? ActionType.attack3:ActionType.attack1;
+				}
+				/*Do a strong attack */
+				else if (Input.GetKeyDown (Attack2)){
+					action.actionType = lowMod? ActionType.attack4:ActionType.attack2;
+				}
+				else if (Input.GetKeyDown (Up)){
+					action.actionType = ActionType.jump;
+				}		
+				/*Crouch */
+				else if (lowMod) {
 					action.actionType = ActionType.crouch;
-				} else {
+				} 
+				else {
 					bool running = Input.GetKey (Run);
 					bool movingLeft = Input.GetKey (Left);
 					bool movingRight = Input.GetKey (Right);
 					bool movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
 					bool moving = movingLeft || movingRight;
-					if (((movingLeft == movingRight) && (movingLeft == true)) || lowMod) {
+					if ( (movingLeft && movingRight) || lowMod) {
 						movingLeft = false;
 						movingRight = false;
 						running = false;
 					}
-				
+
 					if (moving) {
 						if (movingAway) {
 							action.actionType = ActionType.moveAway;
@@ -156,6 +150,9 @@ public class PlayerController : MonoBehaviour {
 			float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
 			float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
 			float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
+
+			//TODO: Can't jump over another player as of now. Fix that? 
+
 			// If there is going to be a collision and moving towards...
 			if (myAction.actionType != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 				// If the other is moving away....
@@ -180,17 +177,29 @@ public class PlayerController : MonoBehaviour {
 			} else {
 				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
-		} else if (myAction.actionType == ActionType.attack) {
-			if (myAction.attackType == AttackType.attack1) {
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
-			} else if (myAction.attackType == AttackType.attack2) {
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
-			} else if (myAction.attackType == AttackType.attack3) {
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
-			} else if (myAction.attackType == AttackType.attack4) {
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+		} else{
+			switch (myAction.actionType){
+				case ActionType.attack1:
+					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+					break;
+				case ActionType.attack2:
+					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+					break;
+				case ActionType.attack3:
+					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+					break;
+				case ActionType.attack4:
+					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+					break;
+				case ActionType.jump:
+					if (!isJumping) {/* Just started jump, need to note end of jump time*/
+						isJumping = true;
+						timeJumpUpEnds = Time.time + JUMP_TIME_CONST;
+					}
+					break;
 			}
 		}
+
 		bool facingLeft = (myAction.oldXPosition > theirAction.oldXPosition);
 		float blockBoxOffset = (playerBodyBox.transform.localScale.x + playerBlockBox.transform.localScale.x) * 0.5f;
 		if (facingLeft) {
@@ -211,6 +220,21 @@ public class PlayerController : MonoBehaviour {
 			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
 			blocking = false;
 			lowBlocking = false;
+		}
+		/*Handle jumping animation*/
+		if (isJumping){
+			float newY;
+			if (Time.time <= timeJumpUpEnds) {
+				newY = playerBodyBox.transform.position.y + upwardVelocity;
+			} else {
+				newY = playerBodyBox.transform.position.y - downwardVelocity;
+
+				if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
+					isJumping = false;
+					newY = this.getHalfHeight();
+				}
+			}
+			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
 		}
 	}
 	// --------------------------------------------------------------------------------
@@ -288,6 +312,9 @@ public class PlayerController : MonoBehaviour {
 	public float getHitXPos() {
 		return playerHitBox.transform.position.x;
 	}
+	public float getHalfHeight() {
+		return playerBodyBox.transform.localScale.y * 0.5f;
+	}
 	public float getHalfWidth() {
 		return playerBodyBox.transform.localScale.x * 0.5f;
 	}
@@ -336,6 +363,7 @@ public class PlayerController : MonoBehaviour {
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
+			Up = KeyCode.W;
 			Down = KeyCode.S;
 			Left = KeyCode.A;
 			Right = KeyCode.D;
@@ -347,6 +375,7 @@ public class PlayerController : MonoBehaviour {
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");
 			playerBlockBox = GameObject.Find ("Player2BlockBox");
+			Up = KeyCode.I;
 			Down = KeyCode.K;
 			Left = KeyCode.J;
 			Right = KeyCode.L;
@@ -355,7 +384,7 @@ public class PlayerController : MonoBehaviour {
 			Attack2 = KeyCode.O;
 			Block = KeyCode.H;
 		}
-	
+
 		if (isAI) {
 			playerAI = new AI (4998, 4999);
 			playerAI.verifyNetwork ();

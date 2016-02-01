@@ -7,13 +7,13 @@
 	public const long XPOS_MASK = 0x1fffffffe00; // 10th - 42nd bits
 
 	public ActionType actionType;
-	public AttackType attackType;
+	//public AttackType attackType;
 	public float oldXPosition;
 	public float distanceMoved;
 
 	public Action() {
 		actionType = ActionType.doNothing;
-		attackType = AttackType.noAttack;
+		//attackType = AttackType.noAttack;
 		oldXPosition = 0.0f;
 		distanceMoved = 0.0f;
 	}
@@ -34,13 +34,10 @@ public enum ActionType : long {
 	blockUp,
 	blockDown,
 	crouch,
-	attack = (0x1 << 3)
+	jump, 
+	attack1,
+	attack2,
+	attack3,
+	attack4
 };
-
-public enum AttackType : long {
-	noAttack=(0x0 << 4),
-	attack1 = (0x1 << 4),
-	attack2 = (0x2 << 4),
-	attack3 = (0x3 << 4),
-	attack4 = (0x4 << 4)
-};
+	
