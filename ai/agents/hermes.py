@@ -8,13 +8,14 @@ Layers lightly over a socket.
 
 import sys
 import socket
+import struct
 import time # for sleep (precursor implementation to connecting directly and awaiting gamestate)
 from agent import Agent
 
 
 HOST = '127.0.0.1'
 _PAGE_SZ = 4096
-_SLEEP_QUANTUM = 0.400
+_SLEEP_QUANTUM = 0.100
 
 
 def main(port, debug=False, agent=Agent()):
@@ -23,7 +24,7 @@ def main(port, debug=False, agent=Agent()):
         and blocks to wait for a response.
     """
     server, client = create_socket(port + 1)
-
+    
     if debug:
         send_random (client, port, agent)
     else:
@@ -31,16 +32,21 @@ def main(port, debug=False, agent=Agent()):
         
 def send_action (client, outport, action):
     ''' Sends the action through the client socket '''
-    data = action.value
-    client.sendto(data, (HOST, port))
+    # packs the enum's number into raw bits 
+    # '@' reads enum with system endianness (shouldn't
+    # matter as of now, as it's only 8 bits)
+
+    data = struct.pack ("@B", action.value)
+    client.sendto(data, (HOST, outport))
 
 def send_random (client, outport, agent):
     """ Wakes up and sends packets every once in a while. """
     while True:
         time.sleep(_SLEEP_QUANTUM)
         agent.ingestState("")
-        action = agent.chooseAction()
-        print "action: ", action, " type: ", type(action)
+        action = agent.chooseAction()        
+        print "action: ", action
+        send_action (client, outport, action)
 
 def create_socket (bindport):
     """ Creates listening UDP socket, server, and client UDP socket, client.
