@@ -5,6 +5,7 @@
 *.txt
 *.userprefs
 *.o
+*.pyc
 
 # Datasets
 *adult/*train*
