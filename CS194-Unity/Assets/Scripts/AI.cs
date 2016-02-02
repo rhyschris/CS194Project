@@ -12,6 +12,7 @@ public class AI {
 	private Action lastChoice;
 	private byte[] buffer;
 	private AsyncAIClient network;
+	private const int PACKET_LENGTH = 1;
 
 
 	public AI (int inPort, int outPort) {
@@ -32,7 +33,7 @@ public class AI {
 		try {
 			bool avail = connectionSignal.WaitOne (AsyncAIClient.serverTimeout);
 			if (!avail){ 
-				//network.closeSockets();
+				network.closeTCPSocket();
 			}
 			return true;
 		} catch (Exception e){
@@ -48,11 +49,15 @@ public class AI {
 	 * 
 	 */
 	public Action queryAction(GameState state) {
-		if (network.readUnblocked (buffer)) {
-			lastChoice = decodeAction ();
+		int size = network.readUnblocked (buffer);
+
+		if (size > 0) {
+			lastChoice = decodeAction (size);
+		} else if (size == -1) {
+			Debug.Log ("---ABORT--- ... Uhhh could not read from socket (SocketError)"); 
 		}
 		return lastChoice;
-	}
+	}	
 	/**
 	 * Interprets the byte array to retrieve an action
 	 * corresponding to a GameState (but not necessarily 
@@ -65,21 +70,44 @@ public class AI {
 	 * 
 	 * See Action.cs for mask and enum values.  
 	 */
-	private Action decodeAction(){
-		int actionFlags = (short)buffer [0];
+	private Action decodeAction(int bytesFilled){
 
+		/* Take the most recently sent action */
 		Action action = new Action ();
-		action.actionType = (ActionType) (actionFlags & Action.ACTION_MASK);
 
-		/* Current behavior doesn't allow attacking during movement.  
-		 * FIXME: Delete next line when this is no longer true.
-		 */
-		/*if ((actionFlags & Action.IS_ATTACK_MASK) != 0) {
-			action.actionType = ActionType.attack;
-		}	
-	   */
-		action.oldXPosition = (float)(actionFlags & Action.XPOS_MASK);
-		//action.attackType = (AttackType)(actionFlags & Action.ATTACK_MASK);
+		// Change to packetlength
+		int read_loc = bytesFilled - PACKET_LENGTH;
+
+		byte[] actionPacket = new byte[PACKET_LENGTH];
+
+		Buffer.BlockCopy(buffer, read_loc, actionPacket, 0, PACKET_LENGTH);
+		Debug.Log ("actionPacket: " + actionPacket[0]);
+		/* least significant byte contains all of the bitwise or'ed action flags */
+		
+		action.actionType = (ActionType) actionPacket[0];
+
+		debugAction (action);
 		return action;
+	}
+	/**
+	 * Debugs an action to the Unity console.
+	 */
+	private void debugAction(Action action){
+		switch (action.actionType & Action.HMOVE_MASK) {
+		case (ActionType.walkTowards):
+			Debug.Log("AI: walking towards");
+			break;
+		case (ActionType.runTowards):
+			Debug.Log ("Walking towards");
+			break;
+		case (ActionType.moveAway):
+			Debug.Log ("Moving away");
+			break;
+		default:
+			Debug.Log ("Not moving");
+			break;
+
+		}
+		Debug.Log ("action: " + (byte)action.actionType);
 	}
 }
