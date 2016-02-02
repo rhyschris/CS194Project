@@ -9,28 +9,29 @@ CXX = clang++
 #  -O0                        do not optimize generated code                                                                                                                                                                
 #  -std=c++0x                 go with the c++0x extensions for thread support, unordered maps, etc                                                                                                                          
 
-CXXFLAGS = -g -Wall -pedantic -O0 -std=c++0x -I /opt/OpenBLAS/include/ 
+CXXFLAGS = -g -Wall -pedantic -O0 -std=c++0x
 
 # The LDFLAGS variable sets flags for linker                                                                                                                                                                                
 #  -lm       link in libm (math library)                                                                                                                                                                                    
 #  -framework Accelerate: Accelerate for vector linear algebra.
 #  -lopenblas
-LDFLAGS = -lm -lpthread -framework Accelerate -L/opt/OpenBLAS/lib -lopenblas
+LDFLAGS = -lm -lpthread -framework Accelerate
 
 # In this section, you list the files that are part of the project.                                                                                                                                                         
 # If you add/change names of header/source files, here is where you                                                                                                                                                         
 # edit the Makefile.                                                                                                                                                                                                        
 SOURCES = \
         maxent.cc \
+	model.cc \
         #news-aggregator-utils.cc \
         stream-tokenizer.cc \
         rss-feed.cc \
         rss-feed-list.cc \
         html-document.cc \
         rss-index.cc
-HEADERS = #\
- article.h \
-        news-aggregator-utils.h \
+HEADERS = \
+	maxent.h \
+        #news-aggregator-utils.h \
         stream-tokenizer.h \
         rss-feed.h \
         rss-feed-exception.h \
@@ -45,7 +46,7 @@ TARGETS = classifier
 
 default: $(TARGETS)
 
-classifier: maxent.o 
+classifier: maxent.o model.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 #news-aggregator.o rss-feed.o rss-feed-list.o rss-index.o html-document.o stream-tokenizer.o news-aggregator-utils.o

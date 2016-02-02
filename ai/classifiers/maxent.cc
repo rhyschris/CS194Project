@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cmath> 
+#include "maxent.h"
+#include "float.h"
+#include <random>
+
 // Accelerate framework on OS X
 // TODO: Add MKL include
 #ifdef __APPLE__
@@ -10,46 +14,66 @@
 // TODO: discriminate with a namespace
 #endif
 
+#define LOWER_TWELVE_MASK 0x00000fff
+
 using namespace std;
-
-
-/**
- * Calculates scaled softmax on the output matrix.
+ 
+/* Constructor.  Creates the weight matrices for this given
+ * instance.  
  */
-static void softmax (double *output, double *max_minus, int n){
-	//max(output)
-	double max = output[ cblas_idamax (n, output, 1) ];
-	
-	// broadcast max to an array
-	catlas_dset (n, max, max_minus, 1);
-	cblas_daxpy (n, -1, max_minus, 1, output, 1);
-	
-	vvexp (output, output, (const int *)&n);
-	// num = sum(output)
-	double num = cblas_dasum (n, output, 1);
-	
-	cblas_dscal (n, 1.0 / num, output, 1);
+Maxent::Maxent(int num_feat, int num_class){
+	this->num_feat = num_feat;
+	this->num_class = num_class;
+
+	this->W = new double[num_feat * num_class]();
+	this->dW = new double[num_feat * num_class]();
 }
 
+/* Frees allocated memory before deallocation */
+Maxent::~Maxent(){
+	delete(this->W);
+	delete(this->dW);
+}
+/* Initializes weights to W, using the LAPACK routine dlaruv. 
+ * Params:
+ * normal: True if normal distribution, uniform if false
+ * scal: The scaling you want compared to a 0-1 distribution 
+ */ 
+void Maxent::initWeights (bool normal, double scal){
 
+	int dist = normal? 3 : 2;
+	// 1) gets you uni(0, 1) (unused)
+	// 2) gets you uni(-1, 1)
+	// 3) gets you normal (0, 1)
+	mt19937 twister(random_device{}());
+
+	// four seed integers between 0 and 4096
+	int iseed[4] = {(int)twister() & LOWER_TWELVE_MASK, 
+					(int)twister() & LOWER_TWELVE_MASK, 
+					(int)twister() & LOWER_TWELVE_MASK, 
+					(int)twister() & LOWER_TWELVE_MASK};
+
+	int n = num_feat * num_class;
+
+    dlarnv_(&dist, iseed,  &n, this->W); 
+    cblas_dscal (n, scal, this->W, 1);
+}
 /**
  * Implements a loss function for the softmax classifier.
  * W: (num_feat, num_class)
  * X: (num_train, num_feat) --> each row is a vector
  * Y: (num_train)
  */
-static void train(double *W, double *X, int *Y, 
-				  int num_feat, int num_class, int num_train){
+double Maxent::train(double *X, int *Y, int num_train,
+					int epochs, double alpha, double reg){
 	/* Initialize single parameters */
-	double reg = 1e-3;
+
 	double frac_const = 1.0/num_train;
+	double loss = 0.0;
 
 	int out_sz = num_train * num_class;
-	int epochs = 100;
-	double alpha = 0.01;
 
 	/* Allocating new matrices */
-	double *dW = new double[num_feat * num_class];
 	double *output = new double[out_sz];
 	double *max_minus = new double[out_sz];
 	double *y_hot = new double[out_sz];
@@ -63,7 +87,7 @@ static void train(double *W, double *X, int *Y,
 	}
 
 	for (int iter = 0; iter < epochs; iter++){
-		double loss = 0.0;
+		loss = 0.0;
 		// set to 0
 		memset (dW, 0, num_feat * num_class * sizeof(double));
 		memset (output, 0, out_sz * sizeof(double));
@@ -77,6 +101,7 @@ static void train(double *W, double *X, int *Y,
 		// B --> W:   		(num_class, num_feat)
 		// output --> C: 	(num_class, num_train)
 		// M, N: first dimension is across 
+
 		cblas_dgemm (CblasRowMajor, CblasNoTrans, CblasNoTrans,
 					num_train, num_class, num_feat, 
 					1, X, num_feat, W, num_class, 1, output, num_class);				
@@ -92,12 +117,13 @@ static void train(double *W, double *X, int *Y,
 		// elt-wise log of output
 		vvlog (output, output, (const int *)&out_sz);
 
+		// loss += 0.5 * reg * np.sum(W ** 2)
+		//loss += 0.5 * reg * cblas_ddot (num_feat * num_class, W, 1, W, 1);
 		loss -= cblas_ddot (out_sz, output, 1, y_hot, 1);
 		loss /= num_train;
-		// loss += 0.5 * reg * np.sum(W ** 2)
-		loss += 0.5 * reg * cblas_ddot (num_feat * num_class, W, 1, W, 1);
-		cout << "loss: " << loss << endl;
 
+		if (iter % 10 == 0)
+			cout << "epoch " << iter << ", loss: " << loss << endl;
 		// dW -= X.T * d_sigmoid
 		cblas_dgemm (CblasRowMajor, CblasTrans, CblasNoTrans,
 					 num_feat, num_class, num_train, 
@@ -109,35 +135,71 @@ static void train(double *W, double *X, int *Y,
 
 		/* W -= alpha * dW */
 		catlas_daxpby (num_class * num_feat, alpha, dW, 1, 1, W, 1);
+		if (iter % 10 == 0)
+			test (X, Y, num_train);	
 	}
 
-
-	delete (dW);	
 	delete (output);
 	delete (max_minus);
 	delete (y_hot);
 	delete (d_sigmoid);
+
+	return loss;
 }
 
-int main(int argc, char *argv[]){
+/**
+ * Runs the linear classifier
+ * on the test set.
+ * 
+ * Returns the accuracy.
+ */
+double Maxent::test(double *X, int *Y, int num_test){
+	double *y_pred = new double[num_test * num_class]();
 
-	// num_features: 3 
-	// num_classes: 2
-	// num_examples: 4
-	// Row major: X: (num_features x num_examples) :
-	// Row major: W: (num_classes x num_features) : 
-	// Y: (num_examples,)
+
+	cblas_dgemm (CblasRowMajor, CblasNoTrans, CblasNoTrans,
+			num_test, num_class, num_feat, 
+			1, X, num_feat, W, num_class, 1, y_pred, num_class);
+
+	int num_correct = 0;
+	for (int i = 0; i < num_test; i++){
+		
+		int max_ind = 0;
+		double cur_max = -DBL_MAX;
+		
+
+		for (int j = 0; j < num_class; j++){
+			double value = y_pred[i*num_class + j];
+			if (value > cur_max) {
+				cur_max = value;
+				max_ind = j;
+			}
+		}
+		num_correct += (max_ind == Y[i]) ? 1. : 0.;
+	}
+	double acc = (double)num_correct / num_test;
+	cout << "accuracy: " << num_correct << " / " << num_test << " = " 
+		 << acc << endl;
+	delete(y_pred);
+	return acc;
+}
+/* Private methods
+ * -------------------
+ */
+
+/**
+ * Calculates scaled softmax on the output matrix.
+ */
+void Maxent::softmax (double *output, double *max_minus, int n){
+	//max(output)
+	double max = output[ cblas_idamax (n, output, 1) ];
+	// broadcast max to an array
+	catlas_dset (n, max, max_minus, 1);
+	cblas_daxpy (n, -1, max_minus, 1, output, 1);
 	
-	double W[6] = {1, 2, 3, 4, 5, 6};
-	double X[12] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-	int Y[4] = {1, 0, 0, 1};
+	vvexp (output, output, (const int *)&n);
+	// num = sum(output)
+	double num = cblas_dasum (n, output, 1);
 	
-	int num_feat = 3;
-	int num_class = 2;
-	int num_train = 4;
-
-	train (W, X, Y, num_feat, num_class, num_train);
-
-	return 0;
-
+	cblas_dscal (n, 1.0 / num, output, 1);
 }

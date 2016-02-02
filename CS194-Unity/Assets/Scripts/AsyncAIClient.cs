@@ -52,8 +52,8 @@ namespace AssemblyCSharp {
 		}
 		/**
 		 * Asynchronously connects to the localhost server on the cached port number.
-		 * Sets up a TCP socket, and a corresponding UDP server.
-		 * bound to the same port.  
+		 * Sets up a TCP socket attempting to contact localhost:outPort, and a 
+		 * corresponding UDP server, bound to the inPort.
 		 * 
 		 * UNDONE: Think about establishing TCP communication to request what port to set up,
 		 * in case ports can't be directly forwarded, etc. and Unity doesn't know.
@@ -62,7 +62,7 @@ namespace AssemblyCSharp {
 		 */
 		public bool connectAsync(){
 			try { 
-				// Create TCP socket for authenticated communication 
+				/* Create TCP socket for authenticated communication */
 				IPEndPoint endpt = new IPEndPoint(IPAddress.Parse(host), outPort); 
 				clientAuth = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				
@@ -72,7 +72,7 @@ namespace AssemblyCSharp {
 				server = new Socket (AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 				server.Blocking = false;
 				
-				// Bind to UDP host port
+				/* Bind to UDP host port */
 				IPEndPoint inpt = new IPEndPoint(IPAddress.Parse(host), inPort);
 				server.Bind (inpt);
 				return true;
@@ -82,9 +82,8 @@ namespace AssemblyCSharp {
 				return false;
 			}
 		}
-		public void closeSockets(){
+		public void closeTCPSocket (){
 			clientAuth.Close ();
-			server.Close ();
 		}
 
 
@@ -93,9 +92,14 @@ namespace AssemblyCSharp {
 		}
 		/**
 		 * Polls the UDP socket server to see if there are any new messsages. 
-		 * Returns false if nothing is present.
-		 */
-		public bool readUnblocked (byte[] buffer){
+		 * Returns:
+		 *    size: If bytes have been read into the buffer.
+		 *    0:    If no bytes were available, but the poll was successful 
+		 *   -1:    If there was some error when trying to read bytes
+		 * 
+		 * TODO: replace pure numbers with constants
+		 */    
+		public int readUnblocked (byte[] buffer){
 
 			try {
 				/**
@@ -111,15 +115,16 @@ namespace AssemblyCSharp {
 				if (server.Poll(0, SelectMode.SelectRead)){
 					int size = server.Available;
 					server.Receive(buffer, 0, size, 0);   
-					return true;
+					Debug.Log("Received UDP packet with contents: " + Encoding.UTF8.GetString(buffer));
+					return size;
 				} else {
 					/* Nothing there */
-					return false;
+					return 0;
 				}
 						
 			} catch (Exception e){
 				Debug.Log(e);
-				return false;
+				return -1;
 			}
 		} 
 		/* Delegate method to be called upon connecting to an AI server asynchronously.
