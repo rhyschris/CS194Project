@@ -8,8 +8,8 @@
 *.pyc
 
 # Datasets
-*adult/*train*
-*adult/*test*
+*adult/*train
+*adult/*test
 
 # Unity generated #
 Temp/
