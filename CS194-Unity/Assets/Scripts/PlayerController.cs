@@ -43,11 +43,13 @@ public class PlayerController : MonoBehaviour {
 	private bool blocking;
 	private bool lowBlocking;
 	private bool isJumping;
-	// --------------------------------------------------------------------------------
-	// PLAYER.UPDATE();
-	// In this function, player status that is not dependant upon input, such as in-
-	// progress animations, are handled.
-	// --------------------------------------------------------------------------------
+
+	/**
+	 * PLAYER.UPDATE();
+	 * In this function, player status that is not dependant upon input, such as in-
+	 * progress animations, are handled.
+	 */
+
 	public void handleAutomaticUpdates(float otherPlayerXPos) {
 		if (inputHold) {
 			if (Time.time >= timeEnds) {
@@ -69,20 +71,36 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.QUERYINPUT();
-	// Determines the action for the player to peform this frame, either by querying
-	// keyboard input or the AI.
-	// --------------------------------------------------------------------------------
+	/** 
+	 * PLAYER.QUERYINPUT();
+	 * Determines the action for the player to peform this frame, either by querying
+	 * keyboard input or the AI.
+	 */
 	public Action queryInput(float otherPlayerXPos) {
 		Action action = new Action();
+		/* Horizontal movement: determine if moving towards or away 
+		 * Player does this by interpreting key intent
+		 * AI does this by direct command
+		 * 
+		 * TODO: clean up player key intent (hierarchial enum)?
+		 */
+		bool running;
+		bool movingLeft = false;
+		bool movingRight;
+		bool movingAway;
+		bool moving;
+
 		if (isAI) {
 			GameState state = new GameState ();
 			// TODO: Build the state here.
+
 			action = playerAI.queryAction (state);
 			if (inputHold) {
 				action = new Action ();
-			}
+			} 
+			/* Assuming AI is player 2 - he will face left */
+			movingLeft = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
+
 		} else {
 			if (!inputHold) {
 				// QUERY KEYBOARD INPUT
@@ -90,29 +108,29 @@ public class PlayerController : MonoBehaviour {
 
 				/*Do a block */
 				if (Input.GetKey (Block)){
-					action.actionType = lowMod? ActionType.blockDown:ActionType.blockUp;
+					action.actionType |= lowMod? ActionType.blockDown:ActionType.blockUp;
 				}
 				/*Do a weak attack*/
 				else if (Input.GetKeyDown (Attack1)){
-					action.actionType = lowMod? ActionType.attack3:ActionType.attack1;
+					action.actionType |= lowMod? ActionType.attack3:ActionType.attack1;
 				}
 				/*Do a strong attack */
 				else if (Input.GetKeyDown (Attack2)){
-					action.actionType = lowMod? ActionType.attack4:ActionType.attack2;
+					action.actionType |= lowMod? ActionType.attack4:ActionType.attack2;
 				}
 				else if (Input.GetKeyDown (Up)){
-					action.actionType = ActionType.jump;
-				}		
-				/*Crouch */
+					action.actionType |= ActionType.jump;
+				}				
+				/* Crouch */
 				else if (lowMod) {
-					action.actionType = ActionType.crouch;
+					action.actionType |= ActionType.crouch;
 				} 
 				else {
-					bool running = Input.GetKey (Run);
-					bool movingLeft = Input.GetKey (Left);
-					bool movingRight = Input.GetKey (Right);
-					bool movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
-					bool moving = movingLeft || movingRight;
+					running = Input.GetKey (Run);
+				    movingLeft = Input.GetKey (Left);
+					movingRight = Input.GetKey (Right);
+					movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+					moving = movingLeft || movingRight;
 					if ( (movingLeft && movingRight) || lowMod) {
 						movingLeft = false;
 						movingRight = false;
@@ -121,32 +139,48 @@ public class PlayerController : MonoBehaviour {
 
 					if (moving) {
 						if (movingAway) {
-							action.actionType = ActionType.moveAway;
-							action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
+							action.actionType |= ActionType.moveAway;
 						} else if (running) {
-							action.actionType = ActionType.runTowards;
-							action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
+							action.actionType |= ActionType.runTowards;
 						} else {
-							action.actionType = ActionType.walkTowards;
-							action.distanceMoved = forwardVelocity * Time.deltaTime;
+							action.actionType |= ActionType.walkTowards;	
 						}
-					}
-					if (movingLeft) {
-						action.distanceMoved = action.distanceMoved * -1.0f;
 					}
 				}
 			}
 		}
+			
 		action.oldXPosition = playerBodyBox.transform.position.x;
+		updatePosition (action, movingLeft);
 		return action;
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.HANDLEINPUT();
-	// Handles the action queried earlier. Uses collision detection for movements to
-	// ensure player's do not overlap.
-	// --------------------------------------------------------------------------------
+		
+	/** 
+	 * Updates the action argument to indicate the distance moved during this frame.
+	 */
+	public void updatePosition (Action action, bool movingLeft){
+		ActionType hmove = action.actionType & Action.HMOVE_MASK;
+		if (hmove == ActionType.moveAway) {
+			action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
+		} else if (hmove == ActionType.runTowards) {
+			action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
+		} else if (hmove == ActionType.walkTowards) {
+			action.distanceMoved = forwardVelocity * Time.deltaTime;
+		}
+		if (movingLeft)
+			action.distanceMoved *= -1.0f;
+	}
+	/** --------------------------------------------------------------------------------
+	 * PLAYER.HANDLEINPUT();
+	 * Handles the action queried earlier. Uses collision detection for movements to
+	 * ensure player's do not overlap.
+	 * --------------------------------------------------------------------------------
+	 */
 	public void handleInput(Action myAction, Action theirAction) {
-		if (myAction.actionType == ActionType.walkTowards || myAction.actionType == ActionType.runTowards || myAction.actionType == ActionType.moveAway) {
+		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
+		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
+
+		if (my_horiz > 0){
 			float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
 			float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
 			float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
@@ -154,9 +188,9 @@ public class PlayerController : MonoBehaviour {
 			//TODO: Can't jump over another player as of now. Fix that? 
 
 			// If there is going to be a collision and moving towards...
-			if (myAction.actionType != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+			if (their_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 				// If the other is moving away....
-				if (theirAction.actionType == ActionType.moveAway) {
+				if (their_horiz == ActionType.moveAway) {
 					// Move right up to the other's projected position.
 					if (myAction.distanceMoved < 0.0f) {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
@@ -206,12 +240,14 @@ public class PlayerController : MonoBehaviour {
 			blockBoxOffset = blockBoxOffset * -1.0f;
 		}
 		blockBoxOffset = playerBodyBox.transform.position.x + blockBoxOffset;
-		if (myAction.actionType == ActionType.blockUp) {
+
+		ActionType blockAction = myAction.actionType & Action.ATTACK_MASK;
+		if (blockAction == ActionType.blockUp) {
 			playerBlockBox.SetActive (true);
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
 			blocking = true;
 			lowBlocking = false;
-		} else if (myAction.actionType == ActionType.blockDown) {
+		} else if (blockAction == ActionType.blockDown) {
 			playerBlockBox.SetActive (true);
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
 			blocking = true;
@@ -237,11 +273,11 @@ public class PlayerController : MonoBehaviour {
 			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
 		}
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.THROWATTACK();
-	// Throws up the attack hitbox, but only if it needs to be thrown up.
-	// Tells the player that its attack hitbox was thrown up.
-	// --------------------------------------------------------------------------------
+	/**
+	 * PLAYER.THROWATTACK();
+	 * Throws up the attack hitbox, but only if it needs to be thrown up.
+	 * Tells the player that its attack hitbox was thrown up.
+	 */
 	private void throwAttack(float otherPlayerXPos) {
 		if (!attackWasThrown) {
 			bool facingRight = (this.getXPos() < otherPlayerXPos);
@@ -259,11 +295,11 @@ public class PlayerController : MonoBehaviour {
 			attackWasThrown = true;
 		}
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.FINISHATTACK();
-	// Throws down the attack hitbox, but only if it needs to be thrown down.
-	// Tells the player that its attack hitbox was thrown down.
-	// --------------------------------------------------------------------------------
+	/**
+	 * PLAYER.FINISHATTACK();
+	 * Throws down the attack hitbox, but only if it needs to be thrown down.
+	 * Tells the player that its attack hitbox was thrown down.
+	 */
 	private void finishAttack() {
 		if (!attackWasFinished) {
 			playerHitBox.SetActive (false);
@@ -272,11 +308,11 @@ public class PlayerController : MonoBehaviour {
 			attackWasFinished = true;
 		}
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.RECEIVEATTACK();
-	// The player receives an attack for the given amount of damage. This function
-	// should define the behavior a player goes through when they are hit by an attack.
-	// --------------------------------------------------------------------------------
+	/**
+	 * PLAYER.RECEIVEATTACK();
+	 * The player receives an attack for the given amount of damage. This function
+	 * should define the behavior a player goes through when they are hit by an attack.
+	 */
 	public void receiveAttack(float damage, bool blocked) {
 		health = health - damage;
 		if (blocked) {
@@ -287,10 +323,10 @@ public class PlayerController : MonoBehaviour {
 			// TODO: Handle behavior if hit while not blocking.
 		}
 	}
-	// --------------------------------------------------------------------------------
-	// PLAYER.INITIATEACTION();
-	// Initates a new attack action with the provided attributes.
-	// --------------------------------------------------------------------------------
+	/**
+	 * PLAYER.INITIATEACTION();
+	 * Initates a new attack action with the provided attributes.
+	 */
 	private void initiateAction(float duration, float attackBegin, float attackDuration, float newReach, float newDamage, bool newLow) {
 		inputHold = true;
 		attackWasThrown = false;

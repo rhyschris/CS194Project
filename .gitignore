@@ -4,6 +4,12 @@
 *.log
 *.txt
 *.userprefs
+*.o
+*.pyc
+
+# Datasets
+*adult/*train
+*adult/*test
 
 # Unity generated #
 Temp/

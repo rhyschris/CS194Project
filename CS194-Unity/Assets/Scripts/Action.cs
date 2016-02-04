@@ -1,10 +1,9 @@
 ﻿public class Action {
 
-
-	public const long ACTION_MASK = 0x1f; // l.s. 5 bits 
-	public const long IS_ATTACK_MASK = 0x10; // 5th bit only
-	public const long ATTACK_MASK = 0x1e0; // 6-9th l.s. bits
-	public const long XPOS_MASK = 0x1fffffffe00; // 10th - 42nd bits
+	public const ActionType VMOVE_MASK = (ActionType)0x3; // 2 l.s. bits
+	public const ActionType HMOVE_MASK = (ActionType)0x1e; // 3-5th l.s. bits
+	public const ActionType ATTACK_MASK = (ActionType)0xf0; // 6-8th l.s. bits
+	public const long XPOS_MASK = 0xffffffff00; // 9 .. 40 l.s. bits
 
 	public ActionType actionType;
 	public float oldXPosition;
@@ -13,31 +12,43 @@
 
 	public Action() {
 		actionType = ActionType.doNothing;
-		//attackType = AttackType.noAttack;
 		oldXPosition = 0.0f;
 		distanceMoved = 0.0f;
 	}
 }
 
 /** Shift the action types for convenient network IO
- *  A discrete action can then be described by 
+ *  A discrete action can then be described by a bitwise OR of the appropriate
+ *  actions
  * 
- *  (old_X_position || AttackType || ActionType.attack ? 1 : 0 || ActionType)
+ *  The following sets of actions are mutually exclusive:
+ *  (doNothing)
+ *  (jump, crouch)
+ *  (walkTowards, runTowards, moveAway)
+ *  (attack1-4, blockUp, blockDown)
  * 
- *  and the action types set by masking with the constant masks below.
+ *  A network packet for an action is expected to look like (big endian):
+ *  -------------------------------------------------------------------------
+ *  LSB Bits-  (40 ... 9)     (8, 7, 6)             (5, 4, 3)              (2, 1)         
+ *  Message -   oldXPos   || [Attack type] || [Horizontal movement] || [Vertical Movement] 
+ * ---------------------------------------------------------------------------
+ * 
+ *  Blocks cannot be done at the same time as attacking.  Some attacks
+ *  may not be compatible with crouching, but are not programmatically disallowed.
  */
-public enum ActionType : long {
+
+public enum ActionType : byte {
 	doNothing = 0,
-	walkTowards,
-	runTowards,
-	moveAway,
-	blockUp,
-	blockDown,
-	crouch,
-	jump, 
-	attack1,
-	attack2,
-	attack3,
-	attack4
+	crouch = 0x1,
+	jump = 0x3,
+	walkTowards = (0x1 << 2),
+	runTowards = (0x2 << 2),
+	moveAway = (0x3 << 2),
+	blockUp = (0x1 << 4),
+	blockDown = (0x2 << 4),
+	attack1 = (0x3 << 4),
+	attack2 = (0x4 << 4),
+	attack3 = (0x5 << 4),
+	attack4 = (0x6 << 4)
 };
 	
