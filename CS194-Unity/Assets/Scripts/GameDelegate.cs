@@ -100,7 +100,7 @@ public class GameDelegate : MonoBehaviour {
 		if (attacker.attackHandle ()) {
 			// See if the attack box is in the body box.
 			float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
-			xdistance -= attacker.getHitHalfWidth() - defender.getHalfWidth();
+			xdistance -= (attacker.getHitHalfWidth() + defender.getHalfWidth());
 			float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
 			ydistance -= (defender.getYPos()+defender.getHalfHeight());
 			if (xdistance <= 0.0f && ydistance<=0.0f) {
