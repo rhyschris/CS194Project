@@ -22,7 +22,7 @@ public class GameDelegate : MonoBehaviour {
 
 	void Start ()
 	{
-		
+
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject player1Obj = GameObject.Find ("Player1");
@@ -83,9 +83,12 @@ public class GameDelegate : MonoBehaviour {
 			// UPDATE PLAYER STATUS
 			player1.handleAutomaticUpdates (player2.getXPos ());
 			player2.handleAutomaticUpdates (player1.getXPos ());
+			//BUILD GAME STATE
+			GameState state = createGameState();
+
 			// QUERY PLAYER INPUT
-			Action player1Action = player1.queryInput (player2.getXPos ());
-			Action player2Action = player2.queryInput (player1.getXPos ());
+			Action player1Action = player1.queryInput (state);
+			Action player2Action = player2.queryInput (state);
 			// HANDLE PLAYER INPUT
 			player1.handleInput (player1Action, player2Action);
 			player2.handleInput (player2Action, player1Action);
@@ -99,9 +102,11 @@ public class GameDelegate : MonoBehaviour {
 		// If the attacker is engaged in an attack that needs to be handled:
 		if (attacker.attackHandle ()) {
 			// See if the attack box is in the body box.
-			float distance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
-			distance = distance - attacker.getHitHalfWidth() - defender.getHalfWidth();
-			if (distance <= 0.0f) {
+			float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
+			xdistance -= (attacker.getHitHalfWidth() + defender.getHalfWidth());
+			float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
+			ydistance -= (defender.getYPos()+defender.getHalfHeight());
+			if (xdistance <= 0.0f && ydistance<=0.0f) {
 				// This was a hit. Handle it.
 				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
 					Debug.Log ("Blocked!");
@@ -109,6 +114,7 @@ public class GameDelegate : MonoBehaviour {
 					defender.receiveAttack (attacker.getAttackDamage () * blockDamageModifier, true);
 				} else {
 					Debug.Log ("Hit!");
+					Debug.Log("Health: "+defender.getHealth().ToString());
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
 				}
@@ -117,5 +123,42 @@ public class GameDelegate : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	private GameState createGameState(){
+		GameState state = new GameState (player1.getXPos(),player1.getYPos(),player2.getXPos(),
+			player2.getYPos(),player1.getHealth(),player2.getHealth());
+
+		bool p1attacking = false, p1high = false, p1blocking = false, p1crouching = false;
+
+		if (player1.attackHandle ()) {
+			p1attacking = true;
+			p1high = player1.isHighAttack ();
+		} else if (player1.isLowBlocking ()) {
+			p1blocking = true;
+		} else if (player1.isHighBlocking ()) {
+			p1blocking = true;
+			p1high = true;
+		} else if (false) { //TODO: fill in when crouching implemented
+			p1crouching = true;
+		}
+
+		bool p2attacking = false, p2high = false, p2blocking = false, p2crouching = false;
+		if (player2.attackHandle ()) {
+			p2attacking = true;
+			p2high = player2.isHighAttack ();
+		} else if (player2.isLowBlocking ()) {
+			p2blocking = true;
+		} else if (player2.isHighBlocking ()) {
+			p2blocking = true;
+			p2high = true;
+		} else if (false) { //TODO: fill in when crouching implemented
+			p2crouching = true;
+		}
+
+		state.setFlags (p1attacking, p1blocking, p1crouching, p1high, 
+			p2attacking, p2blocking, p2crouching, p2high);
+
+		return state;
 	}
 }
