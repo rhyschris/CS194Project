@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 	 * Determines the action for the player to peform this frame, either by querying
 	 * keyboard input or the AI.
 	 */
-	public Action queryInput(float otherPlayerXPos) {
+	public Action queryInput(GameState curState) {
 		Action action = new Action();
 		/* Horizontal movement: determine if moving towards or away 
 		 * Player does this by interpreting key intent
@@ -91,10 +91,8 @@ public class PlayerController : MonoBehaviour {
 		bool moving;
 
 		if (isAI) {
-			GameState state = new GameState ();
-			// TODO: Build the state here.
 
-			action = playerAI.queryAction (state);
+			action = playerAI.queryAction (curState);
 			if (inputHold) {
 				action = new Action ();
 			} 
@@ -126,8 +124,9 @@ public class PlayerController : MonoBehaviour {
 					action.actionType |= ActionType.crouch;
 				} 
 				else {
+					float otherPlayerXPos = curState.getP1XPos();
 					running = Input.GetKey (Run);
-				    movingLeft = Input.GetKey (Left);
+					movingLeft = Input.GetKey (Left);
 					movingRight = Input.GetKey (Right);
 					movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
 					moving = movingLeft || movingRight;
@@ -149,12 +148,12 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
-			
+
 		action.oldXPosition = playerBodyBox.transform.position.x;
 		updatePosition (action, movingLeft);
 		return action;
 	}
-		
+
 	/** 
 	 * Updates the action argument to indicate the distance moved during this frame.
 	 */
@@ -365,6 +364,7 @@ public class PlayerController : MonoBehaviour {
 	public float getHitHalfHeight() {
 		return playerHitBox.transform.localScale.y * 0.5f;
 	}
+
 	public void tellHit() {
 		attackHit = true;
 	}

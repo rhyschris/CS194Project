@@ -83,9 +83,12 @@ public class GameDelegate : MonoBehaviour {
 			// UPDATE PLAYER STATUS
 			player1.handleAutomaticUpdates (player2.getXPos ());
 			player2.handleAutomaticUpdates (player1.getXPos ());
+			//BUILD GAME STATE
+			GameState state = createGameState();
+
 			// QUERY PLAYER INPUT
-			Action player1Action = player1.queryInput (player2.getXPos ());
-			Action player2Action = player2.queryInput (player1.getXPos ());
+			Action player1Action = player1.queryInput (state);
+			Action player2Action = player2.queryInput (state);
 			// HANDLE PLAYER INPUT
 			player1.handleInput (player1Action, player2Action);
 			player2.handleInput (player2Action, player1Action);
@@ -120,5 +123,42 @@ public class GameDelegate : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	private GameState createGameState(){
+		GameState state = new GameState (player1.getXPos(),player1.getYPos(),player2.getXPos(),
+			player2.getYPos(),player1.getHealth(),player2.getHealth());
+
+		bool p1attacking = false, p1high = false, p1blocking = false, p1crouching = false;
+
+		if (player1.attackHandle ()) {
+			p1attacking = true;
+			p1high = player1.isHighAttack ();
+		} else if (player1.isLowBlocking ()) {
+			p1blocking = true;
+		} else if (player1.isHighBlocking ()) {
+			p1blocking = true;
+			p1high = true;
+		} else if (false) { //TODO: fill in when crouching implemented
+			p1crouching = true;
+		}
+
+		bool p2attacking = false, p2high = false, p2blocking = false, p2crouching = false;
+		if (player2.attackHandle ()) {
+			p2attacking = true;
+			p2high = player2.isHighAttack ();
+		} else if (player2.isLowBlocking ()) {
+			p2blocking = true;
+		} else if (player2.isHighBlocking ()) {
+			p2blocking = true;
+			p2high = true;
+		} else if (false) { //TODO: fill in when crouching implemented
+			p2crouching = true;
+		}
+
+		state.setFlags (p1attacking, p1blocking, p1crouching, p1high, 
+			p2attacking, p2blocking, p2crouching, p2high);
+
+		return state;
 	}
 }
