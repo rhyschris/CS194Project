@@ -8,16 +8,17 @@ class DumbAggressiveAgent(Agent):
     
     def __init__(self, name="Stepp"):
         super(DumbAggressiveAgent, self).__init__(name)
+        self.hitboxsize = 1.0;
 
     def chooseAction(self):
-        return beAggressive()
+        return self.beAggressive()
 
 
     def beAggressive(self):
-        if (abs(self.gamestate.p1Xpos-self.gamestate.p2Xpos)<self.hitboxsize):
-            if (!self.gamestate.p1attacking):
+        if (abs(self.gameState.p1Xpos-self.gameState.p2Xpos)<self.hitboxsize):
+            if (not self.gameState.p1Attacking):
                 return random.choice([Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4])
-            elif (!self.gamestate.p1high):
+            elif (not self.gameState.p1High):
                 return random.choice([Actions.blockup, Actions.blockup, Actions.moveAway,Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4])
             else:
                 return random.choice([Actions.blockdown, Actions.blockup, Actions.moveAway,Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4])
@@ -30,4 +31,4 @@ class DumbAggressiveAgent(Agent):
 if __name__ == '__main__':
     agent = DumbAggressiveAgent()
     print "Agent {0} reporting for duty".format(agent.name)
-    hermes.main(4998, debug=True, agent=agent)
+    hermes.main(4998, debug=False, agent=agent)

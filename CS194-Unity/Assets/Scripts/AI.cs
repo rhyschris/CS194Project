@@ -49,7 +49,11 @@ public class AI {
 	 * 
 	 */
 	public Action queryAction(GameState state) {
-		int size = network.readUnblocked (buffer);
+		int size = network.sendGameState (state);
+		if (size ==-1)
+			Debug.Log ("Could not send game state to client!");
+		
+		size = network.readUnblocked (buffer);
 
 		if (size > 0) {
 			lastChoice = decodeAction (size);

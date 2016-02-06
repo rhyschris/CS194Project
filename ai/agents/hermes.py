@@ -35,6 +35,7 @@ def send_action (client, outport, action):
     # packs the enum's number into raw bits 
     # '@' reads enum with system endianness (shouldn't
     # matter as of now, as it's only 8 bits)
+    
 
     data = struct.pack ("@B", action.value)
     client.sendto(data, (HOST, outport))
@@ -69,8 +70,10 @@ def listen (server, client, outport, agent):
         print "Data: \n{0}".format(data)
 
         agent.ingestState(data)
-        action = agent.chooseActions()
+        action = agent.chooseAction()
         print "action: ", action, " type: ", type(action)
+        send_action (client, outport, action)
+
         
 
 if __name__ == '__main__':

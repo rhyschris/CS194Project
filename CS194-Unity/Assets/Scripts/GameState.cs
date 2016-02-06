@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameState {
 	//Masks for flags
@@ -55,6 +56,20 @@ public class GameState {
 		actionFlags |= p2Crouching ? p2CrouchMask : (byte)0;
 		actionFlags |= p2High ? p2HighMask : (byte)0;
 
+	}
+	public List<float> getFloatList(){
+		List<float> myFloats = new List<float>();
+		myFloats.Add(player1X);
+		myFloats.Add(player1Y);
+		myFloats.Add(player1Health);
+		myFloats.Add(player2X);
+		myFloats.Add(player2Y);
+		myFloats.Add(player2Health);
+
+		return myFloats;
+	}
+	public byte getFlags(){
+		return actionFlags;
 	}
 
 	public float getP1XPos(){

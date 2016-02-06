@@ -21,6 +21,8 @@ class StochasticAgent(Agent):
             self.lastAction = random.choice(possActions)
         return self.lastAction
 
+
+
 if __name__ == '__main__':
     ex = 0.3
     if len(sys.argv) > 1:
@@ -28,5 +30,5 @@ if __name__ == '__main__':
 
     agent = StochasticAgent(explore = ex)
     print "Agent {0} reporting for duty".format(agent.name)
-    hermes.main(4998, debug=True, agent=agent)
+    hermes.main(4998, debug=False, agent=agent)
     
