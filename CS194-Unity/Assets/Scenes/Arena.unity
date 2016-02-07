@@ -1415,9 +1415,9 @@ MonoBehaviour:
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  upwardVelocity: 0
-  downwardVelocity: 0
-  JUMP_TIME_CONST: 0
+  upwardVelocity: 0.1
+  downwardVelocity: 0.1
+  JUMP_TIME_CONST: 0.5
   fighter: {fileID: 1190586127}
 --- !u!1 &1899315170
 GameObject:
