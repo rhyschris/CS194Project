@@ -105,7 +105,10 @@ public class PlayerController : MonoBehaviour {
 				action = new Action ();
 			} 
 			/* Assuming AI is player 2 - he will face left */
-			movingLeft = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
+			if (this.player1)
+				movingRight = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
+			else
+				movingLeft = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
 
 		} else {
 			if (!inputHold) {

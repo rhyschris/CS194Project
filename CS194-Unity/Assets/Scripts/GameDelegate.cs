@@ -123,7 +123,7 @@ public class GameDelegate : MonoBehaviour {
 					defender.receiveAttack (attacker.getAttackDamage (), false);
 				}
 				if(defender.getHealth() <= 0.0f) {
-					winText.text = "Victory!";
+					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
 				}
 			}
 		}
