@@ -42,6 +42,7 @@ public class GameDelegate : MonoBehaviour {
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
 
+
 	}
 	void Update()
 	{
@@ -97,8 +98,9 @@ public class GameDelegate : MonoBehaviour {
 			// DO HIT DETECTION
 			handlePlayerHit (player1, player2);
 			handlePlayerHit (player2, player1);
-			debugText.setMessage (player1.getHealth(), player2.getHealth());
+
 		}
+		debugText.setMessage (player1.getHealth(), player2.getHealth());
 	}
 	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
 		// If the attacker is engaged in an attack that needs to be handled:

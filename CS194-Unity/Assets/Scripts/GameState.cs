@@ -75,4 +75,7 @@ public class GameState {
 	public float getP1XPos(){
 		return player1X;
 	}
+	public float getP2XPos(){
+		return player2X;
+	}
 }

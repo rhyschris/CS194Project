@@ -7,6 +7,7 @@
 *.o
 *.pyc
 
+
 # Datasets
 *adult/*train
 *adult/*test
@@ -17,3 +18,4 @@ Obj/
 UnityGenerated/
 Library/
 Assets/AssetStoreTools*
+*.meta

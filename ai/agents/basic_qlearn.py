@@ -6,10 +6,12 @@ from actions import Actions
 import struct 
 import random
 import sys
+import cPickle as pickle
+
 
 class BasicQlearnAgent(Agent):
 
-	def __init__(self,name="Qlearner"):
+	def __init__(self,loadOldTable=False, name="Qlearner"):
 		super(BasicQlearnAgent, self).__init__(name)
 		self.epsilon = .75
 		self.alpha = .5
@@ -23,7 +25,12 @@ class BasicQlearnAgent(Agent):
 		self.actionDic = dict()
 		self.makeActionDic()
 		self.Qtable = dict()
-		self.initializeTable()
+
+		if (not loadOldTable):
+			self.initializeTable()
+		else:
+			self.retrieveQtableFromFile())
+
 		print("Done initializing!")
 
 	def makeActionDic(self):
@@ -113,8 +120,16 @@ class BasicQlearnAgent(Agent):
 		self.epsilon-=0.0001
 		return action
 
+	def dumpQtableToFile(self):
+		with open("savedQTable.txt", "wb") as myFile:
+    		pickle.dump(self.Qtable, myFile)
+
+    def retrieveQtableFromFile(self):
+    	with open("savedQTable.txt", "rb") as myFile:
+    		self.Qtable = pickle.load(myFile)
+
 
 if __name__ == '__main__':
-    agent = BasicQlearnAgent()
+    agent = BasicQlearnAgent(False)
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(4998, debug=False, agent=agent)

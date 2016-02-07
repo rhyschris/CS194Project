@@ -30,5 +30,8 @@ class DumbAggressiveAgent(Agent):
 
 if __name__ == '__main__':
     agent = DumbAggressiveAgent()
+    port = 4998 
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
     print "Agent {0} reporting for duty".format(agent.name)
-    hermes.main(4998, debug=False, agent=agent)
+    hermes.main(port, debug=False, agent=agent)
