@@ -21,9 +21,11 @@ class GameState(object):
 		self.p2Ypos = p2Y
 		self.p2Health = p2H
 
+		self.actionFlags = 0
 
 	def parseFlags(self,flags):
 
+		self.actionFlags = flags
 		self.p1Attacking = flags&self.p1AttackMask
 		self.p1Blocking = flags&self.p1BlockMask
 		self.p1Crouching = flags&self.p1CrouchMask
