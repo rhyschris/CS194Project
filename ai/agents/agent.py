@@ -1,6 +1,6 @@
 __author__ = 'rhyschris'
 
-from gamestate import gameState
+from gamestate import GameState
 import struct 
 
 """
@@ -19,7 +19,12 @@ class Agent(object):
         """ Ingests the given gamestate from the network.
         """
         args = struct.unpack('!ffffffB',data)
-        self.gameState = GameState(args[0:5])
+
+        print("p1x is ", args[0])
+        print("p1health is ", args[2])
+        print("p2x is ", args[3])
+        print("p2health is ", args[5])
+        self.gameState = GameState(args[0],args[1],args[2],args[3],args[4],args[5])
         self.gameState.parseFlags(args[6])
 
 

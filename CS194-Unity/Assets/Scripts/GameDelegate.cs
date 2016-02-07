@@ -4,6 +4,8 @@ using System.Collections;
 
 using AssemblyCSharp;
 
+
+//TODO: on start, send AI initial game state
 public class GameDelegate : MonoBehaviour {
 	public float blockDamageModifier;
 	private bool paused;

@@ -1,6 +1,6 @@
 
 
-class GameState(Object):
+class GameState(object):
 
 	def __init__(self,p1X,p1Y,p1H,p2X,p2Y,p2H):
 		self.p1AttackMask = 0x01; #1st bit
@@ -22,15 +22,15 @@ class GameState(Object):
 		self.p2Health = p2H
 
 
-	def parseFlags(flags):
+	def parseFlags(self,flags):
 
 		self.p1Attacking = flags&self.p1AttackMask
-		self.p1Blocking = flags&p1BlockMask
-		self.p1Crouching = flags&p1CrouchMask
-		self.p1High = flags&p1HighMask
+		self.p1Blocking = flags&self.p1BlockMask
+		self.p1Crouching = flags&self.p1CrouchMask
+		self.p1High = flags&self.p1HighMask
 
-		self.p2Attacking = flags&p2AttackMask
-		self.p2Blocking = flags&p2BlockMask
-		self.p2Crouching = flags&p2CrouchMask
-		self.p2High = flags&p2HighMask
+		self.p2Attacking = flags&self.p2AttackMask
+		self.p2Blocking = flags&self.p2BlockMask
+		self.p2Crouching = flags&self.p2CrouchMask
+		self.p2High = flags&self.p2HighMask
 

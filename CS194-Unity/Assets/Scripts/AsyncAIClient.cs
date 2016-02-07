@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text; //For Encoding
+using System.Collections.Generic;
 
 // To get Debug log to write somewhere we can see
 using UnityEngine;
@@ -14,7 +15,7 @@ using UnityEngine;
  */
 
 namespace AssemblyCSharp {
-	
+
 	public class AsyncAIClient {
 
 		/** --------------
@@ -35,6 +36,10 @@ namespace AssemblyCSharp {
 
 		/* UDP socket for receiving messages */
 		private Socket server;
+		/* UDP socket for sending gameState */
+		private Socket clientGameState;
+		/*Endpoint to send UDP data to */
+		IPEndPoint endpt;
 		/* TCP socket for verifying whether the server exists (debugging), AI commands */
 		private Socket clientAuth; 
 
@@ -63,20 +68,24 @@ namespace AssemblyCSharp {
 		public bool connectAsync(){
 			try { 
 				/* Create TCP socket for authenticated communication */
-				IPEndPoint endpt = new IPEndPoint(IPAddress.Parse(host), outPort); 
+				endpt = new IPEndPoint(IPAddress.Parse(host), outPort); 
 				clientAuth = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-				
+
 				clientAuth.BeginConnect(endpt, new AsyncCallback(connectCallback), clientAuth);
 
-				/* Set up nondurable UDP */
+				/* Set up nondurable UDP server for receiving actions*/
 				server = new Socket (AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 				server.Blocking = false;
-				
+
+				/*Set up nondurable UDP client to send gamestate */
+				IPEndPoint RemoteEndPoint= new IPEndPoint(IPAddress.Parse(host), outPort);
+				clientGameState = new Socket(AddressFamily.InterNetwork,SocketType.Dgram, ProtocolType.Udp);
+
 				/* Bind to UDP host port */
 				IPEndPoint inpt = new IPEndPoint(IPAddress.Parse(host), inPort);
 				server.Bind (inpt);
 				return true;
-		
+
 			} catch (Exception e){
 				Debug.Log (e);
 				return false;
@@ -121,16 +130,44 @@ namespace AssemblyCSharp {
 					/* Nothing there */
 					return 0;
 				}
-						
 			} catch (Exception e){
 				Debug.Log(e);
 				return -1;
 			}
 		} 
+
+		public int sendGameState(GameState state){
+			List<float> myFloats = state.getFloatList ();
+
+			int numElems = myFloats.Count;
+			int width = sizeof(float);
+			byte[] data = new byte[myFloats.Count * width+1];
+
+			int i = 0;
+			foreach (float f in myFloats)
+			{
+				
+				byte[] converted = BitConverter.GetBytes(f);
+
+				if (BitConverter.IsLittleEndian)
+				{
+					Array.Reverse(converted);
+				}
+
+				for (int j = 0; j < width; ++j)
+				{
+					data[i * width + j] = converted[j];
+				}
+				i++;
+			}
+			data[numElems*width] = state.getFlags(); 
+
+			return clientGameState.SendTo(data, myFloats.Count * width+1, SocketFlags.None, endpt);	
+		}
 		/* Delegate method to be called upon connecting to an AI server asynchronously.
 		 * Params: IAsyncResult: */
 		public static void connectCallback(IAsyncResult ar){
-			
+
 			try {
 				Socket clientState = (Socket)ar.AsyncState;
 				// Complete connection
@@ -171,7 +208,7 @@ namespace AssemblyCSharp {
 				}
 			}
 		}
-	
+
 	}
 
 }

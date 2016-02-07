@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour {
 	private bool lowBlocking;
 	private bool isJumping;
 
+	// ANIMATION CONTROLLER
+	Animator fighterAnimator;
+	public GameObject fighter;
+
 	/**
 	 * PLAYER.UPDATE();
 	 * In this function, player status that is not dependant upon input, such as in-
@@ -178,6 +182,17 @@ public class PlayerController : MonoBehaviour {
 	public void handleInput(Action myAction, Action theirAction) {
 		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
+
+		// Set animation bools 
+		if (myAction.actionType == ActionType.attack2){
+//				Debug.Log ("attack!");
+//				fighterAnimator.SetBool ("highPunch", true);
+//			}
+//
+			fighterAnimator.SetBool("highPunch", true);
+		}
+
+
 
 		if (my_horiz > 0){
 			float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
@@ -340,6 +355,9 @@ public class PlayerController : MonoBehaviour {
 		playerHitBox.SetActive (true);
 		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
 		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
+
+		// set animation bool
+
 	}
 	public bool attackHandle() {
 		return (attackWasThrown && !attackWasFinished && !attackHit);
@@ -390,6 +408,10 @@ public class PlayerController : MonoBehaviour {
 		return (blocking && lowBlocking);
 	}
 	void Start () {
+		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
+		// to set the correct bools that trigger different animation states
+		fighterAnimator = fighter.GetComponent<Animator> ();
+
 		health = 1000.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
