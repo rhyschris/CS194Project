@@ -17,14 +17,14 @@ class DumbAggressiveAgent(Agent):
     def beAggressive(self):
         if (abs(self.gameState.p1Xpos-self.gameState.p2Xpos)<self.hitboxsize):
             if (not self.gameState.p1Attacking):
-                return random.choice([Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4,Actions.moveAway])
+                return random.choice([Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4,Actions.moveAway,Actions.moveAway])
             elif (not self.gameState.p1High):
                 return random.choice([Actions.blockUp, Actions.blockUp, Actions.moveAway,Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4])
             else:
                 return random.choice([Actions.blockDown, Actions.blockDown, Actions.moveAway,Actions.attack1, Actions.attack2, Actions.attack3, Actions.attack4])
 
         else:
-            return random.choice([Actions.walkTowards, Actions.walkTowards, Actions.runTowards, Actions.jump])
+            return random.choice([Actions.walkTowards, Actions.walkTowards, Actions.runTowards, Actions.jump,Actions.moveAway])
 
 
 
