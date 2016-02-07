@@ -1,4 +1,10 @@
 
+'''
+
+GameState is the recipient class for a network packet from a Unity fighting game.
+It contains both player's positions and health, and their attack status. 
+
+'''
 
 class GameState(object):
 

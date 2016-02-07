@@ -8,7 +8,7 @@ public class DebugTextController : MonoBehaviour {
 	private string message;
 	void Start () {
 		debugText = GameObject.Find ("DebugText").GetComponent<Text> ();
-		displayDebugText = false;
+		displayDebugText = true;
 		debugText.text = "";
 	}
 	void LateUpdate () {

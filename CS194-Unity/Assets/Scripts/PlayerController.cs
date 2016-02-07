@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour {
 	private bool lowBlocking;
 	private bool isJumping;
 
+	// Direction player is looking
+	// +1.0 if right, -1.0 if left
+	private float playerXFacing;
+
 	// ANIMATION CONTROLLER
 	Animator fighterAnimator;
 	public GameObject fighter;
@@ -128,7 +132,8 @@ public class PlayerController : MonoBehaviour {
 					action.actionType |= ActionType.crouch;
 				} 
 				else {
-					float otherPlayerXPos = curState.getP1XPos();
+					
+					float otherPlayerXPos = (player1) ? curState.getP2XPos() :  curState.getP1XPos();
 					running = Input.GetKey (Run);
 					movingLeft = Input.GetKey (Left);
 					movingRight = Input.GetKey (Right);
@@ -425,35 +430,53 @@ public class PlayerController : MonoBehaviour {
 		attackHit = false;
 		blocking = false;
 		lowBlocking = false;
+
 		if (player1) {
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
-			Up = KeyCode.W;
-			Down = KeyCode.S;
-			Left = KeyCode.A;
-			Right = KeyCode.D;
-			Run = KeyCode.LeftShift;
-			Attack1 = KeyCode.Q;
-			Attack2 = KeyCode.E;
-			Block = KeyCode.F;
-		} else {
+
+			playerXFacing = 1.0f;
+			
+			if (isAI) {
+				int inPort = 4998;
+						
+				playerAI = new AI (inPort, inPort + 1);
+				playerAI.verifyNetwork ();
+
+			} else {
+				Up = KeyCode.W;
+				Down = KeyCode.S;
+				Left = KeyCode.A;
+				Right = KeyCode.D;
+				Run = KeyCode.LeftShift;
+				Attack1 = KeyCode.Q;
+				Attack2 = KeyCode.E;
+				Block = KeyCode.F;
+			}
+
+		} else { // player 2
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");
 			playerBlockBox = GameObject.Find ("Player2BlockBox");
-			Up = KeyCode.I;
-			Down = KeyCode.K;
-			Left = KeyCode.J;
-			Right = KeyCode.L;
-			Run = KeyCode.RightShift;
-			Attack1 = KeyCode.U;
-			Attack2 = KeyCode.O;
-			Block = KeyCode.H;
-		}
+			playerXFacing = -1.0f;
 
-		if (isAI) {
-			playerAI = new AI (4998, 4999);
-			playerAI.verifyNetwork ();
+			if (isAI){
+				int inPort = 5998;
+
+				playerAI = new AI (inPort, inPort + 1);
+				playerAI.verifyNetwork ();
+			} else {
+				Up = KeyCode.I;
+				Down = KeyCode.K;
+				Left = KeyCode.J;
+				Right = KeyCode.L;
+				Run = KeyCode.RightShift;
+				Attack1 = KeyCode.U;
+				Attack2 = KeyCode.O;
+				Block = KeyCode.H;
+			}
+					
 		}
 	}
 }

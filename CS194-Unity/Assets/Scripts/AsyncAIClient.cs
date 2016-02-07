@@ -172,7 +172,7 @@ namespace AssemblyCSharp {
 				Socket clientState = (Socket)ar.AsyncState;
 				// Complete connection
 				clientState.EndConnect (ar);
-				Debug.Log ("Completed connection to localhost on (port unknown - update msg state");
+				Debug.Log ("Completed TCP connection to localhost on outPort (default 4999)");
 				connectedSignal.Set ();
 
 			} catch (Exception unexpected) {

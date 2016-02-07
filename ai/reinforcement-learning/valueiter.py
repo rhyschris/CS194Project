@@ -27,5 +27,10 @@ class ValueIteration (object):
         # Policy: represents a numeric action policy according to actions.py
         self.pi = np.zeros (shape, dtype=np.int8)
     
+    def Q_opt(self, s, a):
+        '''
+        Given a state, take s 
 
+        
+        '''
 

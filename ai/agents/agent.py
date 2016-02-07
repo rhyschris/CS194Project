@@ -18,12 +18,12 @@ class Agent(object):
     def ingestState(self, data):
         """ Ingests the given gamestate from the network.
         """
-        args = struct.unpack('!ffffffB',data)
+        # ignorant agents might not do anything with the state
+        if not data:
+            return
 
-        print("p1x is ", args[0])
-        print("p1health is ", args[2])
-        print("p2x is ", args[3])
-        print("p2health is ", args[5])
+        args = struct.unpack('!ffffffB',data)
+        
         self.gameState = GameState(args[0],args[1],args[2],args[3],args[4],args[5])
         self.gameState.parseFlags(args[6])
 

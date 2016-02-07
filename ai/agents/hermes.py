@@ -66,8 +66,6 @@ def listen (server, client, outport, agent):
  
    while True:
         data, addr = server.recvfrom(_PAGE_SZ) 
-        print "Msg from host: {0}".format(addr)
-        print "Data: \n{0}".format(data)
 
         agent.ingestState(data)
         action = agent.chooseAction()
