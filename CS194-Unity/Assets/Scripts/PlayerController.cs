@@ -356,7 +356,7 @@ public class PlayerController : MonoBehaviour {
 		reach = newReach;
 		attackDamage = newDamage;
 		lowAttack = newLow;
-		playerHitBox.SetActive (true);
+		playerHitBox.SetActive (false);
 		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
 		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
 
@@ -477,5 +477,6 @@ public class PlayerController : MonoBehaviour {
 			}
 					
 		}
+
 	}
 }

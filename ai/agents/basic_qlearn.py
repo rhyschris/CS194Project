@@ -55,19 +55,19 @@ class BasicQlearnAgent(Agent):
 
 
 	def getGSTuple(self,gamestate):
-		xdist = int(gamestate.p1Xpos-gamestate.p2Xpos)
+		xdist = int(gamestate.p1Xpos - gamestate.p2Xpos)
 
 		tupXdist =xdist
-		if (xdist<-4):
+		if  xdist < -4:
 			tupXdist = -6
-		elif(xdist>4):
+		elif xdist > 4 :
 			tupXdist = 6
 
-		ydist = int(gamestate.p1Ypos-gamestate.p2Ypos)
-		tupYdist =ydist
-		if (ydist<-1):
+		ydist = int(gamestate.p1Ypos - gamestate.p2Ypos)
+		tupYdist = ydist
+		if ydist < -1:
 			tupYdist = -3
-		elif(ydist>1):
+		elif ydist > 1:
 			tupYdist = 3
 
 		return (tupXdist,tupYdist,gamestate.actionFlags)

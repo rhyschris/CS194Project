@@ -645,13 +645,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: 1
-  isAI: 0
+  isAI: 1
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  upwardVelocity: 0.1
-  downwardVelocity: 0.1
-  JUMP_TIME_CONST: 0.5
+  upwardVelocity: 0.2
+  downwardVelocity: 0.15
+  JUMP_TIME_CONST: 0.3
   fighter: {fileID: 2004638675}
 --- !u!1 &1148615904
 GameObject:
@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: 0
-  isAI: 0
+  isAI: 1
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
