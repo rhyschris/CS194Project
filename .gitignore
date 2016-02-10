@@ -6,7 +6,7 @@
 *.userprefs
 *.o
 *.pyc
-
+*.wav
 
 # Datasets
 *adult/*train

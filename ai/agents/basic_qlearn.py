@@ -26,10 +26,10 @@ class BasicQlearnAgent(Agent):
 		self.makeActionDic()
 		self.Qtable = dict()
 
-		if (not loadOldTable):
-			self.initializeTable()
+		if not loadOldTable:
+                    self.initializeTable()
 		else:
-			self.retrieveQtableFromFile())
+                    self.retrieveQtableFromFile()
 
 		print("Done initializing!")
 
@@ -122,14 +122,17 @@ class BasicQlearnAgent(Agent):
 
 	def dumpQtableToFile(self):
 		with open("savedQTable.txt", "wb") as myFile:
-    		pickle.dump(self.Qtable, myFile)
+			pickle.dump(self.Qtable, myFile)
 
-    def retrieveQtableFromFile(self):
-    	with open("savedQTable.txt", "rb") as myFile:
-    		self.Qtable = pickle.load(myFile)
+	def retrieveQtableFromFile(self):
+		with open("savedQTable.txt", "rb") as myFile:
+			self.Qtable = pickle.load(myFile)
 
 
 if __name__ == '__main__':
     agent = BasicQlearnAgent(False)
+    port = 4998
+    if len(sys.argv) > 1:
+	    port = int(sys.argv[1])
     print "Agent {0} reporting for duty".format(agent.name)
-    hermes.main(4998, debug=False, agent=agent)
+    hermes.main(port, debug=False, agent=agent)

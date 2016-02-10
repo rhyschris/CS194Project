@@ -105,8 +105,6 @@ public class PlayerController : MonoBehaviour {
 				action = new Action ();
 			} 
 			/* Assuming AI is player 2 - he will face left */
-			movingLeft = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
-
 		} else {
 			if (!inputHold) {
 				// QUERY KEYBOARD INPUT
@@ -159,24 +157,23 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		action.oldXPosition = playerBodyBox.transform.position.x;
-		updatePosition (action, movingLeft);
+		updatePosition (action);
 		return action;
 	}
 
 	/** 
 	 * Updates the action argument to indicate the distance moved during this frame.
 	 */
-	public void updatePosition (Action action, bool movingLeft){
+	public void updatePosition (Action action){
 		ActionType hmove = action.actionType & Action.HMOVE_MASK;
 		if (hmove == ActionType.moveAway) {
-			action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
+			action.distanceMoved = forwardVelocity * -backwardVelocityFactor * Time.deltaTime;
 		} else if (hmove == ActionType.runTowards) {
 			action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
 		} else if (hmove == ActionType.walkTowards) {
 			action.distanceMoved = forwardVelocity * Time.deltaTime;
 		}
-		if (movingLeft)
-			action.distanceMoved *= -1.0f;
+		action.distanceMoved *= this.playerXFacing;
 	}
 	/** --------------------------------------------------------------------------------
 	 * PLAYER.HANDLEINPUT();
@@ -190,10 +187,6 @@ public class PlayerController : MonoBehaviour {
 
 		// Set animation bools 
 		if (myAction.actionType == ActionType.attack2){
-//				Debug.Log ("attack!");
-//				fighterAnimator.SetBool ("highPunch", true);
-//			}
-//
 			fighterAnimator.SetBool("highPunch", true);
 		}
 

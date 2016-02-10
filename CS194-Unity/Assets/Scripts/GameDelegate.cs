@@ -21,6 +21,8 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
 
+	public bool runGraphics;
+
 
 	void Start ()
 	{
@@ -42,10 +44,11 @@ public class GameDelegate : MonoBehaviour {
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
 
-
 	}
-	void Update()
-	{
+	/**
+	 * Entry point for updating the game, whether graphics is on or not.
+	 */
+	void updateGame (){
 		// QUIT THE GAME
 		if (Input.GetKeyDown (Quit)) {
 			Application.Quit ();
@@ -101,6 +104,15 @@ public class GameDelegate : MonoBehaviour {
 
 		}
 		debugText.setMessage (player1.getHealth(), player2.getHealth());
+	}
+
+	void Update()
+	{
+		if (runGraphics) {	
+			updateGame ();
+		} else {
+			Debug.Log ("Warning: Not running graphics on the main thread.");
+		}
 	}
 	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
 		// If the attacker is engaged in an attack that needs to be handled:

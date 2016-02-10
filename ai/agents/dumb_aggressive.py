@@ -9,8 +9,11 @@ class DumbAggressiveAgent(Agent):
     def __init__(self, name="Stepp"):
         super(DumbAggressiveAgent, self).__init__(name)
         self.hitboxsize = 1.0 + 1.0; #width of hitbox + 2*halfwidth player  
-
+        self.counter = 0
     def chooseAction(self):
+        self.counter += 1
+        if self.counter % 1000 == 0:
+            print self.counter
         return self.beAggressive()
 
 
