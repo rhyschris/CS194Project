@@ -7,7 +7,6 @@ using AssemblyCSharp;
 
 //TODO: on start, send AI initial game state
 public class GameDelegate : MonoBehaviour {
-	public float blockDamageModifier;
 	private bool paused;
 	// CONTROLLERS
 	private CameraController mainCamera;
@@ -115,7 +114,7 @@ public class GameDelegate : MonoBehaviour {
 				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
 					Debug.Log ("Blocked!");
 					attacker.tellHit ();
-					defender.receiveAttack (attacker.getAttackDamage () * blockDamageModifier, true);
+					defender.receiveAttack (attacker.getAttackDamage (), true);
 				} else {
 					Debug.Log ("Hit!");
 					Debug.Log("Health: "+defender.getHealth().ToString());

@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
 	private GameObject playerBlockBox;
 	// STAT VARIABLES
 	private float health;
+	public float blockDamageModifier;
+	private float blockPercentage;
 	public bool player1;
 	public bool isAI;
 	public float forwardVelocity;
@@ -270,16 +272,21 @@ public class PlayerController : MonoBehaviour {
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
 			blocking = true;
 			lowBlocking = false;
+			blockPercentage -= .002f;
+			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 
 		} else if (blockAction == ActionType.blockDown) {
 			playerBlockBox.SetActive (true);
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
 			blocking = true;
 			lowBlocking = true;
+			blockPercentage -= .002f;
+			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 		
 		} else {
 			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
 			blocking = false;
 			lowBlocking = false;
-		}
+			blockPercentage += .002f;
+			blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage; 		}
 		/*Handle jumping animation*/
 		if (isJumping){
 			float newY;
@@ -337,10 +344,14 @@ public class PlayerController : MonoBehaviour {
 	 * should define the behavior a player goes through when they are hit by an attack.
 	 */
 	public void receiveAttack(float damage, bool blocked) {
-		health = health - damage;
 		if (blocked) {
+			Debug.Log (blockPercentage);
+			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
+			Debug.Log ("damage = "+damage.ToString());
+			health = health - damage;
 			// TODO: Handle behavior if hit while blocking.
 		} else {
+			health = health - damage;
 			inputHold = false;
 			finishAttack ();
 			// TODO: Handle behavior if hit while not blocking.
@@ -422,6 +433,7 @@ public class PlayerController : MonoBehaviour {
 		fighterAnimator = fighter.GetComponent<Animator> ();
 
 		health = 1000.0f;
+		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
 		timeAttackEnds = 0.0f;
