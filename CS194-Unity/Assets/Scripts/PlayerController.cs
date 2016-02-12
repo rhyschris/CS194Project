@@ -210,7 +210,7 @@ public class PlayerController : MonoBehaviour {
 			//TODO: Can't jump over another player as of now. Fix that? 
 
 			// If there is going to be a collision and moving towards...
-			if (their_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+			if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 				// If the other is moving away....
 				if (their_horiz == ActionType.moveAway) {
 					// Move right up to the other's projected position.
@@ -220,6 +220,7 @@ public class PlayerController : MonoBehaviour {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 					}
 				} else {
+					
 					// They are both moving towards one another.
 					// Move a ratio of the distance between them based on how much each was supposed to move.
 					float distanceRatio = Mathf.Abs (myAction.distanceMoved) / (Mathf.Abs (myAction.distanceMoved) + Mathf.Abs (theirAction.distanceMoved));
