@@ -45,61 +45,68 @@ public class GameDelegate : MonoBehaviour {
 	}
 	void Update()
 	{
-		// QUIT THE GAME
-		if (Input.GetKeyDown (Quit)) {
-			Application.Quit ();
-		}
-		// ENTER DEBUGGING MODE
-		if (Input.GetKeyDown (TogglePause)) {
-			paused = !paused;
-			debugText.toggleDebugText();
-		}
-		if (paused) {
-			// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
-			if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
-				mainCamera.modAngle (-0.5f);
+		Debug.Log ("Sending state at time " + Time.time.ToString ());
+
+		for (int i =0; i<1; i++){
+
+			// QUIT THE GAME
+			if (Input.GetKeyDown (Quit)) {
+				Application.Quit ();
 			}
-			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-				mainCamera.modXPadding (-0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
-				mainCamera.modAngle (0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-				mainCamera.modXPadding (0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-				mainCamera.modWidthMinimum (-0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-				mainCamera.modWidthMinimum (0.5f);
-			}
-			// RESET PLAYER POSITIONS
-			if (Input.GetKeyDown (Reset)) {
-				// Later on, make it so this resets everything to default locations and statuses.
-			}
-		} else {
-			if (Input.GetKeyDown (ToggleDebugText)) {
+			// ENTER DEBUGGING MODE
+			if (Input.GetKeyDown (TogglePause)) {
+				paused = !paused;
 				debugText.toggleDebugText();
 			}
-			// UPDATE PLAYER STATUS
-			player1.handleAutomaticUpdates (player2.getXPos ());
-			player2.handleAutomaticUpdates (player1.getXPos ());
-			//BUILD GAME STATE
-			GameState state = createGameState();
+			if (paused) {
+				// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
+				if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
+					mainCamera.modAngle (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+					mainCamera.modXPadding (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
+					mainCamera.modAngle (0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+					mainCamera.modXPadding (0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+					mainCamera.modWidthMinimum (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+					mainCamera.modWidthMinimum (0.5f);
+				}
+				// RESET PLAYER POSITIONS
+				if (Input.GetKeyDown (Reset)) {
+					// Later on, make it so this resets everything to default locations and statuses.
+				}
+			} else {
+				if (Input.GetKeyDown (ToggleDebugText)) {
+					debugText.toggleDebugText();
+				}
+				// UPDATE PLAYER STATUS
+				player1.handleAutomaticUpdates (player2.getXPos ());
+				player2.handleAutomaticUpdates (player1.getXPos ());
+				//BUILD GAME STATE
+				GameState state = createGameState();
 
-			// QUERY PLAYER INPUT
-			Action player1Action = player1.queryInput (state);
-			Action player2Action = player2.queryInput (state);
-			// HANDLE PLAYER INPUT
-			player1.handleInput (player1Action, player2Action);
-			player2.handleInput (player2Action, player1Action);
-			// DO HIT DETECTION
-			handlePlayerHit (player1, player2);
-			handlePlayerHit (player2, player1);
+				// QUERY PLAYER INPUT
+				Action player1Action = player1.queryInput (state);
+				Action player2Action = player2.queryInput (state);
+				// HANDLE PLAYER INPUT
+				player1.handleInput (player1Action, player2Action);
+				player2.handleInput (player2Action, player1Action);
+				if ((player1.getXPos () + player1.getHalfWidth() * 2) > player2.getXPos ())
+					player1.moveToX (player2.getXPos () - player1.getHalfWidth () * 2);
+				// DO HIT DETECTION
+				handlePlayerHit (player1, player2);
+				handlePlayerHit (player2, player1);
 
+			}
+			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
-		debugText.setMessage (player1.getHealth(), player2.getHealth());
 	}
 	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
 		// If the attacker is engaged in an attack that needs to be handled:

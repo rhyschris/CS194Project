@@ -218,7 +218,8 @@ public class PlayerController : MonoBehaviour {
 					// Move right up to the other's projected position.
 					if (myAction.distanceMoved < 0.0f) {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-					} else {
+					} else {						
+						
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 					}
 				} else {
@@ -233,7 +234,7 @@ public class PlayerController : MonoBehaviour {
 					}
 					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + actualDistance, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 				}
-			} else {
+			} else {										
 				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
 		} else{
@@ -301,6 +302,16 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
+		}
+		if (player1) {
+			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) > theirAction.oldXPosition)
+				print ("p1 Crossed over?");
+			// throw new System.ArgumentException("Parameter cannot be null", "original");	
+		}
+		else {
+			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) < theirAction.oldXPosition)
+				print ("P2 Crossed over?");
+			// throw new System.ArgumentException("Parameter cannot be null", "original");	
 		}
 	}
 	/**
@@ -389,6 +400,9 @@ public class PlayerController : MonoBehaviour {
 		return playerHitBox.transform.position.y;
 	}
 
+	public void moveToX(float x){
+		playerBodyBox.transform.position = new Vector3 (x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+	}
 	public float getHalfHeight() {
 		return playerBodyBox.transform.localScale.y * 0.5f;
 	}
