@@ -195,11 +195,20 @@ public class PlayerController : MonoBehaviour {
 
 		// Set animation bools 
 		if (myAction.actionType == ActionType.attack2){
-//				Debug.Log ("attack!");
-//				fighterAnimator.SetBool ("highPunch", true);
-//			}
-//
+
 			fighterAnimator.SetBool("highPunch", true);
+		}
+
+		if (myAction.actionType == ActionType.walkTowards) {
+			fighterAnimator.SetBool ("runForward", true);
+		} else {
+			fighterAnimator.SetBool ("runForward", false);
+		}
+
+		if (myAction.actionType == ActionType.moveAway) {
+			fighterAnimator.SetBool ("runBackward", true);
+		} else {
+			fighterAnimator.SetBool ("runBackward", false);
 		}
 
 
