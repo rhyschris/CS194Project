@@ -100,17 +100,26 @@ class BasicQlearnAgent(Agent):
 		gameState = GameState(args[0],args[1],args[2],args[3],args[4],args[5])
 		gameState.parseFlags(args[6])
 
-		if (gameState.p1Health <self.prevGamestate.p1Health):
-			if (self.p1):
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1)
-			else:
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,1)
+		p1damage = self.prevGamestate.p1Health - gameState.p1Health;
+		p2damage = self.prevGamestate.p2Health - gameState.p2Health;
 
-		if (gameState.p2Health <self.prevGamestate.p2Health):
+		p1damageval = p1damage/100
+		p2damageval = p2damage/100
+
+		if (p1damage):
 			if (self.p1):
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,1)
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
 			else:
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1)
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
+
+		if (p2damage):
+			if (self.p1):
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
+			else:
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
+
+		#if (not p1damage and not p2damage):
+#			self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,.05) #small reward for getting no damage
 
 		self.prevGamestate = gameState
 
@@ -132,7 +141,7 @@ class BasicQlearnAgent(Agent):
 			action = self.actions[qRow.index(maxQ)]
 	 
 		self.prevAction = action
-		self.epsilon-=0.0001
+		self.epsilon-=0.00001
 		return action
 
 	def dumpQtableToFile(self):
@@ -143,7 +152,10 @@ class BasicQlearnAgent(Agent):
 			pickle.dump(self.Qtable, myFile)
 
 	def retrieveQtableFromFile(self):
-		with open("savedQTable.txt", "rb") as myFile:
+		filename = "savedQTablep2.txt"
+		if self.p1:
+			filename="savedQTablep1.txt"
+		with open(filename, "rb") as myFile:
 			self.Qtable = pickle.load(myFile)
 
 
@@ -154,7 +166,7 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
     
         p1 = False
-    agent = BasicQlearnAgent(p1,False,True)
+    agent = BasicQlearnAgent(p1,loadOldTable=True,overwriteFile=True)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)

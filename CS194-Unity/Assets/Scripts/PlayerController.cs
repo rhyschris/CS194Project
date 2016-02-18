@@ -17,9 +17,9 @@ public class PlayerController : MonoBehaviour {
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
-	public float upwardVelocity;
-	public float downwardVelocity;
-	public float JUMP_TIME_CONST;	
+	//public float upwardVelocity;
+	public float gravity;
+	public float initialJumpVelocity;	
 	// KEYBOARD INPUT
 	private KeyCode Up; 
 	private KeyCode Down;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 	private float timeEnds;
 	private float timeAttackBegins;
 	private float timeAttackEnds;
-	private float timeJumpUpEnds;
+	private float jumpVelocity;
 	private float reach;
 	private float attackDamage;
 	private bool lowAttack;
@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour {
 			case ActionType.jump:
 				if (!isJumping) {/* Just started jump, need to note end of jump time*/
 					isJumping = true;
-					timeJumpUpEnds = Time.time + JUMP_TIME_CONST;
+					jumpVelocity = initialJumpVelocity;
 				}
 				break;
 			}
@@ -299,18 +299,14 @@ public class PlayerController : MonoBehaviour {
 			blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage; 		}
 		/*Handle jumping animation*/
 		if (isJumping){
-			float newY;
-			if (Time.time <= timeJumpUpEnds) {
-				newY = playerBodyBox.transform.position.y + upwardVelocity;
-			} else {
-				newY = playerBodyBox.transform.position.y - downwardVelocity;
-
-				if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
-					isJumping = false;
-					newY = this.getHalfHeight();
-				}
+			float newY = playerBodyBox.transform.position.y + jumpVelocity;
+			if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
+				isJumping = false;
+				newY = this.getHalfHeight();
 			}
 			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
+			jumpVelocity = jumpVelocity - gravity; 
+
 		}
 		if (player1) {
 			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) > theirAction.oldXPosition)

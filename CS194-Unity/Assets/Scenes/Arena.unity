@@ -640,14 +640,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fd95011c8f26742aad796f05cef19d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockDamageModifier: 0
   player1: 1
-  isAI: 0
+  isAI: 1
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  upwardVelocity: 0
-  downwardVelocity: 0
-  JUMP_TIME_CONST: 0
+  upwardVelocity: 0.3
+  downwardVelocity: 0.3
+  JUMP_TIME_CONST: 0.5
   fighter: {fileID: 2004638675}
 --- !u!1 &1148615904
 GameObject:
@@ -870,7 +871,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687eb0e534a012840b18e4355e23680b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockDamageModifier: 0.5
 --- !u!4 &1338451880
 Transform:
   m_ObjectHideFlags: 0
@@ -1410,6 +1410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fd95011c8f26742aad796f05cef19d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockDamageModifier: 0
   player1: 0
   isAI: 1
   forwardVelocity: 5
