@@ -192,12 +192,16 @@ public class PlayerController : MonoBehaviour {
 	public void handleInput(Action myAction, Action theirAction) {
 		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
-
+		if (myAction.actionType == ActionType.attack1 || myAction.actionType == ActionType.attack2) {
+			Debug.Log (my_horiz);
+		}
 		// Set animation bools 
 		if (myAction.actionType == ActionType.attack2){
+			Debug.Log ("Attack2 Anim");
 			fighterAnimator.SetBool("highPunch", true);
 		}
 		if (myAction.actionType == ActionType.attack1) {
+			Debug.Log ("Attack1 Anim");
 			fighterAnimator.SetBool ("highKick", true);
 		}
 		if (myAction.actionType == ActionType.attack3) {
@@ -251,11 +255,15 @@ public class PlayerController : MonoBehaviour {
 				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
 		} else{
+			if(player1&&myAction.actionType!=ActionType.doNothing)
+				Debug.Log ("Not Move");
 			switch (myAction.actionType){
 			case ActionType.attack1:
+				Debug.Log ("Attack1");
 				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
 				break;
 			case ActionType.attack2:
+				Debug.Log ("Attack2");
 				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
 				break;
 			case ActionType.attack3:

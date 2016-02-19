@@ -45,7 +45,7 @@ public class GameDelegate : MonoBehaviour {
 	}
 	void Update()
 	{
-		Debug.Log ("Sending state at time " + Time.time.ToString ());
+		//Debug.Log ("Sending state at time " + Time.time.ToString ());
 
 		for (int i =0; i<1; i++){
 
@@ -127,6 +127,10 @@ public class GameDelegate : MonoBehaviour {
 					Debug.Log("Health: "+defender.getHealth().ToString());
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
+
+					// 
+
+					// set animation f
 				}
 				if(defender.getHealth() <= 0.0f) {
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
