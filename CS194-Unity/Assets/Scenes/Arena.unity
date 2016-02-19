@@ -638,14 +638,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockDamageModifier: 0
   player1: 1
-  isAI: 1
+  isAI: 0
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  upwardVelocity: 0.3
-  downwardVelocity: 0.3
-  JUMP_TIME_CONST: 0.5
-  fighter: {fileID: 2004638675}
+  gravity: 0
+  initialJumpVelocity: 0
+  fighter: {fileID: 1723919716}
 --- !u!1 &1148615904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,9 +1419,8 @@ MonoBehaviour:
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  upwardVelocity: 0.1
-  downwardVelocity: 0.1
-  JUMP_TIME_CONST: 0.5
+  gravity: 0
+  initialJumpVelocity: 0
   fighter: {fileID: 1756844638}
 --- !u!1 &1899315170
 GameObject:

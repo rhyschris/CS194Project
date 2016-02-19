@@ -214,7 +214,7 @@ ModelImporter:
     400204: joint9
     400206: //RootNode
     4300000: human_citizen_male_geo
-    7400000: Take 001
+    7400000: idle3
     9500000: //RootNode
     13700000: human_citizen_male_geo
   materials:
@@ -237,7 +237,243 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: idle3
+      takeName: Take 001
+      firstFrame: 238
+      lastFrame: 272
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: character_cnt_null
+        weight: 1
+      - path: character_cnt_null/character_cnt
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_belly
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_index_l_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_index_l_base/bone_finger_index_l_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_index_l_base/bone_finger_index_l_mid/bone_finger_index_l_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_middle_l_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_middle_l_base/bone_finger_middle_l_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_middle_l_base/bone_finger_middle_l_mid/bone_finger_middle_l_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_pinky_l_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_pinky_l_base/bone_finger_pinky_l_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_pinky_l_base/bone_finger_pinky_l_mid/bone_finger_pinky_l_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_ring_l_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_ring_l_base/bone_finger_ring_l_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_finger_ring_l_base/bone_finger_ring_l_mid/bone_finger_ring_l_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_thumb_l_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_thumb_l_base/bone_thumb_l_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_l/bone_arm_l/bone_elbow_l/bone_radius_l/bone_wrist_l/bone_thumb_l_base/bone_thumb_l_mid/bone_thumb_l_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_index_r_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_index_r_base/bone_finger_index_r_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_index_r_base/bone_finger_index_r_mid/bone_finger_index_r_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_middle_r_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_middle_r_base/bone_finger_middle_r_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_middle_r_base/bone_finger_middle_r_mid/bone_finger_middle_r_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_pinky_r_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_pinky_r_base/bone_finger_pinky_r_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_pinky_r_base/bone_finger_pinky_r_mid/bone_finger_pinky_r_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_ring_r_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_ring_r_base/bone_finger_ring_r_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_finger_ring_r_base/bone_finger_ring_r_mid/bone_finger_ring_r_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_thumb_r_base
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_thumb_r_base/bone_thumb_r_mid
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_clavicle_r/bone_arm_r/bone_elbow_r/bone_radius_r/bone_wrist_r/bone_thumb_r_base/bone_thumb_r_mid/bone_thumb_r_tip
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_brow_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_brow_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_cheek_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_cheek_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_eye_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_eye_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_jaw
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_levator_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_levator_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lid_l_bottom
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lid_l_top
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lid_r_bottom
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lid_r_top
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lips_bottom
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lips_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lips_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_lips_top
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_nose_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/bone_nose_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10/joint11
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10/joint11/joint12
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10/joint11/joint12/joint13
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_spine_base/bone_spine_lower/bone_spine_mid/bone_spine_upper/bone_chest/bone_neck/bone_head/joint1/joint2/joint3/joint4/joint5/joint6/joint7/joint8/joint9/joint10/joint11/joint12/joint13/joint14
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l/bone_knee_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l/bone_knee_l/bone_shin_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l/bone_knee_l/bone_shin_l/bone_ankle_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l/bone_knee_l/bone_shin_l/bone_ankle_l/bone_toe_l
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_l/bone_knee_l/bone_shin_l/bone_ankle_l/bone_toe_l/bone_toe_l_end
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r/bone_knee_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r/bone_knee_r/bone_shin_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r/bone_knee_r/bone_shin_r/bone_ankle_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r/bone_knee_r/bone_shin_r/bone_ankle_r/bone_toe_r
+        weight: 1
+      - path: character_cnt_null/character_cnt/bone_root/bone_thigh_r/bone_knee_r/bone_shin_r/bone_ankle_r/bone_toe_r/bone_toe_r_end
+        weight: 1
+      - path: geometry_grp
+        weight: 1
+      - path: geometry_grp/human_citizen_male_geo_grp
+        weight: 1
+      - path: geometry_grp/human_citizen_male_geo_grp/human_citizen_male_geo
+        weight: 1
+      - path: helper_nodes_grp
+        weight: 1
+      - path: helper_nodes_grp/cluster_grp
+        weight: 1
+      - path: helper_nodes_grp/cluster_grp/animation_cnt_cluster_grp
+        weight: 1
+      - path: helper_nodes_grp/cluster_grp/animation_cnt_cluster_grp/cluster128Handle
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []
