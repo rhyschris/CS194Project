@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\GameState.cs" />
      <Compile Include="Assets\Scripts\Pair.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\facePunched_idle.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
