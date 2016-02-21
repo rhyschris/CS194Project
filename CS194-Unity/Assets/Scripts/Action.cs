@@ -1,7 +1,7 @@
 ﻿public class Action {
 
 	public const ActionType VMOVE_MASK = (ActionType)0x3; // 2 l.s. bits
-	public const ActionType HMOVE_MASK = (ActionType)0x1c; // 3-5th l.s. bits
+	public const ActionType HMOVE_MASK = (ActionType)0x0c; // 3-4th l.s. bits
 	public const ActionType ATTACK_MASK = (ActionType)0xf0; // 6-8th l.s. bits
 	public const long XPOS_MASK = 0xffffffff00; // 9 .. 40 l.s. bits
 

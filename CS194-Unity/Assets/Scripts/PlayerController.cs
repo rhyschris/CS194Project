@@ -10,14 +10,16 @@ public class PlayerController : MonoBehaviour {
 	private GameObject playerBlockBox;
 	// STAT VARIABLES
 	private float health;
+	public float blockDamageModifier;
+	private float blockPercentage;
 	public bool player1;
 	public bool isAI;
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
-	public float upwardVelocity;
-	public float downwardVelocity;
-	public float JUMP_TIME_CONST;	
+	//public float upwardVelocity;
+	public float gravity;
+	public float initialJumpVelocity;	
 	// KEYBOARD INPUT
 	private KeyCode Up; 
 	private KeyCode Down;
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 	private float timeEnds;
 	private float timeAttackBegins;
 	private float timeAttackEnds;
-	private float timeJumpUpEnds;
+	private float jumpVelocity;
 	private float reach;
 	private float attackDamage;
 	private bool lowAttack;
@@ -105,7 +107,6 @@ public class PlayerController : MonoBehaviour {
 				action = new Action ();
 			} 
 			/* Assuming AI is player 2 - he will face left */
-
 			if (this.player1)
 				movingRight = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
 			else
@@ -163,23 +164,24 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		action.oldXPosition = playerBodyBox.transform.position.x;
-		updatePosition (action);
+		updatePosition (action, movingLeft);
 		return action;
 	}
 
 	/** 
 	 * Updates the action argument to indicate the distance moved during this frame.
 	 */
-	public void updatePosition (Action action){
+	public void updatePosition (Action action, bool movingLeft){
 		ActionType hmove = action.actionType & Action.HMOVE_MASK;
 		if (hmove == ActionType.moveAway) {
-			action.distanceMoved = forwardVelocity * -backwardVelocityFactor * Time.deltaTime;
+			action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
 		} else if (hmove == ActionType.runTowards) {
 			action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
 		} else if (hmove == ActionType.walkTowards) {
 			action.distanceMoved = forwardVelocity * Time.deltaTime;
 		}
-		action.distanceMoved *= this.playerXFacing;
+		if (movingLeft)
+			action.distanceMoved *= -1.0f;
 	}
 	/** --------------------------------------------------------------------------------
 	 * PLAYER.HANDLEINPUT();
@@ -192,8 +194,24 @@ public class PlayerController : MonoBehaviour {
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
 
 		// Set animation bools 
-		if (myAction.actionType == ActionType.attack2){
-			fighterAnimator.SetBool("highPunch", true);
+//		if (myAction.actionType == ActionType.attack2){
+//			fighterAnimator.SetBool("highPunch", true);
+//		}
+//		if (myAction.actionType == ActionType.attack1) {
+//			fighterAnimator.SetBool ("highKick", true);
+//		}
+//		if (myAction.actionType == ActionType.attack3) {
+//			fighterAnimator.SetBool ("lowTrip", true);
+//		}
+		if (myAction.actionType == ActionType.walkTowards) {
+			fighterAnimator.SetBool ("runForward", true);
+		} else {
+			fighterAnimator.SetBool ("runForward", false);
+		}
+		if (myAction.actionType == ActionType.moveAway) {
+			fighterAnimator.SetBool ("runBackward", true);
+		} else {
+			fighterAnimator.SetBool ("runBackward", false);
 		}
 
 
@@ -206,16 +224,18 @@ public class PlayerController : MonoBehaviour {
 			//TODO: Can't jump over another player as of now. Fix that? 
 
 			// If there is going to be a collision and moving towards...
-			if (their_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+			if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 				// If the other is moving away....
 				if (their_horiz == ActionType.moveAway) {
 					// Move right up to the other's projected position.
 					if (myAction.distanceMoved < 0.0f) {
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-					} else {
+					} else {						
+						
 						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 					}
 				} else {
+					
 					// They are both moving towards one another.
 					// Move a ratio of the distance between them based on how much each was supposed to move.
 					float distanceRatio = Mathf.Abs (myAction.distanceMoved) / (Mathf.Abs (myAction.distanceMoved) + Mathf.Abs (theirAction.distanceMoved));
@@ -226,27 +246,30 @@ public class PlayerController : MonoBehaviour {
 					}
 					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + actualDistance, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 				}
-			} else {
+			} else {										
 				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
 		} else{
 			switch (myAction.actionType){
 			case ActionType.attack1:
+				fighterAnimator.SetBool("highPunch", true);
 				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
 				break;
 			case ActionType.attack2:
+				fighterAnimator.SetBool ("highKick", true);
 				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
 				break;
 			case ActionType.attack3:
 				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
 				break;
 			case ActionType.attack4:
+				fighterAnimator.SetBool ("lowTrip", true);
 				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
 				break;
 			case ActionType.jump:
 				if (!isJumping) {/* Just started jump, need to note end of jump time*/
 					isJumping = true;
-					timeJumpUpEnds = Time.time + JUMP_TIME_CONST;
+					jumpVelocity = initialJumpVelocity;
 				}
 				break;
 			}
@@ -265,30 +288,41 @@ public class PlayerController : MonoBehaviour {
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
 			blocking = true;
 			lowBlocking = false;
+			blockPercentage -= .002f;
+			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 
 		} else if (blockAction == ActionType.blockDown) {
 			playerBlockBox.SetActive (true);
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
 			blocking = true;
 			lowBlocking = true;
+			blockPercentage -= .002f;
+			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 		
 		} else {
 			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
 			blocking = false;
 			lowBlocking = false;
-		}
+			blockPercentage += .002f;
+			blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage; 		}
 		/*Handle jumping animation*/
 		if (isJumping){
-			float newY;
-			if (Time.time <= timeJumpUpEnds) {
-				newY = playerBodyBox.transform.position.y + upwardVelocity;
-			} else {
-				newY = playerBodyBox.transform.position.y - downwardVelocity;
-
-				if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
-					isJumping = false;
-					newY = this.getHalfHeight();
-				}
+			float newY = playerBodyBox.transform.position.y + jumpVelocity;
+			if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
+				isJumping = false;
+				newY = this.getHalfHeight();
 			}
 			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
+			jumpVelocity = jumpVelocity - gravity; 
+
+		}
+		if (player1) {
+			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) > theirAction.oldXPosition)
+				print ("p1 Crossed over?");
+			// throw new System.ArgumentException("Parameter cannot be null", "original");	
+		}
+		else {
+			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) < theirAction.oldXPosition)
+				print ("P2 Crossed over?");
+			// throw new System.ArgumentException("Parameter cannot be null", "original");	
 		}
 	}
 	/**
@@ -332,10 +366,14 @@ public class PlayerController : MonoBehaviour {
 	 * should define the behavior a player goes through when they are hit by an attack.
 	 */
 	public void receiveAttack(float damage, bool blocked) {
-		health = health - damage;
 		if (blocked) {
+			Debug.Log (blockPercentage);
+			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
+			Debug.Log ("damage = "+damage.ToString());
+			health = health - damage;
 			// TODO: Handle behavior if hit while blocking.
 		} else {
+			health = health - damage;
 			inputHold = false;
 			finishAttack ();
 			// TODO: Handle behavior if hit while not blocking.
@@ -373,6 +411,9 @@ public class PlayerController : MonoBehaviour {
 		return playerHitBox.transform.position.y;
 	}
 
+	public void moveToX(float x){
+		playerBodyBox.transform.position = new Vector3 (x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+	}
 	public float getHalfHeight() {
 		return playerBodyBox.transform.localScale.y * 0.5f;
 	}
@@ -417,6 +458,7 @@ public class PlayerController : MonoBehaviour {
 		fighterAnimator = fighter.GetComponent<Animator> ();
 
 		health = 1000.0f;
+		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
 		timeAttackEnds = 0.0f;

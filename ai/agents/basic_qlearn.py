@@ -6,13 +6,15 @@ from actions import Actions
 import struct 
 import random
 import sys
+import signal
 import cPickle as pickle
 
 
 class BasicQlearnAgent(Agent):
 
-	def __init__(self,loadOldTable=False, name="Qlearner"):
+	def __init__(self,isPlayer1=False,loadOldTable=False,overwriteFile = False, name="Qlearner"):
 		super(BasicQlearnAgent, self).__init__(name)
+		self.p1 = isPlayer1
 		self.epsilon = .75
 		self.alpha = .5
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
@@ -20,18 +22,25 @@ class BasicQlearnAgent(Agent):
 
 		self.possibleXdists = [-6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6]
 
+		if (overwriteFile):
+			signal.signal(signal.SIGINT, self.signalHandler)
 		self.actions = [a for a in Actions]
 		self.numActions = len(self.actions)
 		self.actionDic = dict()
 		self.makeActionDic()
 		self.Qtable = dict()
 
-		if not loadOldTable:
-                    self.initializeTable()
+		if (not loadOldTable):
+			self.initializeTable()
 		else:
-                    self.retrieveQtableFromFile()
+			self.retrieveQtableFromFile()
 
 		print("Done initializing!")
+
+	def signalHandler(self,err,ernum):
+		print("dumping to file!")
+		self.dumpQtableToFile()
+		sys.exit(0)
 
 	def makeActionDic(self):
 		for i in range(0,self.numActions):
@@ -91,11 +100,26 @@ class BasicQlearnAgent(Agent):
 		gameState = GameState(args[0],args[1],args[2],args[3],args[4],args[5])
 		gameState.parseFlags(args[6])
 
-		if (gameState.p1Health <self.prevGamestate.p1Health):
-			self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,1)
+		p1damage = self.prevGamestate.p1Health - gameState.p1Health;
+		p2damage = self.prevGamestate.p2Health - gameState.p2Health;
 
-		if (gameState.p2Health <self.prevGamestate.p2Health):
-			self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1)
+		p1damageval = p1damage/100
+		p2damageval = p2damage/100
+
+		if (p1damage):
+			if (self.p1):
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
+			else:
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
+
+		if (p2damage):
+			if (self.p1):
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
+			else:
+				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
+
+		#if (not p1damage and not p2damage):
+#			self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,.05) #small reward for getting no damage
 
 		self.prevGamestate = gameState
 
@@ -117,22 +141,32 @@ class BasicQlearnAgent(Agent):
 			action = self.actions[qRow.index(maxQ)]
 	 
 		self.prevAction = action
-		self.epsilon-=0.0001
+		self.epsilon-=0.00001
 		return action
 
 	def dumpQtableToFile(self):
-		with open("savedQTable.txt", "wb") as myFile:
+		filename = "savedQTablep2.txt"
+		if self.p1:
+			filename="savedQTablep1.txt"
+		with open(filename, "wb") as myFile:
 			pickle.dump(self.Qtable, myFile)
 
 	def retrieveQtableFromFile(self):
-		with open("savedQTable.txt", "rb") as myFile:
+		filename = "savedQTablep2.txt"
+		if self.p1:
+			filename="savedQTablep1.txt"
+		with open(filename, "rb") as myFile:
 			self.Qtable = pickle.load(myFile)
 
 
 if __name__ == '__main__':
-    agent = BasicQlearnAgent(False)
     port = 4998
+    p1 = True
     if len(sys.argv) > 1:
-	    port = int(sys.argv[1])
+        port = int(sys.argv[1])
+    
+        p1 = False
+    agent = BasicQlearnAgent(p1,loadOldTable=True,overwriteFile=True)
+
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)

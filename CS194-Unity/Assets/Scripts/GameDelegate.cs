@@ -7,7 +7,6 @@ using AssemblyCSharp;
 
 //TODO: on start, send AI initial game state
 public class GameDelegate : MonoBehaviour {
-	public float blockDamageModifier;
 	private bool paused;
 	// CONTROLLERS
 	private CameraController mainCamera;
@@ -20,8 +19,6 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode Reset;
 	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
-
-	public bool runGraphics;
 
 
 	void Start ()
@@ -44,74 +41,71 @@ public class GameDelegate : MonoBehaviour {
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
 
+
 	}
-	/**
-	 * Entry point for updating the game, whether graphics is on or not.
-	 */
-	void updateGame (){
-		// QUIT THE GAME
-		if (Input.GetKeyDown (Quit)) {
-			Application.Quit ();
-		}
-		// ENTER DEBUGGING MODE
-		if (Input.GetKeyDown (TogglePause)) {
-			paused = !paused;
-			debugText.toggleDebugText();
-		}
-		if (paused) {
-			// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
-			if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
-				mainCamera.modAngle (-0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-				mainCamera.modXPadding (-0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
-				mainCamera.modAngle (0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-				mainCamera.modXPadding (0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-				mainCamera.modWidthMinimum (-0.5f);
-			}
-			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-				mainCamera.modWidthMinimum (0.5f);
-			}
-			// RESET PLAYER POSITIONS
-			if (Input.GetKeyDown (Reset)) {
-				// Later on, make it so this resets everything to default locations and statuses.
-			}
-		} else {
-			if (Input.GetKeyDown (ToggleDebugText)) {
-				debugText.toggleDebugText();
-			}
-			// UPDATE PLAYER STATUS
-			player1.handleAutomaticUpdates (player2.getXPos ());
-			player2.handleAutomaticUpdates (player1.getXPos ());
-			//BUILD GAME STATE
-			GameState state = createGameState();
-
-			// QUERY PLAYER INPUT
-			Action player1Action = player1.queryInput (state);
-			Action player2Action = player2.queryInput (state);
-			// HANDLE PLAYER INPUT
-			player1.handleInput (player1Action, player2Action);
-			player2.handleInput (player2Action, player1Action);
-			// DO HIT DETECTION
-			handlePlayerHit (player1, player2);
-			handlePlayerHit (player2, player1);
-
-		}
-		debugText.setMessage (player1.getHealth(), player2.getHealth());
-	}
-
 	void Update()
 	{
-		if (runGraphics) {	
-			updateGame ();
-		} else {
-			Debug.Log ("Warning: Not running graphics on the main thread.");
+		//Debug.Log ("Sending state at time " + Time.time.ToString ());
+
+		for (int i =0; i<1; i++){
+
+			// QUIT THE GAME
+			if (Input.GetKeyDown (Quit)) {
+				Application.Quit ();
+			}
+			// ENTER DEBUGGING MODE
+			if (Input.GetKeyDown (TogglePause)) {
+				paused = !paused;
+				debugText.toggleDebugText();
+			}
+			if (paused) {
+				// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
+				if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
+					mainCamera.modAngle (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+					mainCamera.modXPadding (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
+					mainCamera.modAngle (0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+					mainCamera.modXPadding (0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+					mainCamera.modWidthMinimum (-0.5f);
+				}
+				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+					mainCamera.modWidthMinimum (0.5f);
+				}
+				// RESET PLAYER POSITIONS
+				if (Input.GetKeyDown (Reset)) {
+					// Later on, make it so this resets everything to default locations and statuses.
+				}
+			} else {
+				if (Input.GetKeyDown (ToggleDebugText)) {
+					debugText.toggleDebugText();
+				}
+				// UPDATE PLAYER STATUS
+				player1.handleAutomaticUpdates (player2.getXPos ());
+				player2.handleAutomaticUpdates (player1.getXPos ());
+				//BUILD GAME STATE
+				GameState state = createGameState();
+
+				// QUERY PLAYER INPUT
+				Action player1Action = player1.queryInput (state);
+				Action player2Action = player2.queryInput (state);
+				// HANDLE PLAYER INPUT
+				player1.handleInput (player1Action, player2Action);
+				player2.handleInput (player2Action, player1Action);
+				if ((player1.getXPos () + player1.getHalfWidth() * 2) > player2.getXPos ())
+					player1.moveToX (player2.getXPos () - player1.getHalfWidth () * 2);
+				// DO HIT DETECTION
+				handlePlayerHit (player1, player2);
+				handlePlayerHit (player2, player1);
+
+			}
+			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
 	}
 	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
@@ -127,12 +121,20 @@ public class GameDelegate : MonoBehaviour {
 				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
 					Debug.Log ("Blocked!");
 					attacker.tellHit ();
-					defender.receiveAttack (attacker.getAttackDamage () * blockDamageModifier, true);
+					defender.receiveAttack (attacker.getAttackDamage (), true);
 				} else {
 					Debug.Log ("Hit!");
 					Debug.Log("Health: "+defender.getHealth().ToString());
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
+
+
+
+					// set animation for punch
+					GameObject defenderFighter = defender.fighter;
+					Animator defenderAnimator;
+					defenderAnimator = defenderFighter.GetComponent<Animator> ();
+					defenderAnimator.SetBool ("facePunched", true);
 				}
 				if(defender.getHealth() <= 0.0f) {
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
