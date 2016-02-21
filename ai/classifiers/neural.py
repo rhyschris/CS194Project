@@ -3,7 +3,7 @@ __author__='rhyschris'
 ''' 
 
   Implements a self-contained, fully-connected network 
-  neural network of arbitrary depth, on top of a least squares objective.
+  neural network regressor of arbitrary depth, on top of a least squares objective.
 
   Uses Kaiming He or Xavier initialization
 
@@ -15,7 +15,7 @@ import numpy as np
 from layers import *
 import optimization
 
-class NeuralNet(object):
+class NeuralRegressor(object):
   """
   A fully-connected neural network with an arbitrary number of hidden layers 
   of arbitrary linearity
@@ -95,13 +95,15 @@ class NeuralNet(object):
     # i is still in local namespace with i == num_layers
     scores, cache[self.num_layers] = affine_forward (inpt, self.params['W{0}'.format(self.num_layers)], \
                                                    self.params['b{0}'.format(self.num_layers)])
-
+    
     # If test mode return early
     if mode == 'test':
       return scores
-    # Least squares loss
-
-    loss, dout = softmax_loss (scores, y)
+    # Least squares (linear regression)
+    # scores - y 
+    dout = scores - y
+    loss = 0.5 * dout**2
+    
     for i in xrange(1, self.num_layers + 1):
       loss += 0.5 * self.reg * np.sum(self.params['W{0}'.format(i)] ** 2)
 
@@ -120,12 +122,3 @@ class NeuralNet(object):
       grads['b{0}'.format(j)] = db
 
     return loss, grads
-
-
-  def train(self, X, y):
-    """ Trains the neural network on the given examples. """
-
-    loss, grads = self.loss (X, y)
-    pass    
-
-

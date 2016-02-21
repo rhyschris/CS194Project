@@ -73,6 +73,6 @@ def DeepQLearningAgent (Agent):
         # reward = r + self.discount * V_opt(new_state) - Q_score (s)
         # Back-prop into model (backpass should have some argument to give an 
         # an augmented reward. 
-    
+        self.w = 
         # w += alpha * reward * phi(x)
         pass
