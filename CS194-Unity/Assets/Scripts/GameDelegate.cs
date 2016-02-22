@@ -128,9 +128,13 @@ public class GameDelegate : MonoBehaviour {
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
 
-					// 
 
-					// set animation f
+
+					// set animation for punch
+					GameObject defenderFighter = defender.fighter;
+					Animator defenderAnimator;
+					defenderAnimator = defenderFighter.GetComponent<Animator> ();
+					defenderAnimator.SetBool ("facePunched", true);
 				}
 				if(defender.getHealth() <= 0.0f) {
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");

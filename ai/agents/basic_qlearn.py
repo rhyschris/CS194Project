@@ -8,11 +8,12 @@ import random
 import sys
 import signal
 import cPickle as pickle
-
+from plotter import Plotter
 
 class BasicQlearnAgent(Agent):
 
-	def __init__(self,isPlayer1=False,loadOldTable=False,overwriteFile = False, epsilon =.75,name="Qlearner"):
+	def __init__(self,isPlayer1=False, loadOldTable=False, overwriteFile = False, 
+				 epsilon=.75, name="Qlearner", plot_freq=0):
 		super(BasicQlearnAgent, self).__init__(name)
 		self.p1 = isPlayer1
 		self.epsilon = epsilon
@@ -35,6 +36,15 @@ class BasicQlearnAgent(Agent):
 			self.initializeTable()
 		else:
 			self.retrieveQtableFromFile()
+
+		# times per second to plot
+		# 0 is 'off', but we add modulo plot_freq + 1, and update
+		# when counter = 1
+		self.plot_freq = plot_freq + 1
+		self.plot_counter = 0
+
+		if plot_freq > 0:
+			self.plotter = Plotter()
 
 		print("Done initializing!")
 
@@ -83,7 +93,7 @@ class BasicQlearnAgent(Agent):
 		return (tupXdist,tupYdist,gamestate.actionFlags)
 
 	def getQRow(self,gamestate):
-		tup = self.getGSTuple(gamestate)#(int(gamestate.p1XPos),int(gamestate.p2XPos),int(gamestate.p1XPos),int(gamestate.p1XPos),int(gamestate.p1XPos),int(gamestate.p1XPos),gamestate.actionFlags)
+		tup = self.getGSTuple(gamestate)
 
 		return self.Qtable[tup]
 
@@ -128,14 +138,18 @@ class BasicQlearnAgent(Agent):
 			else:
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
 
-		#if (not p1damage and not p2damage):
-#			self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,.05) #small reward for getting no damage
 
 		self.prevGamestate = gameState
 
 	def chooseAction(self):
 		qRow = self.getQRow(self.prevGamestate)
 		maxQ = max(qRow)
+		# update plot according to frequency
+		self.plot_counter = (self.plot_counter + 1) % (self.plot_freq + 1)
+
+		if self.plot_counter == 1:
+			self.plotter.updateGraph(qRow)
+
 		count = qRow.count(maxQ)
 		action = None
 	 	
@@ -166,7 +180,7 @@ class BasicQlearnAgent(Agent):
 		if self.p1:
 			filename="savedQTablep1.txt"
 		with open(filename, "rb") as myFile:
-			self.Qtable = pickle.load(myFile)
+			self.Qtable = pickle.load(myyFile)
 
 
 if __name__ == '__main__':
@@ -176,7 +190,10 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
     
         p1 = False
-    agent = BasicQlearnAgent(p1,loadOldTable=False,overwriteFile=True,epsilon=.75)
+
+    agent = BasicQlearnAgent(p1, loadOldTable=True,epsilon=.75, 
+    						overwriteFile=True, plot_freq=5)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)
+
