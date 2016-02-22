@@ -12,13 +12,14 @@ import cPickle as pickle
 
 class BasicQlearnAgent(Agent):
 
-	def __init__(self,isPlayer1=False,loadOldTable=False,overwriteFile = False, name="Qlearner"):
+	def __init__(self,isPlayer1=False,loadOldTable=False,overwriteFile = False, epsilon =.75,name="Qlearner"):
 		super(BasicQlearnAgent, self).__init__(name)
 		self.p1 = isPlayer1
-		self.epsilon = .75
+		self.epsilon = epsilon
 		self.alpha = .5
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
 		self.prevAction = Actions.doNothing
+		self.bodywidth = 1.0;
 
 		self.possibleXdists = [-6, -4, -3, -2, -1, 0, 1, 2, 3, 4, 6]
 
@@ -57,14 +58,14 @@ class BasicQlearnAgent(Agent):
 						Gamestate = (xdist,ydist,p1flags|p2flags)
 						self.Qtable[Gamestate] = [0]*self.numActions
 						if (abs(xdist)>2):
-							self.Qtable[Gamestate][self.actionDic[Actions.walkTowards]]+=.1
-							self.Qtable[Gamestate][self.actionDic[Actions.runTowards]]+=.1
+							self.Qtable[Gamestate][self.actionDic[Actions.walkTowards]]+=.5
+							self.Qtable[Gamestate][self.actionDic[Actions.runTowards]]+=.5
 
 
 
 
 	def getGSTuple(self,gamestate):
-		xdist = int(gamestate.p1Xpos-gamestate.p2Xpos)
+		xdist = int(gamestate.p1Xpos-gamestate.p2Xpos-self.bodywidth)
 
 		tupXdist =xdist
 		if (xdist<-4):
@@ -103,16 +104,25 @@ class BasicQlearnAgent(Agent):
 		p1damage = self.prevGamestate.p1Health - gameState.p1Health;
 		p2damage = self.prevGamestate.p2Health - gameState.p2Health;
 
+		p1win = gameState.p2Health ==0
+		p2win = gameState.p1Health ==0
+
+		if (p1win):
+			p2damage = 250
+		if (p2win):
+			p1damage = 250
+
 		p1damageval = p1damage/100
+
 		p2damageval = p2damage/100
 
-		if (p1damage):
+		if (p1damage and (p1damage>0)):#end of game, don't count negative
 			if (self.p1):
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
 			else:
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
 
-		if (p2damage):
+		if (p2damage and (p2damage>0)):
 			if (self.p1):
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
 			else:
@@ -166,7 +176,7 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
     
         p1 = False
-    agent = BasicQlearnAgent(p1,loadOldTable=True,overwriteFile=True)
+    agent = BasicQlearnAgent(p1,loadOldTable=False,overwriteFile=True,epsilon=.75)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)
