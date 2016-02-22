@@ -48,11 +48,14 @@ public class PlayerController : MonoBehaviour {
 
 	// Direction player is looking
 	// +1.0 if right, -1.0 if left
-	private float playerXFacing;
 
-	// ANIMATION CONTROLLER
+	// Animation Controller
 	Animator fighterAnimator;
 	public GameObject fighter;
+
+	// Dictionary of state machine behaviors 
+	//private Dictionary<string, BufferedStateMachineBehavior> animatedBehaviors; 
+
 
 	/**
 	 * PLAYER.UPDATE();
@@ -456,6 +459,8 @@ public class PlayerController : MonoBehaviour {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
 		// to set the correct bools that trigger different animation states
 		fighterAnimator = fighter.GetComponent<Animator> ();
+		// Capture the animation behaviors that underlie each state.  
+
 
 		health = 1000.0f;
 		blockPercentage = 1.0f;
@@ -476,9 +481,7 @@ public class PlayerController : MonoBehaviour {
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
-
-			playerXFacing = 1.0f;
-			
+						
 			if (isAI) {
 				int inPort = 4998;
 						
@@ -500,8 +503,7 @@ public class PlayerController : MonoBehaviour {
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");
 			playerBlockBox = GameObject.Find ("Player2BlockBox");
-			playerXFacing = -1.0f;
-
+			
 			if (isAI){
 				int inPort = 5998;
 
