@@ -7,7 +7,7 @@ using System.Collections;
  * to the animations.  
  */
 
-public class BufferedStateMachineBehavior : StateMachineBehaviour{
+public class BufferedStateMachineBehaviour : StateMachineBehaviour{
 
 		
 	protected float startBufferTime; // Time % before throwing active behavior on animation, i.e. hitboxes
@@ -15,7 +15,10 @@ public class BufferedStateMachineBehavior : StateMachineBehaviour{
 
 	protected bool active; // Tells you whether the behavior is active or not.
 
-	public BufferedStateMachineBehavior () {
+	public BufferedStateMachineBehaviour () {
+
+		startBufferTime = 0.0f;
+		endBufferTime = 0.95f;
 		//Stub implementation
 	}
 
@@ -30,6 +33,12 @@ public class BufferedStateMachineBehavior : StateMachineBehaviour{
 				this.active = false;
 			}
 		}
+	}
+	/**
+	 * Returns whether an active behavior is being animated.
+	 */
+	public bool isActive (){
+		return active;
 	}
 }
 

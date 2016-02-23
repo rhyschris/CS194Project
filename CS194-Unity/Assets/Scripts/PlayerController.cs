@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 	// AI
@@ -45,45 +46,54 @@ public class PlayerController : MonoBehaviour {
 	private bool blocking;
 	private bool lowBlocking;
 	private bool isJumping;
-
-	// Direction player is looking
-	// +1.0 if right, -1.0 if left
-
+	
 	// Animation Controller
 	Animator fighterAnimator;
 	public GameObject fighter;
 
 	// Dictionary of state machine behaviors 
-	//private Dictionary<string, BufferedStateMachineBehavior> animatedBehaviors; 
-
+	// English 'behaviour' spelling to match the Unity module naming :/
+	private BufferedStateMachineBehaviour[] animatedBehaviours; 
 
 	/**
 	 * PLAYER.UPDATE();
-	 * In this function, player status that is not dependant upon input, such as in-
+	 * In this function, player status that is not dependent upon input, such as in-
 	 * progress animations, are handled.
+	 *
 	 */
 
 	public void handleAutomaticUpdates(float otherPlayerXPos) {
-		if (inputHold) {
-			if (Time.time >= timeEnds) {
-				if (attackWasThrown) {
-					// Animation is over. Release hold and return.
-					finishAttack();
-					inputHold = false;
-				} else {
-					// Attack animation cannot end without attack being thrown for at least a frame.
-					// Throw the attack. Next frame, it will be seen that the attack was thrown.
-					throwAttack(otherPlayerXPos);
-				}
-			} else if (Time.time >= timeAttackEnds) {
-				// Attack period over. Finish attack hitbox.
+		bool shouldHold = false;
+//		if (inputHold) {
+		// If an animation is active, then we want to hold input. 
+	
+//		foreach (BufferedStateMachineBehaviour bhvr in animatedBehaviours) { 
+//			if (bhvr.isActive()) {
+//				shouldHold = true;
+//			}
+//		}
+//		inputHold = shouldHold;
+
+		if (!inputHold) return;
+		if (Time.time >= timeEnds) {
+			if (attackWasThrown) {
+				// Animation is over. Release hold and return.
 				finishAttack();
-			} else if (Time.time >= timeAttackBegins) {
-				// Attack period began. Throw attack hitbox.
+				//inputHold = false;
+			} else {
+				// Attack animation cannot end without attack being thrown for at least a frame.
+				// Throw the attack. Next frame, it will be seen that the attack was thrown.
 				throwAttack(otherPlayerXPos);
 			}
+		} else if (Time.time >= timeAttackEnds) {
+			// Attack period over. Finish attack hitbox.
+			finishAttack();
+		} else if (Time.time >= timeAttackBegins) {
+			// Attack period began. Throw attack hitbox.
+			throwAttack(otherPlayerXPos);
 		}
 	}
+
 	/** 
 	 * PLAYER.QUERYINPUT();
 	 * Determines the action for the player to peform this frame, either by querying
@@ -460,8 +470,9 @@ public class PlayerController : MonoBehaviour {
 		// to set the correct bools that trigger different animation states
 		fighterAnimator = fighter.GetComponent<Animator> ();
 		// Capture the animation behaviors that underlie each state.  
+		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
 
-
+		Debug.Log ("animated behaviors: " + animatedBehaviours);
 		health = 1000.0f;
 		blockPercentage = 1.0f;
 		timeEnds = 0.0f;

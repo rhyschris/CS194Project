@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class facePunched_idle : BufferedStateMachineBehavior {
+public class facePunched_idle : BufferedStateMachineBehaviour {
 
 
 	public facePunched_idle () {
-		this.startBufferTime = 0.1f;
-		this.endBufferTime = 0.9f;
+//		this.startBufferTime = 0.1f;
+//		this.endBufferTime = 0.9f;
 	}
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
