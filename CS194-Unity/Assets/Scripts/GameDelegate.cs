@@ -10,6 +10,7 @@ public class GameDelegate : MonoBehaviour {
 	private bool paused;
 	// CONTROLLERS
 	private CameraController mainCamera;
+	private HealthBarController healthbarcontroller;
 	private PlayerController player1;
 	private PlayerController player2;
 	private DebugTextController debugText;
@@ -19,18 +20,17 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode Reset;
 	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
-
-
 	void Start ()
 	{
-
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
+		GameObject healthBars = GameObject.Find ("HealthBars");
 		GameObject player1Obj = GameObject.Find ("Player1");
 		GameObject player2Obj = GameObject.Find ("Player2");
 		GameObject debugTextObj = GameObject.Find ("DebugText");
 		GameObject winTextObj = GameObject.Find ("WinText");
 		mainCamera = mainCameraObj.GetComponent<CameraController> ();
+		healthbarcontroller = healthBars.GetComponent<HealthBarController> ();
 		player1 = player1Obj.GetComponent<PlayerController> ();
 		player2 = player2Obj.GetComponent<PlayerController> ();
 		debugText = debugTextObj.GetComponent<DebugTextController> ();
@@ -40,15 +40,11 @@ public class GameDelegate : MonoBehaviour {
 		TogglePause = KeyCode.BackQuote;
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
-
-
 	}
 	void Update()
 	{
 		//Debug.Log ("Sending state at time " + Time.time.ToString ());
-
 		for (int i =0; i<1; i++){
-
 			// QUIT THE GAME
 			if (Input.GetKeyDown (Quit)) {
 				Application.Quit ();
@@ -101,14 +97,13 @@ public class GameDelegate : MonoBehaviour {
 				if ((player1.getXPos () + player1.getHalfWidth() * 2) > player2.getXPos ())
 					player1.moveToX (player2.getXPos () - player1.getHalfWidth () * 2);
 				// DO HIT DETECTION
-				handlePlayerHit (player1, player2);
-				handlePlayerHit (player2, player1);
-
+				handlePlayerHit (player1, player2, true);
+				handlePlayerHit (player2, player1, false);
 			}
 			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
 	}
-	private void handlePlayerHit(PlayerController attacker, PlayerController defender) {
+	private void handlePlayerHit(PlayerController attacker, PlayerController defender, bool player1Attacker) {
 		// If the attacker is engaged in an attack that needs to be handled:
 		if (attacker.attackHandle ()) {
 			// See if the attack box is in the body box.
@@ -136,6 +131,7 @@ public class GameDelegate : MonoBehaviour {
 					defenderAnimator = defenderFighter.GetComponent<Animator> ();
 					defenderAnimator.SetBool ("facePunched", true);
 				}
+				healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
 				if(defender.getHealth() <= 0.0f) {
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
 				}

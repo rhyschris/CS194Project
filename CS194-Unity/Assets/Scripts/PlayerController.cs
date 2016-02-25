@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	private GameObject playerHitBox;
 	private GameObject playerBlockBox;
 	// STAT VARIABLES
+	private float maxHealth;
 	private float health;
 	public float blockDamageModifier;
 	private float blockPercentage;
@@ -446,6 +447,9 @@ public class PlayerController : MonoBehaviour {
 	public float getHealth() {
 		return health;
 	}
+	public float getHealthPercent() {
+		return health / maxHealth;
+	}
 	public bool isHighAttack() {
 		return !lowAttack;
 	}
@@ -461,8 +465,8 @@ public class PlayerController : MonoBehaviour {
 		fighterAnimator = fighter.GetComponent<Animator> ();
 		// Capture the animation behaviors that underlie each state.  
 
-
-		health = 1000.0f;
+		maxHealth = 1000.0f;
+		health = maxHealth;
 		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
