@@ -8,12 +8,14 @@
 	public ActionType actionType;
 	public float oldXPosition;
 	public float distanceMoved;
+	public float jumpType;
 
 
 	public Action() {
 		actionType = ActionType.doNothing;
 		oldXPosition = 0.0f;
 		distanceMoved = 0.0f;
+		jumpType = 0.0f;
 	}
 }
 

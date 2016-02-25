@@ -18,9 +18,6 @@ public class PlayerController : MonoBehaviour {
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
-	//public float upwardVelocity;
-	public float gravity;
-	public float initialJumpVelocity;	
 	// KEYBOARD INPUT
 	private KeyCode Up; 
 	private KeyCode Down;
@@ -46,10 +43,15 @@ public class PlayerController : MonoBehaviour {
 	private bool blocking;
 	private bool lowBlocking;
 	private bool isJumping;
-
+	// JUMPING VARIABLES
+	private float xVelocity;
+	private float yVelocity;
+	private float yGravity;
+	private float currJumpXVelocity;
+	private float currJumpXInitial;
+	private float currJumpTInitial;
 	// Direction player is looking
 	// +1.0 if right, -1.0 if left
-
 	// Animation Controller
 	Animator fighterAnimator;
 	public GameObject fighter;
@@ -84,6 +86,9 @@ public class PlayerController : MonoBehaviour {
 				throwAttack(otherPlayerXPos);
 			}
 		}
+		if (isJumping) {
+			// HANDLE AUTOMATIC JUMPING BEHAVIOR
+		}
 	}
 	/** 
 	 * PLAYER.QUERYINPUT();
@@ -98,14 +103,12 @@ public class PlayerController : MonoBehaviour {
 		 * 
 		 * TODO: clean up player key intent (hierarchial enum)?
 		 */
-		bool running;
-		bool movingLeft = false;
-		bool movingRight;
+		bool running = Input.GetKey (Run);
+		bool movingLeft = Input.GetKey (Left);
+		bool movingRight = Input.GetKey (Right);
 		bool movingAway;
 		bool moving;
-
 		if (isAI) {
-
 			action = playerAI.queryAction (curState);
 			if (inputHold) {
 				action = new Action ();
@@ -115,12 +118,10 @@ public class PlayerController : MonoBehaviour {
 				movingRight = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
 			else
 				movingLeft = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
-
 		} else {
 			if (!inputHold) {
 				// QUERY KEYBOARD INPUT
 				bool lowMod = Input.GetKey (Down);
-
 				/*Do a block */
 				if (Input.GetKey (Block)){
 					action.actionType |= lowMod? ActionType.blockDown:ActionType.blockUp;
@@ -135,13 +136,17 @@ public class PlayerController : MonoBehaviour {
 				}
 				else if (Input.GetKeyDown (Up)){
 					action.actionType |= ActionType.jump;
+					if (movingLeft && !movingRight) {
+						action.jumpType = -1.0f;
+					} else if (movingRight && !movingLeft) {
+						action.jumpType = 1.0f;
+					}
 				}				
 				/* Crouch */
 				else if (lowMod) {
 					action.actionType |= ActionType.crouch;
 				} 
 				else {
-					
 					float otherPlayerXPos = (player1) ? curState.getP2XPos() :  curState.getP1XPos();
 					running = Input.GetKey (Run);
 					movingLeft = Input.GetKey (Left);
@@ -153,7 +158,6 @@ public class PlayerController : MonoBehaviour {
 						movingRight = false;
 						running = false;
 					}
-
 					if (moving) {
 						if (movingAway) {
 							action.actionType |= ActionType.moveAway;
@@ -166,7 +170,6 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
-
 		action.oldXPosition = playerBodyBox.transform.position.x;
 		updatePosition (action, movingLeft);
 		return action;
@@ -196,17 +199,7 @@ public class PlayerController : MonoBehaviour {
 	public void handleInput(Action myAction, Action theirAction) {
 		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
-
-		// Set animation bools 
-//		if (myAction.actionType == ActionType.attack2){
-//			fighterAnimator.SetBool("highPunch", true);
-//		}
-//		if (myAction.actionType == ActionType.attack1) {
-//			fighterAnimator.SetBool ("highKick", true);
-//		}
-//		if (myAction.actionType == ActionType.attack3) {
-//			fighterAnimator.SetBool ("lowTrip", true);
-//		}
+		// HANDLE ANIMATiONS
 		if (myAction.actionType == ActionType.walkTowards) {
 			fighterAnimator.SetBool ("runForward", true);
 		} else {
@@ -217,43 +210,7 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			fighterAnimator.SetBool ("runBackward", false);
 		}
-
-
-
-		if (my_horiz > 0){
-			float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
-			float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
-			float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
-
-			//TODO: Can't jump over another player as of now. Fix that? 
-
-			// If there is going to be a collision and moving towards...
-			if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
-				// If the other is moving away....
-				if (their_horiz == ActionType.moveAway) {
-					// Move right up to the other's projected position.
-					if (myAction.distanceMoved < 0.0f) {
-						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-					} else {						
-						
-						playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-					}
-				} else {
-					
-					// They are both moving towards one another.
-					// Move a ratio of the distance between them based on how much each was supposed to move.
-					float distanceRatio = Mathf.Abs (myAction.distanceMoved) / (Mathf.Abs (myAction.distanceMoved) + Mathf.Abs (theirAction.distanceMoved));
-					float distanceAway = Mathf.Abs (myAction.oldXPosition - theirAction.oldXPosition) - playerBodyBox.transform.localScale.x;
-					float actualDistance = distanceAway * distanceRatio;
-					if (myAction.distanceMoved < 0.0f) {
-						actualDistance = actualDistance * -1.0f;
-					}
-					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + actualDistance, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-				}
-			} else {										
-				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
-			}
-		} else{
+		if (my_horiz <= 0) {
 			switch (myAction.actionType){
 			case ActionType.attack1:
 				fighterAnimator.SetBool("highPunch", true);
@@ -270,63 +227,84 @@ public class PlayerController : MonoBehaviour {
 				fighterAnimator.SetBool ("lowTrip", true);
 				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
 				break;
-			case ActionType.jump:
-				if (!isJumping) {/* Just started jump, need to note end of jump time*/
-					isJumping = true;
-					jumpVelocity = initialJumpVelocity;
+			}
+		}
+		// HANDLE JUMPING
+		//private float xVelocity;
+		//private float yVelocity;
+		//private float yGravity;
+		//private float currJumpXVelocity;
+		//private float currJumpXInitial;
+		//private float currJumpTInitial;
+		// HANDLE ACTIONS THAT CAN BE PERFORMED WHILE NOT JUMPING
+		if (!isJumping) {
+			if (myAction.actionType == ActionType.jump) {
+				// HANDLE JUMPING
+				currJumpTInitial = Time.deltaTime;
+				currJumpXInitial = playerBodyBox.transform.position.x;
+				isJumping = true;
+				currJumpXVelocity = xVelocity * myAction.jumpType;
+				// TODO: Set currJumpXVelocity such that the final position of the jump
+				// is resolved to be outside the other player's pre-action position.
+			} else if (my_horiz > 0){
+				// HANDLE HORIZONTAL COLLISION DETECTION BASED ON MOVEMENT
+				float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
+				float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
+				float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
+				// If there is going to be a collision between player boxes and I am moving towards...
+				if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+					// If the other is moving away....
+					if (their_horiz == ActionType.moveAway) {
+						// Move right up to the other's projected position.
+						if (myAction.distanceMoved < 0.0f) {
+							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+						} else {
+							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+						}
+					} else {
+						// Both players moving towards one another.
+						// Move a ratio of the distance between them based on how much each was supposed to move.
+						float distanceRatio = Mathf.Abs (myAction.distanceMoved) / (Mathf.Abs (myAction.distanceMoved) + Mathf.Abs (theirAction.distanceMoved));
+						float distanceAway = Mathf.Abs (myAction.oldXPosition - theirAction.oldXPosition) - playerBodyBox.transform.localScale.x;
+						float actualDistance = distanceAway * distanceRatio;
+						if (myAction.distanceMoved < 0.0f) {
+							actualDistance = actualDistance * -1.0f;
+						}
+						playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + actualDistance, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+					}
+				} else {										
+					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 				}
-				break;
 			}
-		}
-
-		bool facingLeft = (myAction.oldXPosition > theirAction.oldXPosition);
-		float blockBoxOffset = (playerBodyBox.transform.localScale.x + playerBlockBox.transform.localScale.x) * 0.5f;
-		if (facingLeft) {
-			blockBoxOffset = blockBoxOffset * -1.0f;
-		}
-		blockBoxOffset = playerBodyBox.transform.position.x + blockBoxOffset;
-
-		ActionType blockAction = myAction.actionType & Action.ATTACK_MASK;
-		if (blockAction == ActionType.blockUp) {
-			playerBlockBox.SetActive (true);
-			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
-			blocking = true;
-			lowBlocking = false;
-			blockPercentage -= .002f;
-			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 
-		} else if (blockAction == ActionType.blockDown) {
-			playerBlockBox.SetActive (true);
-			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
-			blocking = true;
-			lowBlocking = true;
-			blockPercentage -= .002f;
-			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 		
-		} else {
-			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
-			blocking = false;
-			lowBlocking = false;
-			blockPercentage += .002f;
-			blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage; 		}
-		/*Handle jumping animation*/
-		if (isJumping){
-			float newY = playerBodyBox.transform.position.y + jumpVelocity;
-			if (newY <=this.getHalfHeight()) {/*We hit the ground, need to stop moving. We can now jump again*/
-				isJumping = false;
-				newY = this.getHalfHeight();
+			// HANDLE BLOCKING
+			bool facingLeft = (myAction.oldXPosition > theirAction.oldXPosition);
+			float blockBoxOffset = (playerBodyBox.transform.localScale.x + playerBlockBox.transform.localScale.x) * 0.5f;
+			if (facingLeft) {
+				blockBoxOffset = blockBoxOffset * -1.0f;
 			}
-			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
-			jumpVelocity = jumpVelocity - gravity; 
-
-		}
-		if (player1) {
-			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) > theirAction.oldXPosition)
-				print ("p1 Crossed over?");
-			// throw new System.ArgumentException("Parameter cannot be null", "original");	
-		}
-		else {
-			if ((playerBodyBox.transform.position.x + playerBodyBox.transform.localScale.x) < theirAction.oldXPosition)
-				print ("P2 Crossed over?");
-			// throw new System.ArgumentException("Parameter cannot be null", "original");	
+			blockBoxOffset = playerBodyBox.transform.position.x + blockBoxOffset;
+			ActionType blockAction = myAction.actionType & Action.ATTACK_MASK;
+			if (blockAction == ActionType.blockUp) {
+				playerBlockBox.SetActive (true);
+				playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 1.5f, 0.0f);
+				blocking = true;
+				lowBlocking = false;
+				blockPercentage -= .002f;
+				blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 
+			} else if (blockAction == ActionType.blockDown) {
+				playerBlockBox.SetActive (true);
+				playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
+				blocking = true;
+				lowBlocking = true;
+				blockPercentage -= .002f;
+				blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 		
+			} else {
+				playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
+				blocking = false;
+				lowBlocking = false;
+				blockPercentage += .002f;
+				blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage;
+			}
 		}
 	}
 	/**
@@ -464,7 +442,6 @@ public class PlayerController : MonoBehaviour {
 		// to set the correct bools that trigger different animation states
 		fighterAnimator = fighter.GetComponent<Animator> ();
 		// Capture the animation behaviors that underlie each state.  
-
 		maxHealth = 1000.0f;
 		health = maxHealth;
 		blockPercentage = 1.0f;
@@ -480,15 +457,19 @@ public class PlayerController : MonoBehaviour {
 		attackHit = false;
 		blocking = false;
 		lowBlocking = false;
-
+		xVelocity = 1.0f;
+		yVelocity = xVelocity;
+		yGravity = 1.0f;
+		currJumpXVelocity = 0.0f;
+		currJumpXInitial = 0.0f;
+		currJumpTInitial = 0.0f;
+		isJumping = false;
 		if (player1) {
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
-						
 			if (isAI) {
 				int inPort = 4998;
-						
 				playerAI = new AI (inPort, inPort + 1);
 				playerAI.verifyNetwork ();
 
@@ -502,15 +483,12 @@ public class PlayerController : MonoBehaviour {
 				Attack2 = KeyCode.E;
 				Block = KeyCode.F;
 			}
-
 		} else { // player 2
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");
 			playerBlockBox = GameObject.Find ("Player2BlockBox");
-			
 			if (isAI){
 				int inPort = 5998;
-
 				playerAI = new AI (inPort, inPort + 1);
 				playerAI.verifyNetwork ();
 			} else {
@@ -523,7 +501,6 @@ public class PlayerController : MonoBehaviour {
 				Attack2 = KeyCode.O;
 				Block = KeyCode.H;
 			}
-					
 		}
 	}
 }

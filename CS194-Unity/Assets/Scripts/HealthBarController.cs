@@ -71,7 +71,10 @@ public class HealthBarController : MonoBehaviour {
 	public void setPercent(bool player2, float percent) {
 		if (percent < 0.01f) {
 			percent = 0.01f;
-			bar1.SetActive (false);
+			if (player2)
+				bar2.SetActive (false);
+			else
+				bar1.SetActive (false);
 		} else if (percent > 1.0f) {
 			percent = 1.0f;
 		}
