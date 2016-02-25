@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 	private float currJumpXVelocity;
 	private float currJumpXInitial;
 	private float currJumpTInitial;
+	private float currJumpXFinal;
 	// Direction player is looking
 	// +1.0 if right, -1.0 if left
 	// Animation Controller
@@ -172,6 +173,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		action.oldXPosition = playerBodyBox.transform.position.x;
 		updatePosition (action, movingLeft);
+		action.isJumping = isJumping;
 		return action;
 	}
 
@@ -179,16 +181,23 @@ public class PlayerController : MonoBehaviour {
 	 * Updates the action argument to indicate the distance moved during this frame.
 	 */
 	public void updatePosition (Action action, bool movingLeft){
-		ActionType hmove = action.actionType & Action.HMOVE_MASK;
-		if (hmove == ActionType.moveAway) {
-			action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
-		} else if (hmove == ActionType.runTowards) {
-			action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
-		} else if (hmove == ActionType.walkTowards) {
-			action.distanceMoved = forwardVelocity * Time.deltaTime;
+		action.jumpXFinal = currJumpXFinal;
+		if (action.actionType == ActionType.jump && !isJumping) {
+			float jumpDuration = 2.0f * yVelocity / yGravity;
+			action.jumpXFinal = playerBodyBox.transform.position.x + xVelocity * jumpDuration;
+			action.isJumping = true;
+		} else {
+			ActionType hmove = action.actionType & Action.HMOVE_MASK;
+			if (hmove == ActionType.moveAway) {
+				action.distanceMoved = forwardVelocity * backwardVelocityFactor * Time.deltaTime;
+			} else if (hmove == ActionType.runTowards) {
+				action.distanceMoved = forwardVelocity * runningVelocityFactor * Time.deltaTime;
+			} else if (hmove == ActionType.walkTowards) {
+				action.distanceMoved = forwardVelocity * Time.deltaTime;
+			}
+			if (movingLeft)
+				action.distanceMoved *= -1.0f;
 		}
-		if (movingLeft)
-			action.distanceMoved *= -1.0f;
 	}
 	/** --------------------------------------------------------------------------------
 	 * PLAYER.HANDLEINPUT();
@@ -242,10 +251,19 @@ public class PlayerController : MonoBehaviour {
 				// HANDLE JUMPING
 				currJumpTInitial = Time.deltaTime;
 				currJumpXInitial = playerBodyBox.transform.position.x;
-				isJumping = true;
 				currJumpXVelocity = xVelocity * myAction.jumpType;
-				// TODO: Set currJumpXVelocity such that the final position of the jump
-				// is resolved to be outside the other player's pre-action position.
+				currJumpXFinal = myAction.jumpXFinal;
+				float theirXPos;
+				if (theirAction.isJumping) {
+					theirXPos = theirAction.jumpXFinal;
+				} else {
+					theirXPos = theirAction.oldXPosition;
+				}
+				float finalDistance = currJumpXFinal - theirXPos;
+				if ( Mathf.Abs(finalDistance) > playerBodyBox.transform.localScale.x ) {
+					// This player's final jump position is too close to the other players current or projected position.
+					// TODO: resolve final jump position, setting the actual jumpXVelocity.
+				}
 			} else if (my_horiz > 0){
 				// HANDLE HORIZONTAL COLLISION DETECTION BASED ON MOVEMENT
 				float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
@@ -379,9 +397,7 @@ public class PlayerController : MonoBehaviour {
 		playerHitBox.SetActive (true);
 		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
 		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
-
 		// set animation bool
-
 	}
 	public bool attackHandle() {
 		return (attackWasThrown && !attackWasFinished && !attackHit);
@@ -463,6 +479,7 @@ public class PlayerController : MonoBehaviour {
 		currJumpXVelocity = 0.0f;
 		currJumpXInitial = 0.0f;
 		currJumpTInitial = 0.0f;
+		currJumpXFinal = 0.0f;
 		isJumping = false;
 		if (player1) {
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
