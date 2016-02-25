@@ -262,17 +262,43 @@ public class PlayerController : MonoBehaviour {
 				float finalDistance = currJumpXFinal - theirXPos;
 				if ( Mathf.Abs(finalDistance) > playerBodyBox.transform.localScale.x ) {
 					// This player's final jump position is too close to the other players current or projected position.
-					// TODO: resolve final jump position, setting the actual jumpXVelocity.
+					float adjustDirection = currJumpXFinal - theirXPos;
+					if (adjustDirection < 0.0f) {
+						currJumpXFinal = theirXPos - playerBodyBox.transform.localScale.x;
+					} else {
+						currJumpXFinal = theirXPos + playerBodyBox.transform.localScale.x;
+					}
+					float jumpDuration = 2.0f * yVelocity / yGravity;
+					currJumpXVelocity = (currJumpXFinal - currJumpXInitial) / jumpDuration;
 				}
 			} else if (my_horiz > 0){
 				// HANDLE HORIZONTAL COLLISION DETECTION BASED ON MOVEMENT
 				float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
 				float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
 				float projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
-				// If there is going to be a collision between player boxes and I am moving towards...
-				if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
-					// If the other is moving away....
-					if (their_horiz == ActionType.moveAway) {
+				if (theirAction.isJumping) {
+					projectedOtherXPos = theirAction.jumpXFinal;
+					float projectedDistancePreCorrection = Mathf.Abs (myAction.oldXPosition - projectedOtherXPos);
+					if (projectedDistancePreCorrection < playerBodyBox.transform.localScale.x) {
+						float adjustDirection = theirAction.jumpXFinal - myAction.oldXPosition;
+						if (adjustDirection < 0.0f) {
+							projectedOtherXPos = myAction.oldXPosition - playerBodyBox.transform.localScale.x;
+						} else {
+							projectedOtherXPos = myAction.oldXPosition + playerBodyBox.transform.localScale.x;
+						}
+						projectedDistance = Mathf.Abs (projectedXPos - projectedOtherXPos);
+					}
+					if (projectedDistance < playerBodyBox.transform.localScale.x) {
+						if (projectedXPos - projectedOtherXPos < 0) {
+							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos - playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+						} else {
+							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+						}
+					}
+				} else if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
+					// If there is going to be a collision between player boxes and I am moving towards...
+					if ((their_horiz == ActionType.moveAway && !theirAction.isJumping) || theirAction.isJumping) {
+						// If the other is moving away or their action is jumping and this is their projected position...
 						// Move right up to the other's projected position.
 						if (myAction.distanceMoved < 0.0f) {
 							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
