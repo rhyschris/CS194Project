@@ -89,7 +89,6 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (isJumping) {
 			// HANDLE AUTOMATIC JUMPING BEHAVIOR
-			Debug.Log("What?");
 			float elapsedTime = Time.time - currJumpTInitial;
 			float newXPos = currJumpXInitial + currJumpXVelocity * elapsedTime;
 			float newYPos = playerBodyBox.transform.localScale.y * 0.5f + yVelocity * elapsedTime - yGravity * Mathf.Pow (elapsedTime, 2.0f) / 2.0f;
@@ -98,6 +97,7 @@ public class PlayerController : MonoBehaviour {
 				newXPos = currJumpXFinal;
 				isJumping = false;
 			}
+			Debug.Log ("newXPos: " + newXPos);
 			playerBodyBox.transform.position = new Vector3 (newXPos, newYPos, playerBodyBox.transform.position.z);
 		}
 	}
@@ -147,10 +147,14 @@ public class PlayerController : MonoBehaviour {
 				}
 				else if (Input.GetKeyDown (Up)){
 					action.actionType |= ActionType.jump;
-					if (movingLeft && !movingRight) {
+					if (movingLeft && (!movingRight)) {
+						Debug.Log ("Left");
 						action.jumpType = -1.0f;
-					} else if (movingRight && !movingLeft) {
+					} else if (movingRight && (!movingLeft)) {
+						Debug.Log ("Right");
 						action.jumpType = 1.0f;
+					} else {
+						Debug.Log ("Up");
 					}
 				}				
 				/* Crouch */
@@ -194,7 +198,7 @@ public class PlayerController : MonoBehaviour {
 		action.jumpXFinal = currJumpXFinal;
 		if (action.actionType == ActionType.jump && !isJumping) {
 			float jumpDuration = 2.0f * yVelocity / yGravity;
-			action.jumpXFinal = playerBodyBox.transform.position.x + xVelocity * jumpDuration;
+			action.jumpXFinal = playerBodyBox.transform.position.x + (xVelocity * jumpDuration * action.jumpType);
 			action.isJumping = true;
 		} else {
 			ActionType hmove = action.actionType & Action.HMOVE_MASK;
@@ -218,45 +222,18 @@ public class PlayerController : MonoBehaviour {
 	public void handleInput(Action myAction, Action theirAction) {
 		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
-		// HANDLE ANIMATiONS
-		if (myAction.actionType == ActionType.walkTowards) {
-			fighterAnimator.SetBool ("runForward", true);
-		} else {
-			fighterAnimator.SetBool ("runForward", false);
-		}
-		if (myAction.actionType == ActionType.moveAway) {
-			fighterAnimator.SetBool ("runBackward", true);
-		} else {
-			fighterAnimator.SetBool ("runBackward", false);
-		}
-		if (my_horiz <= 0) {
-			switch (myAction.actionType){
-			case ActionType.attack1:
-				fighterAnimator.SetBool("highPunch", true);
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
-				break;
-			case ActionType.attack2:
-				fighterAnimator.SetBool ("highKick", true);
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
-				break;
-			case ActionType.attack3:
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
-				break;
-			case ActionType.attack4:
-				fighterAnimator.SetBool ("lowTrip", true);
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
-				break;
-			}
-		}
-		// HANDLE JUMPING
-		//private float xVelocity;
-		//private float yVelocity;
-		//private float yGravity;
-		//private float currJumpXVelocity;
-		//private float currJumpXInitial;
-		//private float currJumpTInitial;
 		// HANDLE ACTIONS THAT CAN BE PERFORMED WHILE NOT JUMPING
 		if (!isJumping) {
+			if (myAction.actionType == ActionType.walkTowards) {
+				fighterAnimator.SetBool ("runForward", true);
+			} else {
+				fighterAnimator.SetBool ("runForward", false);
+			}
+			if (myAction.actionType == ActionType.moveAway) {
+				fighterAnimator.SetBool ("runBackward", true);
+			} else {
+				fighterAnimator.SetBool ("runBackward", false);
+			}
 			if (myAction.actionType == ActionType.jump) {
 				// HANDLE JUMPING
 				currJumpTInitial = Time.time;
@@ -269,8 +246,12 @@ public class PlayerController : MonoBehaviour {
 				} else {
 					theirXPos = theirAction.oldXPosition;
 				}
+				Debug.Log ("PRIOR PRINT OUT: xVelocity: " + xVelocity + ", yVelocity: " + yVelocity + ", myAction.jumpType: "
+				+ myAction.jumpType + ", oldXPosition: " + myAction.oldXPosition + ", currJumpTInitial: "
+				+ currJumpTInitial + ", currJumpXInitial: " + currJumpXInitial + ", currJumpXVelocity: "
+				+ currJumpXVelocity + ", currJumpXFinal: " + currJumpXFinal);
 				float finalDistance = currJumpXFinal - theirXPos;
-				if ( Mathf.Abs(finalDistance) > playerBodyBox.transform.localScale.x ) {
+				if (Mathf.Abs (finalDistance) < playerBodyBox.transform.localScale.x) {
 					// This player's final jump position is too close to the other players current or projected position.
 					float adjustDirection = currJumpXFinal - theirXPos;
 					if (adjustDirection < 0.0f) {
@@ -281,8 +262,13 @@ public class PlayerController : MonoBehaviour {
 					float jumpDuration = 2.0f * yVelocity / yGravity;
 					currJumpXVelocity = (currJumpXFinal - currJumpXInitial) / jumpDuration;
 				}
+				myAction.jumpXFinal = currJumpXFinal;
 				isJumping = true;
-			} else if (my_horiz > 0){
+				Debug.Log ("FINAL PRINT OUT: xVelocity: " + xVelocity + ", yVelocity: " + yVelocity + ", myAction.jumpType: "
+				+ myAction.jumpType + ", oldXPosition: " + myAction.oldXPosition + ", currJumpTInitial: "
+				+ currJumpTInitial + ", currJumpXInitial: " + currJumpXInitial + ", currJumpXVelocity: "
+				+ currJumpXVelocity + ", currJumpXFinal: " + currJumpXFinal);
+			} else if (my_horiz > 0) {
 				// HANDLE HORIZONTAL COLLISION DETECTION BASED ON MOVEMENT
 				float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
 				float projectedOtherXPos = theirAction.oldXPosition + theirAction.distanceMoved;
@@ -330,6 +316,24 @@ public class PlayerController : MonoBehaviour {
 					}
 				} else {										
 					playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+				}
+			} else {
+				switch (myAction.actionType) {
+				case ActionType.attack1:
+					fighterAnimator.SetBool("highPunch", true);
+					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+					break;
+				case ActionType.attack2:
+					fighterAnimator.SetBool ("highKick", true);
+					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+					break;
+				case ActionType.attack3:
+					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+					break;
+				case ActionType.attack4:
+					fighterAnimator.SetBool ("lowTrip", true);
+					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+					break;
 				}
 			}
 			// HANDLE BLOCKING

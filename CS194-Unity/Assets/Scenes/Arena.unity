@@ -213,7 +213,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 118785286}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
@@ -288,7 +288,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 140559954}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: b1a59b3d20b3a7c48a35d410f84af311, type: 2}
@@ -608,7 +608,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 284220108}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
@@ -803,7 +803,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 461867256}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
@@ -1214,7 +1214,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 730623847}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
@@ -1315,8 +1315,6 @@ MonoBehaviour:
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  gravity: 0
-  initialJumpVelocity: 0
   fighter: {fileID: 1723919716}
 --- !u!1001 &1008688521
 Prefab:
@@ -1669,7 +1667,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1294532845}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
@@ -2078,7 +2076,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1489987810}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: b1a59b3d20b3a7c48a35d410f84af311, type: 2}
@@ -2407,12 +2405,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockDamageModifier: 0
   player1: 0
-  isAI: 1
+  isAI: 0
   forwardVelocity: 5
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
-  gravity: 0
-  initialJumpVelocity: 0
   fighter: {fileID: 1756844638}
 --- !u!1 &1789629498
 GameObject:
@@ -2705,7 +2701,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2141776715}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 2175f463ed40a0f48ae60a2626dd65aa, type: 2}
