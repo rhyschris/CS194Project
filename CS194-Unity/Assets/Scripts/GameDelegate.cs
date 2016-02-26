@@ -90,6 +90,7 @@ public class GameDelegate : MonoBehaviour {
 
 				// QUERY PLAYER INPUT
 				Action player1Action = player1.queryInput (state);
+				Debug.Log (player1Action.actionType);
 				Action player2Action = player2.queryInput (state);
 				// HANDLE PLAYER INPUT
 				player1.handleInput (player1Action, player2Action);
@@ -118,18 +119,32 @@ public class GameDelegate : MonoBehaviour {
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), true);
 				} else {
-					Debug.Log ("Hit!");
+					Debug.Log ("Hit!!");
 					Debug.Log("Health: "+defender.getHealth().ToString());
 					attacker.tellHit ();
 					defender.receiveAttack (attacker.getAttackDamage (), false);
-
 
 
 					// set animation for punch
 					GameObject defenderFighter = defender.fighter;
 					Animator defenderAnimator;
 					defenderAnimator = defenderFighter.GetComponent<Animator> ();
-					defenderAnimator.SetBool ("facePunched", true);
+
+					Debug.Log (attacker.lastAttackThrown());
+					if (attacker.lastAttackThrown() == ActionType.attack1) {
+						defenderAnimator.SetBool ("facePunched", true);
+					}
+					if (attacker.lastAttackThrown () == ActionType.attack2) {
+						defenderAnimator.SetBool ("faceKicked", true);
+					}
+					if (attacker.lastAttackThrown () == ActionType.attack3) {
+					}
+					if (attacker.lastAttackThrown () == ActionType.attack4){
+						defenderAnimator.SetBool("isTripped", true);
+					}
+
+
+
 				}
 				healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
 				if(defender.getHealth() <= 0.0f) {

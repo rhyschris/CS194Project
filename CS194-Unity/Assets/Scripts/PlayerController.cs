@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour {
 	private bool inputHold;
 	private bool attackWasThrown;
 	private bool attackWasFinished;
+	private ActionType lastAttack;
 	private bool attackHit;
 	private bool blocking;
 	private bool lowBlocking;
@@ -326,17 +327,21 @@ public class PlayerController : MonoBehaviour {
 			} else {
 				switch (myAction.actionType) {
 				case ActionType.attack1:
+					lastAttack = ActionType.attack1;
 					fighterAnimator.SetBool("highPunch", true);
 					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
 					break;
 				case ActionType.attack2:
+					lastAttack = ActionType.attack2;
 					fighterAnimator.SetBool ("highKick", true);
 					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
 					break;
 				case ActionType.attack3:
+					lastAttack = ActionType.attack3;
 					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
 					break;
 				case ActionType.attack4:
+					lastAttack = ActionType.attack4;
 					fighterAnimator.SetBool ("lowTrip", true);
 					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
 					break;
@@ -449,6 +454,9 @@ public class PlayerController : MonoBehaviour {
 	}
 	public bool attackHandle() {
 		return (attackWasThrown && !attackWasFinished && !attackHit);
+	}
+	public ActionType lastAttackThrown(){
+		return lastAttack;
 	}
 	public float getHitXPos() {
 		return playerHitBox.transform.position.x;
