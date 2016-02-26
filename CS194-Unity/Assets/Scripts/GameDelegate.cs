@@ -138,6 +138,7 @@ public class GameDelegate : MonoBehaviour {
 						defenderAnimator.SetBool ("faceKicked", true);
 					}
 					if (attacker.lastAttackThrown () == ActionType.attack3) {
+						defenderAnimator.SetBool ("shinKicked", true);
 					}
 					if (attacker.lastAttackThrown () == ActionType.attack4){
 						defenderAnimator.SetBool("isTripped", true);

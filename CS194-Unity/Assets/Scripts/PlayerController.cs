@@ -338,6 +338,7 @@ public class PlayerController : MonoBehaviour {
 					break;
 				case ActionType.attack3:
 					lastAttack = ActionType.attack3;
+					fighterAnimator.SetBool ("lowKick", true);
 					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
 					break;
 				case ActionType.attack4:
