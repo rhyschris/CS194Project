@@ -219,6 +219,11 @@ public class PlayerController : MonoBehaviour {
 		ActionType my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		ActionType their_horiz = theirAction.actionType & Action.HMOVE_MASK;
 		// HANDLE ANIMATiONS
+		if (myAction.actionType == ActionType.blockUp) {
+			fighterAnimator.SetBool ("block", true);
+		} else {
+			fighterAnimator.SetBool ("block", false);
+		}
 		if (myAction.actionType == ActionType.walkTowards) {
 			fighterAnimator.SetBool ("runForward", true);
 		} else {
