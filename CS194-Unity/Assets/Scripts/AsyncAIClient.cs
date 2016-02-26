@@ -53,7 +53,6 @@ namespace AssemblyCSharp {
 			this.host = host;
 			this.inPort = inPort;
 			this.outPort = outPort;
-			Debug.Log ("HI from async client!");
 		}
 		/**
 		 * Asynchronously connects to the localhost server on the cached port number.

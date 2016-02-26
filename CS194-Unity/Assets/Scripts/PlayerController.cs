@@ -89,6 +89,16 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (isJumping) {
 			// HANDLE AUTOMATIC JUMPING BEHAVIOR
+			Debug.Log("What?");
+			float elapsedTime = Time.time - currJumpTInitial;
+			float newXPos = currJumpXInitial + currJumpXVelocity * elapsedTime;
+			float newYPos = playerBodyBox.transform.localScale.y * 0.5f + yVelocity * elapsedTime - yGravity * Mathf.Pow (elapsedTime, 2.0f) / 2.0f;
+			if (newYPos < playerBodyBox.transform.localScale.y * 0.5f) {
+				newYPos = playerBodyBox.transform.localScale.y * 0.5f;
+				newXPos = currJumpXFinal;
+				isJumping = false;
+			}
+			playerBodyBox.transform.position = new Vector3 (newXPos, newYPos, playerBodyBox.transform.position.z);
 		}
 	}
 	/** 
@@ -249,7 +259,7 @@ public class PlayerController : MonoBehaviour {
 		if (!isJumping) {
 			if (myAction.actionType == ActionType.jump) {
 				// HANDLE JUMPING
-				currJumpTInitial = Time.deltaTime;
+				currJumpTInitial = Time.time;
 				currJumpXInitial = playerBodyBox.transform.position.x;
 				currJumpXVelocity = xVelocity * myAction.jumpType;
 				currJumpXFinal = myAction.jumpXFinal;
@@ -271,6 +281,7 @@ public class PlayerController : MonoBehaviour {
 					float jumpDuration = 2.0f * yVelocity / yGravity;
 					currJumpXVelocity = (currJumpXFinal - currJumpXInitial) / jumpDuration;
 				}
+				isJumping = true;
 			} else if (my_horiz > 0){
 				// HANDLE HORIZONTAL COLLISION DETECTION BASED ON MOVEMENT
 				float projectedXPos = myAction.oldXPosition + myAction.distanceMoved;
@@ -297,8 +308,9 @@ public class PlayerController : MonoBehaviour {
 					}
 				} else if (my_horiz != ActionType.moveAway && (projectedDistance < playerBodyBox.transform.localScale.x)) {
 					// If there is going to be a collision between player boxes and I am moving towards...
-					if ((their_horiz == ActionType.moveAway && !theirAction.isJumping) || theirAction.isJumping) {
-						// If the other is moving away or their action is jumping and this is their projected position...
+					// Note: This clause only encounterd if they are not jumping, so this is default horizontal collision detection behavior.
+					if (their_horiz == ActionType.moveAway) {
+						// If the other is moving away...
 						// Move right up to the other's projected position.
 						if (myAction.distanceMoved < 0.0f) {
 							playerBodyBox.transform.position = new Vector3 (projectedOtherXPos + playerBodyBox.transform.localScale.x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
@@ -499,9 +511,18 @@ public class PlayerController : MonoBehaviour {
 		attackHit = false;
 		blocking = false;
 		lowBlocking = false;
-		xVelocity = 1.0f;
-		yVelocity = xVelocity;
-		yGravity = 1.0f;
+		//xVelocity = 5.0f;
+		//yVelocity = xVelocity;
+		//yGravity = 9.0f;
+		// Temp:
+		{
+			float topt = 0.25f;
+			float topy = 2.0f;
+			float tend = topt * 2.0f;
+			yGravity = 2.0f * topy / (topt * tend - topt * topt);
+			yVelocity = yGravity * tend / 2.0f;
+			xVelocity = yVelocity;
+		}
 		currJumpXVelocity = 0.0f;
 		currJumpXInitial = 0.0f;
 		currJumpTInitial = 0.0f;
