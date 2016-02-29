@@ -8,12 +8,17 @@
 	public ActionType actionType;
 	public float oldXPosition;
 	public float distanceMoved;
-
+	public float jumpType;
+	public bool isJumping;
+	public float jumpXFinal;
 
 	public Action() {
 		actionType = ActionType.doNothing;
 		oldXPosition = 0.0f;
 		distanceMoved = 0.0f;
+		jumpType = 0.0f;
+		isJumping = false;
+		jumpXFinal = 0.0f;
 	}
 }
 
