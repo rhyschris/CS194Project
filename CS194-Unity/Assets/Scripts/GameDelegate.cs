@@ -150,6 +150,8 @@ public class GameDelegate : MonoBehaviour {
 				healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
 				if(defender.getHealth() <= 0.0f) {
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
+					player1.resetGame ();
+					player2.resetGame ();
 				}
 			}
 		}

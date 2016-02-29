@@ -510,12 +510,19 @@ public class PlayerController : MonoBehaviour {
 	public bool isLowBlocking() {
 		return (blocking && lowBlocking);
 	}
+	public void resetGame(){
+		int xpos = -4;
+		if (player1)
+			xpos = 4;
+		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
+		health = 2000.0f;
+	}
 	void Start () {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
 		// to set the correct bools that trigger different animation states
 		fighterAnimator = fighter.GetComponent<Animator> ();
 		// Capture the animation behaviors that underlie each state.  
-		maxHealth = 1000.0f;
+		maxHealth = 2000.0f;
 		health = maxHealth;
 		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
