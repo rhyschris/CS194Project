@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 	private Camera mainCamera;
+	private HealthBarController healthbarcontroller;
 	private PlayerController player1;
 	private PlayerController player2;
 	public float angle;
@@ -17,6 +18,8 @@ public class CameraController : MonoBehaviour {
 	private KeyCode widthMinimumMinus;
 	void Start () {
 		mainCamera = Camera.main;
+		GameObject healthBars = GameObject.Find ("HealthBars");
+		healthbarcontroller = healthBars.GetComponent<HealthBarController> ();
 		transform.eulerAngles = new Vector3 (angle, 0.0f, 0.0f);
 		GameObject player1Obj = GameObject.Find ("Player1");
 		GameObject player2Obj = GameObject.Find ("Player2");
@@ -42,6 +45,7 @@ public class CameraController : MonoBehaviour {
 		float y = yAboveHeight + yheight;
 		float z = zAbsolute * -1.0f;
 		transform.position = new Vector3 (x, y, z);
+		healthbarcontroller.remoteUpdate ();
 	}
 	public void modAngle(float modBy) {
 		angle = angle + modBy;
