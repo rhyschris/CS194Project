@@ -31,9 +31,7 @@ public class PlayerController : MonoBehaviour {
 	private KeyCode Attack2;
 	private KeyCode Block;
 	// ANIMATION VARIABLES
-	private float timeEnds;
-	private float timeAttackBegins;
-	private float timeAttackEnds;
+
 	private float jumpVelocity;
 	private float reach;
 	private float attackDamage;
@@ -64,34 +62,21 @@ public class PlayerController : MonoBehaviour {
 
 	public void handleAutomaticUpdates(float otherPlayerXPos) {
 		bool shouldHold = false;
-//		if (inputHold) {
-		// If an animation is active, then we want to hold input. 
-	
-//		foreach (BufferedStateMachineBehaviour bhvr in animatedBehaviours) { 
-//			if (bhvr.isActive()) {
-//				shouldHold = true;
-//			}
-//		}
-//		inputHold = shouldHold;
 
-		if (!inputHold) return;
-		if (Time.time >= timeEnds) {
-			if (attackWasThrown) {
-				// Animation is over. Release hold and return.
+		foreach (BufferedStateMachineBehaviour bhvr in animatedBehaviours) { 
+			bool active = bhvr.isActive ();
+			if (active) {
+				shouldHold = true;
+				if (bhvr.isTriggered ()) {
+					throwAttack (otherPlayerXPos);
+				}
+				break;
+			} else if (bhvr.isTriggered ()) {
+				// Not active + recently changed
 				finishAttack();
-				//inputHold = false;
-			} else {
-				// Attack animation cannot end without attack being thrown for at least a frame.
-				// Throw the attack. Next frame, it will be seen that the attack was thrown.
-				throwAttack(otherPlayerXPos);
 			}
-		} else if (Time.time >= timeAttackEnds) {
-			// Attack period over. Finish attack hitbox.
-			finishAttack();
-		} else if (Time.time >= timeAttackBegins) {
-			// Attack period began. Throw attack hitbox.
-			throwAttack(otherPlayerXPos);
 		}
+		inputHold = shouldHold;
 	}
 
 	/** 
@@ -266,18 +251,18 @@ public class PlayerController : MonoBehaviour {
 			switch (myAction.actionType){
 			case ActionType.attack1:
 				fighterAnimator.SetBool("highPunch", true);
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+				initiateAction (1.0f, 50, false);
 				break;
 			case ActionType.attack2:
 				fighterAnimator.SetBool ("highKick", true);
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+				initiateAction (1.0f, 100, false);
 				break;
 			case ActionType.attack3:
-				initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+				initiateAction (1.0f, 50, true);
 				break;
 			case ActionType.attack4:
 				fighterAnimator.SetBool ("lowTrip", true);
-				initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+				initiateAction (1.0f, 100, true);
 				break;
 			case ActionType.jump:
 				if (!isJumping) {/* Just started jump, need to note end of jump time*/
@@ -303,13 +288,15 @@ public class PlayerController : MonoBehaviour {
 			lowBlocking = false;
 			blockPercentage -= .002f;
 			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 
+
 		} else if (blockAction == ActionType.blockDown) {
 			playerBlockBox.SetActive (true);
 			playerBlockBox.transform.position = new Vector3 (blockBoxOffset, 0.5f, 0.0f);
 			blocking = true;
 			lowBlocking = true;
 			blockPercentage -= .002f;
-			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 		
+			blockPercentage = (blockPercentage <= 0.0f) ? 0.0f : blockPercentage; 	
+
 		} else {
 			playerBlockBox.transform.position = new Vector3 (0.0f, -1.0f, 0.0f);
 			blocking = false;
@@ -396,14 +383,12 @@ public class PlayerController : MonoBehaviour {
 	 * PLAYER.INITIATEACTION();
 	 * Initates a new attack action with the provided attributes.
 	 */
-	private void initiateAction(float duration, float attackBegin, float attackDuration, float newReach, float newDamage, bool newLow) {
-		inputHold = true;
+	private void initiateAction(float newReach, float newDamage, bool newLow) {
+		// inputHold = true;
 		attackWasThrown = false;
 		attackWasFinished = false;
 		attackHit = false;
-		timeEnds = Time.time + duration;
-		timeAttackBegins = Time.time + attackBegin;
-		timeAttackEnds = Time.time + attackBegin + attackDuration;
+
 		reach = newReach;
 		attackDamage = newDamage;
 		lowAttack = newLow;
@@ -475,9 +460,7 @@ public class PlayerController : MonoBehaviour {
 		Debug.Log ("animated behaviors: " + animatedBehaviours);
 		health = 1000.0f;
 		blockPercentage = 1.0f;
-		timeEnds = 0.0f;
-		timeAttackBegins = 0.0f;
-		timeAttackEnds = 0.0f;
+
 		reach = 0.0f;
 		attackDamage = 0.0f;
 		lowAttack = false;

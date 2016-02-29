@@ -5,8 +5,8 @@ public class facePunched_idle : BufferedStateMachineBehaviour {
 
 
 	public facePunched_idle () {
-//		this.startBufferTime = 0.1f;
-//		this.endBufferTime = 0.9f;
+		this.startBufferTime = 0.0f;
+		this.endBufferTime = 0.5f;
 	}
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

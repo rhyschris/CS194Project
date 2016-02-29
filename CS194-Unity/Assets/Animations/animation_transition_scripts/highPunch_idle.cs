@@ -3,6 +3,11 @@ using System.Collections;
 
 public class highPunch_idle : BufferedStateMachineBehaviour {
 
+
+
+	public highPunch_idle (){
+		this.startBufferTime = 0.15f;
+	}
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		Debug.Log ("HIGHPUNCHENTER");

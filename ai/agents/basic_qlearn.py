@@ -181,7 +181,7 @@ if __name__ == '__main__':
     
         p1 = False
     agent = BasicQlearnAgent(p1, loadOldTable=True, 
-    						overwriteFile=False, plot_freq=5)
+    						overwriteFile=False, plot_freq=20)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)

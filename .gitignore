@@ -19,3 +19,6 @@ UnityGenerated/
 Library/
 Assets/AssetStoreTools*
 
+
+# mac metafiles
+*/.DS_Store
