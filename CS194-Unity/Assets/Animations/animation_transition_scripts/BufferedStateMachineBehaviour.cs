@@ -23,6 +23,7 @@ public class BufferedStateMachineBehaviour : StateMachineBehaviour{
 		//Stub implementation
 	}
 
+
 	override public void OnStateUpdate (Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 
 		if (stateInfo.normalizedTime >= startBufferTime && stateInfo.normalizedTime <= endBufferTime) {
@@ -42,8 +43,8 @@ public class BufferedStateMachineBehaviour : StateMachineBehaviour{
 			}
 
 		}
-
 	}
+
 	/**
 	 * Returns whether an active behavior is being animated.
 	 */

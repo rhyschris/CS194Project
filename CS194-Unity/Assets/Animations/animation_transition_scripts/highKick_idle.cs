@@ -11,7 +11,8 @@ public class highKick_idle : BufferedStateMachineBehaviour {
 //	 OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool ("highKick", false);
-
+		// In case the animation ends early, we must avoid input holds
+		this.active = false;
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

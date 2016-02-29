@@ -80,13 +80,12 @@ public class PlayerController : MonoBehaviour {
 				if (bhvr.isTriggered ()) {
 					throwAttack (otherPlayerXPos);
 				}
-				break;
+
 			} else if (bhvr.isTriggered ()) {
 				// Not active + recently changed
 				finishAttack();
 			}
 		}
-
 		inputHold = shouldHold;
 
 		if (isJumping) {
@@ -116,7 +115,6 @@ public class PlayerController : MonoBehaviour {
 		 * Player does this by interpreting key intent
 		 * AI does this by direct command
 		 * 
-		 * TODO: clean up player key intent (hierarchial enum)?
 		 */
 		bool running = Input.GetKey (Run);
 		bool movingLeft = Input.GetKey (Left);
