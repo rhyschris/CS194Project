@@ -511,10 +511,10 @@ public class PlayerController : MonoBehaviour {
 	public bool isLowBlocking() {
 		return (blocking && lowBlocking);
 	}
-	public void resetGame(){
-		int xpos = -4;
+	public void resetPlayer(){
+		int xpos = 4;
 		if (player1)
-			xpos = 4;
+			xpos = -4;
 		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
 		health = 2000.0f;
 	}
