@@ -44,6 +44,7 @@ public class GameDelegate : MonoBehaviour {
 		TogglePause = KeyCode.BackQuote;
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
+		winText.color = Color.white;
 	}
 	void Update()
 	{
