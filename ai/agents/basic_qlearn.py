@@ -225,8 +225,6 @@ class BasicQlearnAgent(Agent):
 			self.Qtable = pickle.load(myFile)
 
 
-
-
 if __name__ == '__main__':
     port = 4998
     p1 = True
@@ -234,7 +232,6 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
     
         p1 = False
-
 
     agent = BasicQlearnAgent(p1, loadOldTable=False,epsilon=.15, 
     						overwriteFile=True, plot_freq=5)

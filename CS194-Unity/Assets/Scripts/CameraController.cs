@@ -34,14 +34,14 @@ public class CameraController : MonoBehaviour {
 	}
 	void LateUpdate() {
 		float xTransformRad = transform.eulerAngles.x * Mathf.Deg2Rad;
-		float yheight = (player1.getYPos() + player2.getYPos()) * 0.5f;
+		float yheight = (player1.getYPos() + player2.getYPos()) * .75f;
 		float xwidth = Mathf.Abs(player2.getXPos() - player1.getXPos()) + xPadding;
 		xwidth = Mathf.Max (xwidth, widthMinimum);
 		float hFOVRad = 2.0f * Mathf.Atan (Mathf.Tan (mainCamera.fieldOfView * Mathf.Deg2Rad * 0.5f) * mainCamera.aspect);
-		float distance = (0.5f * xwidth) / Mathf.Tan (hFOVRad * 0.5f);
+		float distance = (.75f * xwidth) / Mathf.Tan (hFOVRad * 0.5f);
 		float yAboveHeight = distance * Mathf.Sin (xTransformRad);
 		float zAbsolute = distance * Mathf.Cos (xTransformRad);
-		float x = (player1.getXPos() + player2.getXPos()) * 0.5f;
+		float x = (player1.getXPos() + player2.getXPos()) *.5f;
 		float y = yAboveHeight + yheight;
 		float z = zAbsolute * -1.0f;
 		transform.position = new Vector3 (x, y, z);
