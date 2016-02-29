@@ -75,13 +75,18 @@ public class HealthBarController : MonoBehaviour {
 				bar2.SetActive (false);
 			else
 				bar1.SetActive (false);
-		} else if (percent > 1.0f) {
+		} else if (percent >= 1.0f) {
 			percent = 1.0f;
+			if (player2)
+				bar2.SetActive (true);
+			else
+				bar1.SetActive (true);
 		}
 		if (player2) {
 			Vector3 newScale = bar2.transform.localScale;
 			newScale.x = (1.0f - baseXScale) * percent;
 			bar2.transform.localScale = newScale;
+
 			Vector3 newPosition = bar2.transform.localPosition;
 			newPosition.x = (newScale.x * -0.5f) - baseXScale;
 			bar2.transform.localPosition = newPosition;

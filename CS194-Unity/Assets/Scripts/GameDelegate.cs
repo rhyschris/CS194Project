@@ -8,6 +8,7 @@ using AssemblyCSharp;
 //TODO: on start, send AI initial game state
 public class GameDelegate : MonoBehaviour {
 	private bool paused;
+	private bool firstTime;
 	private bool wait_for_start;
 	// CONTROLLERS
 	private CameraController mainCamera;
@@ -24,6 +25,7 @@ public class GameDelegate : MonoBehaviour {
 	void Start ()
 	{
 		wait_for_start = true;
+		firstTime = true;
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject healthBars = GameObject.Find ("HealthBars");
@@ -77,8 +79,10 @@ public class GameDelegate : MonoBehaviour {
 			}
 
 		} else if (wait_for_start){
-			winText.text = "Press G to start game!";
+			if (firstTime)
+				winText.text = "Press G to start game!";
 			if (Input.GetKeyDown(start_game)){
+				firstTime = false;
 				wait_for_start = false;
 				player1.resetPlayer();
 				player2.resetPlayer();
@@ -99,7 +103,6 @@ public class GameDelegate : MonoBehaviour {
 
 				// QUERY PLAYER INPUT
 				Action player1Action = player1.queryInput (state);
-				Debug.Log (player1Action.actionType);
 				Action player2Action = player2.queryInput (state);
 				// HANDLE PLAYER INPUT
 				player1.handleInput (player1Action, player2Action);
@@ -158,7 +161,7 @@ public class GameDelegate : MonoBehaviour {
 					}
 					healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
 					if(defender.getHealth() <= 0.0f) {
-						winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
+						winText.text = "Victory for "+(defender.player1?"player2!":"player1!\nPRESS G TO PLAY AGAIN");
 						wait_for_start = true;
 					}
 				}

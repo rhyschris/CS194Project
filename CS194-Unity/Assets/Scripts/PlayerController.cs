@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour {
 				newXPos = currJumpXFinal;
 				isJumping = false;
 			}
-			Debug.Log ("newXPos: " + newXPos);
 			playerBodyBox.transform.position = new Vector3 (newXPos, newYPos, playerBodyBox.transform.position.z);
 		}
 	}
@@ -149,10 +148,8 @@ public class PlayerController : MonoBehaviour {
 				else if (Input.GetKeyDown (Up)){
 					action.actionType |= ActionType.jump;
 					if (movingLeft && (!movingRight)) {
-						Debug.Log ("Left");
 						action.jumpType = -1.0f;
 					} else if (movingRight && (!movingLeft)) {
-						Debug.Log ("Right");
 						action.jumpType = 1.0f;
 					} else {
 						Debug.Log ("Up");
@@ -421,9 +418,7 @@ public class PlayerController : MonoBehaviour {
 	 */
 	public void receiveAttack(float damage, bool blocked) {
 		if (blocked) {
-			Debug.Log (blockPercentage);
 			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
-			Debug.Log ("damage = "+damage.ToString());
 			health = health - damage;
 			// TODO: Handle behavior if hit while blocking.
 		} else {
