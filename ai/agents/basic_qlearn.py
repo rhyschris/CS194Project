@@ -20,7 +20,9 @@ class BasicQlearnAgent(Agent):
 				 epsilon=.75, name="Qlearner", plot_freq=0):
 		super(BasicQlearnAgent, self).__init__(name)
 		self.p1 = isPlayer1
+
 		self.epsilon = epsilon
+
 		self.alpha = .5
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
 		self.prevAction = Actions.doNothing
@@ -56,7 +58,7 @@ class BasicQlearnAgent(Agent):
 		# times per second to plot
 		# 0 is 'off', but we add modulo plot_freq + 1, and update
 		# when counter = 1
-		self.plot_freq = plot_freq + 1
+		self.plot_freq = (60/plot_freq) + 1
 		self.plot_counter = 0
 
 #		if plot_freq > 0:
@@ -214,14 +216,13 @@ class BasicQlearnAgent(Agent):
 		with open(filename, "wb") as myFile:
 			pickle.dump(self.Qtable, myFile)
 
+
 	def retrieveQtableFromFile(self,filename):
 		#filename = "savedQTablep2.txt"
 		#if self.p1:
 		#	filename="savedQTablep1.txt"
 		with open(filename, "rb") as myFile:
 			self.Qtable = pickle.load(myFile)
-
-
 
 
 if __name__ == '__main__':
