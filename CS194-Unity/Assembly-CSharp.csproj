@@ -45,13 +45,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Animations\animation_transition_scripts\BufferedStateMachineBehavior.cs" />
-     <Compile Include="Assets\Animations\animation_transition_scripts\block_idle.cs" />
+     <Compile Include="Assets\Animations\animation_transition_scripts\BufferedStateMachineBehaviour.cs" />
+     <Compile Include="Assets\Animations\animation_transition_scripts\faceKicked_idle.cs" />
      <Compile Include="Assets\Animations\animation_transition_scripts\facePunched_idle.cs" />
      <Compile Include="Assets\Animations\animation_transition_scripts\highKick_idle.cs" />
      <Compile Include="Assets\Animations\animation_transition_scripts\highPunch_idle.cs" />
      <Compile Include="Assets\Animations\animation_transition_scripts\isTripped_idle.cs" />
+     <Compile Include="Assets\Animations\animation_transition_scripts\lowKick_idle.cs" />
      <Compile Include="Assets\Animations\animation_transition_scripts\lowTrip_idle.cs" />
+     <Compile Include="Assets\Animations\animation_transition_scripts\shinKIcked_idle.cs" />
      <Compile Include="Assets\Scripts\AI.cs" />
      <Compile Include="Assets\Scripts\Action.cs" />
      <Compile Include="Assets\Scripts\AsyncAIClient.cs" />
@@ -64,9 +66,6 @@
      <Compile Include="Assets\Scripts\LampPost.cs" />
      <Compile Include="Assets\Scripts\Pair.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\faceKicked_idle.cs" />
-     <Compile Include="Assets\lowKick_idle.cs" />
-     <Compile Include="Assets\shinKIcked_idle.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

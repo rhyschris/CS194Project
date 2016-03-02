@@ -151,6 +151,7 @@ public class GameDelegate : MonoBehaviour {
 							defenderAnimator.SetBool ("faceKicked", true);
 						}
 						if (attacker.lastAttackThrown () == ActionType.attack3) {
+							Debug.Log ("shin kciked");
 							defenderAnimator.SetBool ("shinKicked", true);
 						}
 						if (attacker.lastAttackThrown () == ActionType.attack4){
