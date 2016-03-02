@@ -8,6 +8,8 @@ using AssemblyCSharp;
 //TODO: on start, send AI initial game state
 public class GameDelegate : MonoBehaviour {
 	private bool paused;
+	private bool firstTime;
+	private bool wait_for_start;
 	// CONTROLLERS
 	private CameraController mainCamera;
 	private HealthBarController healthbarcontroller;
@@ -17,11 +19,13 @@ public class GameDelegate : MonoBehaviour {
 	private Text winText;
 	// KEYBOARD INPUTS
 	private KeyCode Quit;
-	private KeyCode Reset;
+	private KeyCode start_game;
 	private KeyCode TogglePause;
 	private KeyCode ToggleDebugText;
 	void Start ()
 	{
+		wait_for_start = true;
+		firstTime = true;
 		paused = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject healthBars = GameObject.Find ("HealthBars");
@@ -36,49 +40,59 @@ public class GameDelegate : MonoBehaviour {
 		debugText = debugTextObj.GetComponent<DebugTextController> ();
 		winText = winTextObj.GetComponent<Text> ();
 		Quit = KeyCode.Escape;
-		Reset = KeyCode.Semicolon;
+		start_game = KeyCode.G;
 		TogglePause = KeyCode.BackQuote;
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
+		winText.color = Color.white;
 	}
 	void Update()
 	{
 		//Debug.Log ("Sending state at time " + Time.time.ToString ());
-		for (int i =0; i<1; i++){
-			// QUIT THE GAME
-			if (Input.GetKeyDown (Quit)) {
-				Application.Quit ();
+		// QUIT THE GAME
+		if (Input.GetKeyDown (Quit)) {
+			Application.Quit ();
+		}
+		// ENTER DEBUGGING MODE
+		if (Input.GetKeyDown (TogglePause)) {
+			paused = !paused;
+			debugText.toggleDebugText();
+		}
+		if (paused) {
+			// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
+			if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
+				mainCamera.modAngle (-0.5f);
 			}
-			// ENTER DEBUGGING MODE
-			if (Input.GetKeyDown (TogglePause)) {
-				paused = !paused;
-				debugText.toggleDebugText();
+			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+				mainCamera.modXPadding (-0.5f);
 			}
-			if (paused) {
-				// ALTER PERSPECTIVE CAMERA ANGLE ATTRIBUTES
-				if (Input.GetKeyDown (mainCamera.getAngleMinus())) {
-					mainCamera.modAngle (-0.5f);
-				}
-				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-					mainCamera.modXPadding (-0.5f);
-				}
-				if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
-					mainCamera.modAngle (0.5f);
-				}
-				if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
-					mainCamera.modXPadding (0.5f);
-				}
-				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-					mainCamera.modWidthMinimum (-0.5f);
-				}
-				if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
-					mainCamera.modWidthMinimum (0.5f);
-				}
-				// RESET PLAYER POSITIONS
-				if (Input.GetKeyDown (Reset)) {
-					// Later on, make it so this resets everything to default locations and statuses.
-				}
-			} else {
+			if (Input.GetKeyDown (mainCamera.getAnglePlus())) {
+				mainCamera.modAngle (0.5f);
+			}
+			if (Input.GetKeyDown (mainCamera.getXPaddingPlus())) {
+				mainCamera.modXPadding (0.5f);
+			}
+			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+				mainCamera.modWidthMinimum (-0.5f);
+			}
+			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
+				mainCamera.modWidthMinimum (0.5f);
+			}
+
+		} else if (wait_for_start){
+			if (firstTime)
+				winText.text = "Press G to start game!";
+			if (Input.GetKeyDown(start_game)){
+				firstTime = false;
+				wait_for_start = false;
+				player1.resetPlayer();
+				player2.resetPlayer();
+				healthbarcontroller.setPercent (true, 1.0f);
+				healthbarcontroller.setPercent (false, 1.0f);
+				winText.text = "";
+			}
+		}
+			else{
 				if (Input.GetKeyDown (ToggleDebugText)) {
 					debugText.toggleDebugText();
 				}
@@ -90,7 +104,6 @@ public class GameDelegate : MonoBehaviour {
 
 				// QUERY PLAYER INPUT
 				Action player1Action = player1.queryInput (state);
-				Debug.Log (player1Action.actionType);
 				Action player2Action = player2.queryInput (state);
 				// HANDLE PLAYER INPUT
 				player1.handleInput (player1Action, player2Action);
@@ -103,92 +116,93 @@ public class GameDelegate : MonoBehaviour {
 			}
 			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
-	}
-	private void handlePlayerHit(PlayerController attacker, PlayerController defender, bool player1Attacker) {
-		// If the attacker is engaged in an attack that needs to be handled:
-		if (attacker.attackHandle ()) {
-			// See if the attack box is in the body box.
-			float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
-			xdistance -= (attacker.getHitHalfWidth() + defender.getHalfWidth());
-			float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
-			ydistance -= (defender.getYPos()+defender.getHalfHeight());
-			if (xdistance <= 0.0f && ydistance<=0.0f) {
-				// This was a hit. Handle it.
-				if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
-					Debug.Log ("Blocked!");
-					attacker.tellHit ();
-					defender.receiveAttack (attacker.getAttackDamage (), true);
-				} else {
-					Debug.Log ("Hit!!");
-					Debug.Log("Health: "+defender.getHealth().ToString());
-					attacker.tellHit ();
-					defender.receiveAttack (attacker.getAttackDamage (), false);
+
+		private void handlePlayerHit(PlayerController attacker, PlayerController defender, bool player1Attacker) {
+			// If the attacker is engaged in an attack that needs to be handled:
+			if (attacker.attackHandle ()) {
+				// See if the attack box is in the body box.
+				float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
+				xdistance -= (attacker.getHitHalfWidth() + defender.getHalfWidth());
+				float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
+				ydistance -= (defender.getYPos()+defender.getHalfHeight());
+				if (xdistance <= 0.0f && ydistance<=0.0f) {
+					// This was a hit. Handle it.
+					if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
+						Debug.Log ("Blocked!");
+						attacker.tellHit ();
+						defender.receiveAttack (attacker.getAttackDamage (), true);
+					} else {
+						Debug.Log ("Hit!!");
+						Debug.Log("Health: "+defender.getHealth().ToString());
+						attacker.tellHit ();
+						defender.receiveAttack (attacker.getAttackDamage (), false);
 
 
-					// set animation for punch
-					GameObject defenderFighter = defender.fighter;
-					Animator defenderAnimator;
-					defenderAnimator = defenderFighter.GetComponent<Animator> ();
+						// set animation for punch
+						GameObject defenderFighter = defender.fighter;
+						Animator defenderAnimator;
+						defenderAnimator = defenderFighter.GetComponent<Animator> ();
 
-					Debug.Log (attacker.lastAttackThrown());
-					if (attacker.lastAttackThrown() == ActionType.attack1) {
-						defenderAnimator.SetBool ("facePunched", true);
+						Debug.Log (attacker.lastAttackThrown());
+						if (attacker.lastAttackThrown() == ActionType.attack1) {
+							defenderAnimator.SetBool ("facePunched", true);
+						}
+						if (attacker.lastAttackThrown () == ActionType.attack2) {
+							defenderAnimator.SetBool ("faceKicked", true);
+						}
+						if (attacker.lastAttackThrown () == ActionType.attack3) {
+							defenderAnimator.SetBool ("shinKicked", true);
+						}
+						if (attacker.lastAttackThrown () == ActionType.attack4){
+							defenderAnimator.SetBool("isTripped", true);
+						}
+
+
+
 					}
-					if (attacker.lastAttackThrown () == ActionType.attack2) {
-						defenderAnimator.SetBool ("faceKicked", true);
+					healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
+					if(defender.getHealth() <= 0.0f) {
+						winText.text = "Victory for "+(defender.player1?"player2!":"player1!\nPRESS G TO PLAY AGAIN");
+						wait_for_start = true;
 					}
-					if (attacker.lastAttackThrown () == ActionType.attack3) {
-						defenderAnimator.SetBool ("shinKicked", true);
-					}
-					if (attacker.lastAttackThrown () == ActionType.attack4){
-						defenderAnimator.SetBool("isTripped", true);
-					}
-
-
-
-				}
-				healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
-				if(defender.getHealth() <= 0.0f) {
-					winText.text = "Victory for "+(defender.player1?"player2!":"player1!");
 				}
 			}
 		}
-	}
 
-	private GameState createGameState(){
-		GameState state = new GameState (player1.getXPos(),player1.getYPos(),player2.getXPos(),
-			player2.getYPos(),player1.getHealth(),player2.getHealth());
+		private GameState createGameState(){
+			GameState state = new GameState (player1.getXPos(),player1.getYPos(),player2.getXPos(),
+				player2.getYPos(),player1.getHealth(),player2.getHealth());
 
-		bool p1attacking = false, p1high = false, p1blocking = false, p1crouching = false;
+			bool p1attacking = false, p1high = false, p1blocking = false, p1crouching = false;
 
-		if (player1.attackHandle ()) {
-			p1attacking = true;
-			p1high = player1.isHighAttack ();
-		} else if (player1.isLowBlocking ()) {
-			p1blocking = true;
-		} else if (player1.isHighBlocking ()) {
-			p1blocking = true;
-			p1high = true;
-		} else if (false) { //TODO: fill in when crouching implemented
-			p1crouching = true;
+			if (player1.attackHandle ()) {
+				p1attacking = true;
+				p1high = player1.isHighAttack ();
+			} else if (player1.isLowBlocking ()) {
+				p1blocking = true;
+			} else if (player1.isHighBlocking ()) {
+				p1blocking = true;
+				p1high = true;
+			} else if (false) { //TODO: fill in when crouching implemented
+				p1crouching = true;
+			}
+
+			bool p2attacking = false, p2high = false, p2blocking = false, p2crouching = false;
+			if (player2.attackHandle ()) {
+				p2attacking = true;
+				p2high = player2.isHighAttack ();
+			} else if (player2.isLowBlocking ()) {
+				p2blocking = true;
+			} else if (player2.isHighBlocking ()) {
+				p2blocking = true;
+				p2high = true;
+			} else if (false) { //TODO: fill in when crouching implemented
+				p2crouching = true;
+			}
+
+			state.setFlags (p1attacking, p1blocking, p1crouching, p1high, 
+				p2attacking, p2blocking, p2crouching, p2high);
+
+			return state;
 		}
-
-		bool p2attacking = false, p2high = false, p2blocking = false, p2crouching = false;
-		if (player2.attackHandle ()) {
-			p2attacking = true;
-			p2high = player2.isHighAttack ();
-		} else if (player2.isLowBlocking ()) {
-			p2blocking = true;
-		} else if (player2.isHighBlocking ()) {
-			p2blocking = true;
-			p2high = true;
-		} else if (false) { //TODO: fill in when crouching implemented
-			p2crouching = true;
-		}
-
-		state.setFlags (p1attacking, p1blocking, p1crouching, p1high, 
-			p2attacking, p2blocking, p2crouching, p2high);
-
-		return state;
 	}
-}

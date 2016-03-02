@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 	// AI
@@ -28,9 +29,7 @@ public class PlayerController : MonoBehaviour {
 	private KeyCode Attack2;
 	private KeyCode Block;
 	// ANIMATION VARIABLES
-	private float timeEnds;
-	private float timeAttackBegins;
-	private float timeAttackEnds;
+
 	private float jumpVelocity;
 	private float reach;
 	private float attackDamage;
@@ -44,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 	private bool blocking;
 	private bool lowBlocking;
 	private bool isJumping;
+
 	// JUMPING VARIABLES
 	private float xVelocity;
 	private float yVelocity;
@@ -54,40 +54,40 @@ public class PlayerController : MonoBehaviour {
 	private float currJumpXFinal;
 	// Direction player is looking
 	// +1.0 if right, -1.0 if left
+
 	// Animation Controller
 	Animator fighterAnimator;
 	public GameObject fighter;
 
 	// Dictionary of state machine behaviors 
-	//private Dictionary<string, BufferedStateMachineBehavior> animatedBehaviors; 
-
+	// English 'behaviour' spelling to match the Unity module naming :/
+	private BufferedStateMachineBehaviour[] animatedBehaviours; 
 
 	/**
 	 * PLAYER.UPDATE();
-	 * In this function, player status that is not dependant upon input, such as in-
+	 * In this function, player status that is not dependent upon input, such as in-
 	 * progress animations, are handled.
+	 *
 	 */
 
 	public void handleAutomaticUpdates(float otherPlayerXPos) {
-		if (inputHold) {
-			if (Time.time >= timeEnds) {
-				if (attackWasThrown) {
-					// Animation is over. Release hold and return.
-					finishAttack();
-					inputHold = false;
-				} else {
-					// Attack animation cannot end without attack being thrown for at least a frame.
-					// Throw the attack. Next frame, it will be seen that the attack was thrown.
-					throwAttack(otherPlayerXPos);
+		bool shouldHold = false;
+
+		foreach (BufferedStateMachineBehaviour bhvr in animatedBehaviours) { 
+			bool active = bhvr.isActive ();
+			if (active) {
+				shouldHold = true;
+				if (bhvr.isTriggered ()) {
+					throwAttack (otherPlayerXPos);
 				}
-			} else if (Time.time >= timeAttackEnds) {
-				// Attack period over. Finish attack hitbox.
+
+			} else if (bhvr.isTriggered ()) {
+				// Not active + recently changed
 				finishAttack();
-			} else if (Time.time >= timeAttackBegins) {
-				// Attack period began. Throw attack hitbox.
-				throwAttack(otherPlayerXPos);
 			}
 		}
+		inputHold = shouldHold;
+
 		if (isJumping) {
 			// HANDLE AUTOMATIC JUMPING BEHAVIOR
 			float elapsedTime = Time.time - currJumpTInitial;
@@ -98,10 +98,11 @@ public class PlayerController : MonoBehaviour {
 				newXPos = currJumpXFinal;
 				isJumping = false;
 			}
-			Debug.Log ("newXPos: " + newXPos);
 			playerBodyBox.transform.position = new Vector3 (newXPos, newYPos, playerBodyBox.transform.position.z);
 		}
+
 	}
+
 	/** 
 	 * PLAYER.QUERYINPUT();
 	 * Determines the action for the player to peform this frame, either by querying
@@ -113,7 +114,6 @@ public class PlayerController : MonoBehaviour {
 		 * Player does this by interpreting key intent
 		 * AI does this by direct command
 		 * 
-		 * TODO: clean up player key intent (hierarchial enum)?
 		 */
 		bool running = Input.GetKey (Run);
 		bool movingLeft = Input.GetKey (Left);
@@ -149,10 +149,8 @@ public class PlayerController : MonoBehaviour {
 				else if (Input.GetKeyDown (Up)){
 					action.actionType |= ActionType.jump;
 					if (movingLeft && (!movingRight)) {
-						Debug.Log ("Left");
 						action.jumpType = -1.0f;
 					} else if (movingRight && (!movingLeft)) {
-						Debug.Log ("Right");
 						action.jumpType = 1.0f;
 					} else {
 						Debug.Log ("Up");
@@ -269,6 +267,7 @@ public class PlayerController : MonoBehaviour {
 					float jumpDuration = 2.0f * yVelocity / yGravity;
 					currJumpXVelocity = (currJumpXFinal - currJumpXInitial) / jumpDuration;
 				}
+
 				myAction.jumpXFinal = currJumpXFinal;
 				isJumping = true;
 				Debug.Log ("FINAL PRINT OUT: xVelocity: " + xVelocity + ", yVelocity: " + yVelocity + ", myAction.jumpType: "
@@ -329,22 +328,22 @@ public class PlayerController : MonoBehaviour {
 				case ActionType.attack1:
 					lastAttack = ActionType.attack1;
 					fighterAnimator.SetBool("highPunch", true);
-					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, false);
+					initiateAction ( 1.0f, 50, false);
 					break;
 				case ActionType.attack2:
 					lastAttack = ActionType.attack2;
 					fighterAnimator.SetBool ("highKick", true);
-					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, false);
+					initiateAction (1.0f, 100, false);
 					break;
 				case ActionType.attack3:
 					lastAttack = ActionType.attack3;
 					fighterAnimator.SetBool ("lowKick", true);
-					initiateAction (0.5f, 0.125f, 0.25f, 1.0f, 50, true);
+					initiateAction ( 1.0f, 50, true);
 					break;
 				case ActionType.attack4:
 					lastAttack = ActionType.attack4;
 					fighterAnimator.SetBool ("lowTrip", true);
-					initiateAction (1.0f, 0.25f, 0.5f, 1.0f, 100, true);
+					initiateAction ( 1.0f, 100, true);
 					break;
 				}
 			}
@@ -376,6 +375,7 @@ public class PlayerController : MonoBehaviour {
 				lowBlocking = false;
 				blockPercentage += .002f;
 				blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage;
+
 			}
 		}
 	}
@@ -421,9 +421,7 @@ public class PlayerController : MonoBehaviour {
 	 */
 	public void receiveAttack(float damage, bool blocked) {
 		if (blocked) {
-			Debug.Log (blockPercentage);
 			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
-			Debug.Log ("damage = "+damage.ToString());
 			health = health - damage;
 			// TODO: Handle behavior if hit while blocking.
 		} else {
@@ -437,14 +435,12 @@ public class PlayerController : MonoBehaviour {
 	 * PLAYER.INITIATEACTION();
 	 * Initates a new attack action with the provided attributes.
 	 */
-	private void initiateAction(float duration, float attackBegin, float attackDuration, float newReach, float newDamage, bool newLow) {
-		inputHold = true;
+	private void initiateAction(float newReach, float newDamage, bool newLow) {
+		// inputHold = true;
 		attackWasThrown = false;
 		attackWasFinished = false;
 		attackHit = false;
-		timeEnds = Time.time + duration;
-		timeAttackBegins = Time.time + attackBegin;
-		timeAttackEnds = Time.time + attackBegin + attackDuration;
+
 		reach = newReach;
 		attackDamage = newDamage;
 		lowAttack = newLow;
@@ -510,17 +506,27 @@ public class PlayerController : MonoBehaviour {
 	public bool isLowBlocking() {
 		return (blocking && lowBlocking);
 	}
+	public void resetPlayer(){
+		int xpos = 4;
+		if (player1)
+			xpos = -4;
+		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
+		health = 2000.0f;
+	}
 	void Start () {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
 		// to set the correct bools that trigger different animation states
 		fighterAnimator = fighter.GetComponent<Animator> ();
 		// Capture the animation behaviors that underlie each state.  
-		maxHealth = 1000.0f;
+
+		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
+		
+		health = 1000.0f;
+		maxHealth = 2000.0f;
 		health = maxHealth;
+
 		blockPercentage = 1.0f;
-		timeEnds = 0.0f;
-		timeAttackBegins = 0.0f;
-		timeAttackEnds = 0.0f;
+
 		reach = 0.0f;
 		attackDamage = 0.0f;
 		lowAttack = false;
