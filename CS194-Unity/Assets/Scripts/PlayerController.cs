@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour {
 			} else {
 				fighterAnimator.SetBool ("block", false);
 			}
-			if (myAction.actionType == ActionType.walkTowards) {
+			if (myAction.actionType == ActionType.walkTowards || myAction.actionType == ActionType.runTowards) {
 				fighterAnimator.SetBool ("runForward", true);
 			} else {
 				fighterAnimator.SetBool ("runForward", false);
