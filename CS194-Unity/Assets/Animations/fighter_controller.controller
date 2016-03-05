@@ -132,6 +132,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1181989faf654df1989c74a075bf287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11417920
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b425718153eef4b76b5fa42cbabc7519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11423578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,6 +185,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a5601dc354be43a58ab85f81414d45b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11488840
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02cf8df0eabff4ed694cdde3b765def3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1101 &110112536
@@ -777,7 +799,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: run_forward
-  m_Speed: 1.5
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110185148}
@@ -825,7 +847,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: low_trip
-  m_Speed: 1
+  m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110173606}
@@ -854,7 +876,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110198744}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 11417920}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -874,7 +897,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: face_punched
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110184188}
@@ -899,7 +922,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: high_kick
-  m_Speed: 1
+  m_Speed: 1.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110185868}
@@ -924,11 +947,12 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: low_kick2
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110114616}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 11488840}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -972,7 +996,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: high_punch3
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 110163024}
@@ -1095,16 +1119,16 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 110293270}
-    m_Position: {x: 396, y: 192, z: 0}
+    m_Position: {x: 396, y: 144, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110228386}
     m_Position: {x: 240, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110230906}
-    m_Position: {x: 612, y: 48, z: 0}
+    m_Position: {x: 672, y: -12, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110263440}
-    m_Position: {x: 504, y: -48, z: 0}
+    m_Position: {x: 528, y: -96, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110232482}
     m_Position: {x: 636, y: 180, z: 0}
