@@ -9,6 +9,7 @@ public class highPunch_idle : BufferedStateMachineBehaviour {
 	}
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		animator.SetBool ("highPunch", false);
 
 	}
 
@@ -19,7 +20,6 @@ public class highPunch_idle : BufferedStateMachineBehaviour {
 
 //	 OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		animator.SetBool ("highPunch", false);
 		
 		// In case the animation ends early, we must avoid input holds
 		this.active = false;

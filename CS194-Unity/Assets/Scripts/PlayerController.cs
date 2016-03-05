@@ -377,6 +377,10 @@ public class PlayerController : MonoBehaviour {
 				blockPercentage = (blockPercentage >= 1.0f) ? 1.0f : blockPercentage;
 
 			}
+
+
+
+
 		}
 	}
 	/**
