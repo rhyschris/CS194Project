@@ -8,7 +8,7 @@ import random
 import sys
 import signal
 import cPickle as pickle
-#from plotter import Plotter
+from plotter import Plotter
 import socket
 
 HOST = '127.0.0.1'
@@ -61,8 +61,8 @@ class BasicQlearnAgent(Agent):
 		self.plot_freq = (60/plot_freq) + 1
 		self.plot_counter = 0
 
-#		if plot_freq > 0:
-#			self.plotter = Plotter()
+		if plot_freq > 0:
+			self.plotter = Plotter()
 
 		print("Done initializing!")
 
@@ -188,8 +188,8 @@ class BasicQlearnAgent(Agent):
 		# update plot according to frequency
 		self.plot_counter = (self.plot_counter + 1) % (self.plot_freq + 1)
 
-		#if self.plot_counter == 1:
-			#self.plotter.updateGraph(qRow)
+		if self.plot_counter == 1:
+			self.plotter.updateGraph(qRow)
 
 		count = qRow.count(maxQ)
 		action = None
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         p1 = False
 
     agent = BasicQlearnAgent(p1, loadOldTable=False,epsilon=.15, 
-    						overwriteFile=True, plot_freq=5)
+    						overwriteFile=True, plot_freq=20)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)
