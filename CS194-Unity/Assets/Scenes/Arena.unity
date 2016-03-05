@@ -3326,9 +3326,9 @@ MonoBehaviour:
   blockDamageModifier: 0
   player1: 0
   isAI: 0
-  forwardVelocity: 5
-  backwardVelocityFactor: 0.75
-  runningVelocityFactor: 1.5
+  forwardVelocity: 6
+  backwardVelocityFactor: 0.9
+  runningVelocityFactor: 2
   fighter: {fileID: 87076506}
 --- !u!1 &1789629498
 GameObject:
