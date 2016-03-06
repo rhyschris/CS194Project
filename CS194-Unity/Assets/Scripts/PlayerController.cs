@@ -172,7 +172,6 @@ public class PlayerController : MonoBehaviour {
 
 		action.oldXPosition = playerBodyBox.transform.position.x;
 		updatePosition (action, movingLeft);
-		lastAction = action.actionType;
 		return action;
 	}
 
@@ -240,6 +239,7 @@ public class PlayerController : MonoBehaviour {
 					isJumping = true;
 					jumpVelocity = initialJumpVelocity;
 					jumpHorizAction = lastAction;
+					Debug.Log("last action = "+jumpHorizAction.ToString());
 				}
 				break;
 			}
@@ -249,7 +249,11 @@ public class PlayerController : MonoBehaviour {
 			myAction.actionType = jumpHorizAction;
 			if (!this.player1)
 				movingLeft = (myAction.actionType & Action.HMOVE_MASK) != ActionType.moveAway;
+			else
+				movingLeft = myAction.actionType==ActionType.moveAway;
+
 			updatePosition(myAction,movingLeft);
+			myAction.distanceMoved = myAction.distanceMoved*1.5;
 			my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		}
 
@@ -333,6 +337,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
+		lastAction = myAction.actionType;
 	}
 	/**
 		 * PLAYER.THROWATTACK();
