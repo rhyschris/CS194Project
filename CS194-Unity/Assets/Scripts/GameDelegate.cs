@@ -10,6 +10,8 @@ public class GameDelegate : MonoBehaviour {
 	private bool paused;
 	private bool firstTime;
 	private bool wait_for_start;
+	private float stageEnd_left;
+	private float stageEnd_right;
 	// CONTROLLERS
 	private CameraController mainCamera;
 	private HealthBarController healthbarcontroller;
@@ -24,6 +26,8 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode ToggleDebugText;
 	void Start ()
 	{
+		stageEnd_left = -20.0f;
+		stageEnd_right = 20.0f;
 		wait_for_start = true;
 		firstTime = true;
 		paused = false;
@@ -108,6 +112,10 @@ public class GameDelegate : MonoBehaviour {
 				// HANDLE PLAYER INPUT
 				player1.handleInput (player1Action, player2Action);
 				player2.handleInput (player2Action, player1Action);
+				if (player1.getXPos () <= stageEnd_left)
+					player1.moveToX (stageEnd_left);
+				if (player2.getXPos () >= stageEnd_right)
+					player2.moveToX (stageEnd_right);
 				if ((player1.getXPos () + player1.getHalfWidth() * 2) > player2.getXPos ())
 					player1.moveToX (player2.getXPos () - player1.getHalfWidth () * 2);
 				// DO HIT DETECTION
