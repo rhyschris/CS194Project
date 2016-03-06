@@ -1,3 +1,4 @@
+
 ﻿using UnityEngine;
 using System.Collections;
 
@@ -27,3 +28,4 @@ public class lowKick_idle : BufferedStateMachineBehaviour {
 	//
 	//}
 }
+

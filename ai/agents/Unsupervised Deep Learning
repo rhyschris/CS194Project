@@ -1,0 +1,19 @@
+Unsupervised Deep Learning
+--------------------------
+Autoencoders
+- Traditional: feature learning
+- Variational: generate samples
+
+Generative adversarial networks
+
+
+Autoencoder
+
+
+[ ---------- y ---------]		Output
+			^^
+			||	
+	[------ z------]			Hidden features (generally compressed).  Often deep with relus
+			^^
+			||
+[-----------x-----------]		Input
