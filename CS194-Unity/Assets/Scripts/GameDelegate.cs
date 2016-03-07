@@ -84,8 +84,9 @@ public class GameDelegate : MonoBehaviour {
 			}
 
 		} else if (wait_for_start){
-			if (firstTime)
+			if (firstTime) {
 				winText.text = "Press G to start game!";
+			}
 			if (Input.GetKeyDown(start_game)){
 				firstTime = false;
 				wait_for_start = false;
@@ -94,6 +95,14 @@ public class GameDelegate : MonoBehaviour {
 				healthbarcontroller.setPercent (true, 1.0f);
 				healthbarcontroller.setPercent (false, 1.0f);
 				winText.text = "";
+				GameObject p1Fighter = player1.fighter;
+				Animator p1Anim;
+				p1Anim = p1Fighter.GetComponent<Animator> ();
+				p1Anim.SetBool ("start_game", true);
+				GameObject p2Fighter = player2.fighter;
+				Animator p2Anim;
+				p2Anim = p2Fighter.GetComponent<Animator> ();
+				p2Anim.SetBool ("start_game", true);
 			}
 		}
 			else{
@@ -159,7 +168,7 @@ public class GameDelegate : MonoBehaviour {
 							defenderAnimator.SetBool ("faceKicked", true);
 						}
 						if (attacker.lastAttackThrown () == ActionType.attack3) {
-							Debug.Log ("shin kciked");
+							Debug.Log ("shin kicked");
 							defenderAnimator.SetBool ("shinKicked", true);
 						}
 						if (attacker.lastAttackThrown () == ActionType.attack4){
@@ -171,6 +180,16 @@ public class GameDelegate : MonoBehaviour {
 					}
 					healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
 					if(defender.getHealth() <= 0.0f) {
+						GameObject defenderFighter = defender.fighter;
+						Animator defenderAnimator;
+						defenderAnimator = defenderFighter.GetComponent<Animator> ();
+						defenderAnimator.SetBool ("lost_game", true);
+
+						GameObject attackerFighter = attacker.fighter;
+						Animator attackerAnimator;
+						attackerAnimator = attackerFighter.GetComponent<Animator> ();
+						attackerAnimator.SetBool ("won_game", true);
+
 						winText.text = "Victory for "+(defender.player1?"player2!":"player1!\nPRESS G TO PLAY AGAIN");
 						wait_for_start = true;
 					}

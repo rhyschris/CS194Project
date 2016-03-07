@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour {
 				movingLeft = myAction.actionType==ActionType.moveAway;
 
 			updatePosition(myAction,movingLeft);
-			myAction.distanceMoved = myAction.distanceMoved*1.5;
+			myAction.distanceMoved = (float) (myAction.distanceMoved*1.5);
 			my_horiz = myAction.actionType & Action.HMOVE_MASK;
 		}
 
@@ -473,7 +473,7 @@ public class PlayerController : MonoBehaviour {
 		if (player1)
 			xpos = -4;
 		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
-		health = 2000.0f;
+		health = 2000.0f; // Debug for animation
 	}
 	void Start () {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
@@ -483,7 +483,7 @@ public class PlayerController : MonoBehaviour {
 		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
 
 		Debug.Log ("animated behaviors: " + animatedBehaviours);
-		health = 2000.0f;
+		health = 2000.0f; // Debug for animation
 		maxHealth = health;
 		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
