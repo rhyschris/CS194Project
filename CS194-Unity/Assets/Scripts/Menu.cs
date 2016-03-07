@@ -19,12 +19,17 @@ public class Menu : MonoBehaviour {
 
 
 	// need to figure out how to set hva and ava too
-	public void loadLevel() {
-		if (hva) {
-			// flag for one AI
-		} else if (ava) {
-			// flag for two AIs
-		}
-		SceneManager.LoadScene ("/Scenes/Arena");
+	public void loadhvhLevel() {
+		SceneManager.LoadScene ("Scenes/Arena");
+	}
+
+	public void loadhvaLevel() {
+		// flag for one AI
+		SceneManager.LoadScene ("Scenes/Arena");
+	}
+
+	public void loadavaLevel() {
+		// flag for two AI
+		SceneManager.LoadScene ("Scenes/Arena");
 	}
 }
