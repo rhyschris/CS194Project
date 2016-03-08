@@ -471,8 +471,8 @@ public class PlayerController : MonoBehaviour {
 		isAI = true;
 		Process process = new Process();
 		// Configure the process using the StartInfo properties.
-		process.StartInfo.FileName = "C:/Python27/python";
-		process.StartInfo.Arguments = "C:/Documents/CS194-Unity/ai/agents/basicQlearn.py 5998";
+		process.StartInfo.FileName = "CMD.EXE";
+		process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py 5998";
 		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
 		process.Start();
