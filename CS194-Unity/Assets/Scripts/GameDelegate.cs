@@ -17,6 +17,7 @@ public class GameDelegate : MonoBehaviour {
 	private HealthBarController healthbarcontroller;
 	private PlayerController player1;
 	private PlayerController player2;
+	private MenuInfo MI_gd;
 	private DebugTextController debugText;
 	private Text winText;
 	// KEYBOARD INPUTS
@@ -37,6 +38,9 @@ public class GameDelegate : MonoBehaviour {
 		GameObject player2Obj = GameObject.Find ("Player2");
 		GameObject debugTextObj = GameObject.Find ("DebugText");
 		GameObject winTextObj = GameObject.Find ("WinText");
+		GameObject MIObj = GameObject.Find ("Info");
+
+		MI_gd = MIObj.GetComponent<MenuInfo> ();
 		mainCamera = mainCameraObj.GetComponent<CameraController> ();
 		healthbarcontroller = healthBars.GetComponent<HealthBarController> ();
 		player1 = player1Obj.GetComponent<PlayerController> ();
@@ -49,6 +53,10 @@ public class GameDelegate : MonoBehaviour {
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
 		winText.color = Color.white;
+		if (MI_gd.isp1AI())
+			player1.setPlayerAI ();
+		if (MI_gd.isp2AI())
+			player2.setPlayerAI ();
 	}
 	void Update()
 	{

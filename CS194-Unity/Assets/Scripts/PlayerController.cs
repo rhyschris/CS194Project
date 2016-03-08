@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class PlayerController : MonoBehaviour {
 	// AI
@@ -239,7 +240,6 @@ public class PlayerController : MonoBehaviour {
 					isJumping = true;
 					jumpVelocity = initialJumpVelocity;
 					jumpHorizAction = lastAction;
-					Debug.Log("last action = "+jumpHorizAction.ToString());
 				}
 				break;
 			}
@@ -381,9 +381,7 @@ public class PlayerController : MonoBehaviour {
 		 */
 	public void receiveAttack(float damage, bool blocked) {
 		if (blocked) {
-			Debug.Log (blockPercentage);
 			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
-			Debug.Log ("damage = "+damage.ToString());
 			health = health - damage;
 			// TODO: Handle behavior if hit while blocking.
 		} else {
@@ -468,12 +466,24 @@ public class PlayerController : MonoBehaviour {
 	public bool isLowBlocking() {
 		return (blocking && lowBlocking);
 	}
+
+	public void setPlayerAI(){
+		isAI = true;
+		Process process = new Process();
+		// Configure the process using the StartInfo properties.
+		process.StartInfo.FileName = "C:/Python27/python";
+		process.StartInfo.Arguments = "C:/Documents/CS194-Unity/ai/agents/basicQlearn.py 5998";
+		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+
+		process.Start();
+		process.WaitForExit ();
+	}
 	public void resetPlayer(){
 		int xpos = 4;
 		if (player1)
 			xpos = -4;
 		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
-		health = 2000.0f; // Debug for animation
+		health = maxHealth; // Debug for animation
 	}
 	void Start () {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
@@ -482,7 +492,6 @@ public class PlayerController : MonoBehaviour {
 		// Capture the animation behaviors that underlie each state.  
 		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
 
-		Debug.Log ("animated behaviors: " + animatedBehaviours);
 		health = 2000.0f; // Debug for animation
 		maxHealth = health;
 		blockPercentage = 1.0f;
