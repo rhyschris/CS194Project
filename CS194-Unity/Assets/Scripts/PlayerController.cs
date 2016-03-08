@@ -472,11 +472,10 @@ public class PlayerController : MonoBehaviour {
 		Process process = new Process();
 		// Configure the process using the StartInfo properties.
 		process.StartInfo.FileName = "CMD.EXE";
-		process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py 5998";
+		process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
 		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
 		process.Start();
-		process.WaitForExit ();
 	}
 	public void resetPlayer(){
 		int xpos = 4;
