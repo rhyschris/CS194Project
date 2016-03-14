@@ -1,0 +1,2323 @@
+fileFormatVersion: 2
+guid: 0fe8ec69faf471748bb2e0e436c9baf5
+timeCreated: 1457997936
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: animation_cnt_cluster_grp
+    100002: ankle_l_cnt
+    100004: ankle_l_cnt_null
+    100006: ankle_l_cnt_null2
+    100008: ankle_l_fk_ik_trans_cnt
+    100010: ankle_l_fk_ik_trans_cnt_null
+    100012: ankle_r_cnt
+    100014: ankle_r_cnt_null
+    100016: ankle_r_cnt_null2
+    100018: ankle_r_fk_ik_trans_cnt
+    100020: ankle_r_fk_ik_trans_cnt 1
+    100022: ankle_r_fk_ik_trans_cnt 2
+    100024: ankle_r_fk_ik_trans_cnt_null
+    100026: ankle_r_fk_ik_trans_cnt_null1
+    100028: ankle_r_fk_ik_trans_cnt_null2
+    100030: ankle_r_trans_cnt
+    100032: ankle_r_trans_cnt_null
+    100034: ankle_trans_cnt
+    100036: ankle_trans_cnt_null
+    100038: arm_l_cnt
+    100040: arm_l_cnt_null
+    100042: arm_l_cnt_null2
+    100044: arm_l_cnt_null3
+    100046: arm_l_fk_trans_cnt
+    100048: arm_l_fk_trans_cnt_null
+    100050: arm_l_gimbal_cnt
+    100052: arm_l_gimbal_cnt_null
+    100054: arm_l_ik_trans_cnt
+    100056: arm_l_ik_trans_cnt 1
+    100058: arm_l_ik_trans_cnt_null
+    100060: arm_l_ik_trans_cnt_null1
+    100062: arm_l_trans_cnt_grp
+    100064: arm_r_cnt
+    100066: arm_r_cnt_null
+    100068: arm_r_cnt_null2
+    100070: arm_r_cnt_null3
+    100072: arm_r_fk_trans_cnt
+    100074: arm_r_fk_trans_cnt_null
+    100076: arm_r_gimbal_cnt
+    100078: arm_r_gimbal_cnt_null
+    100080: arm_r_ik_trans_cnt
+    100082: arm_r_ik_trans_cnt 1
+    100084: arm_r_ik_trans_cnt_null
+    100086: arm_r_ik_trans_cnt_null1
+    100088: arm_r_trans_cnt
+    100090: arm_r_trans_cnt_grp
+    100092: arm_r_trans_cnt_null
+    100094: arm_trans_cnt
+    100096: arm_trans_cnt_null
+    100098: base_trans_cnt_grp
+    100100: belly_cnt
+    100102: belly_cnt_null
+    100104: belly_cnt_null2
+    100106: belly_trans_cnt
+    100108: belly_trans_cnt 1
+    100110: belly_trans_cnt_null
+    100112: belly_trans_cnt_null2
+    100114: biped_rig_grp
+    100116: bone_ankle_l
+    100118: bone_ankle_r
+    100120: bone_arm_l
+    100122: bone_arm_r
+    100124: bone_belly
+    100126: bone_brow_l
+    100128: bone_brow_r
+    100130: bone_cheek_l
+    100132: bone_cheek_r
+    100134: bone_chest
+    100136: bone_clavicle_l
+    100138: bone_clavicle_r
+    100140: bone_elbow_l
+    100142: bone_elbow_r
+    100144: bone_eye_l
+    100146: bone_eye_r
+    100148: bone_finger_index_l_base
+    100150: bone_finger_index_l_mid
+    100152: bone_finger_index_l_tip
+    100154: bone_finger_index_r_base
+    100156: bone_finger_index_r_mid
+    100158: bone_finger_index_r_tip
+    100160: bone_finger_middle_l_base
+    100162: bone_finger_middle_l_mid
+    100164: bone_finger_middle_l_tip
+    100166: bone_finger_middle_r_base
+    100168: bone_finger_middle_r_mid
+    100170: bone_finger_middle_r_tip
+    100172: bone_finger_pinky_l_base
+    100174: bone_finger_pinky_l_mid
+    100176: bone_finger_pinky_l_tip
+    100178: bone_finger_pinky_r_base
+    100180: bone_finger_pinky_r_mid
+    100182: bone_finger_pinky_r_tip
+    100184: bone_finger_ring_l_base
+    100186: bone_finger_ring_l_mid
+    100188: bone_finger_ring_l_tip
+    100190: bone_finger_ring_r_base
+    100192: bone_finger_ring_r_mid
+    100194: bone_finger_ring_r_tip
+    100196: bone_head
+    100198: bone_jaw
+    100200: bone_knee_l
+    100202: bone_knee_r
+    100204: bone_levator_l
+    100206: bone_levator_r
+    100208: bone_lid_l_bottom
+    100210: bone_lid_l_top
+    100212: bone_lid_r_bottom
+    100214: bone_lid_r_top
+    100216: bone_lips_bottom
+    100218: bone_lips_l
+    100220: bone_lips_r
+    100222: bone_lips_top
+    100224: bone_neck
+    100226: bone_nose_l
+    100228: bone_nose_r
+    100230: bone_radius_l
+    100232: bone_radius_r
+    100234: bone_root
+    100236: bone_shin_l
+    100238: bone_shin_r
+    100240: bone_spine_base
+    100242: bone_spine_lower
+    100244: bone_spine_mid
+    100246: bone_spine_upper
+    100248: bone_thigh_l
+    100250: bone_thigh_r
+    100252: bone_thumb_l_base
+    100254: bone_thumb_l_mid
+    100256: bone_thumb_l_tip
+    100258: bone_thumb_r_base
+    100260: bone_thumb_r_mid
+    100262: bone_thumb_r_tip
+    100264: bone_toe_l
+    100266: bone_toe_l_end
+    100268: bone_toe_r
+    100270: bone_toe_r_end
+    100272: bone_wrist_l
+    100274: bone_wrist_r
+    100276: brow_l_cnt
+    100278: brow_l_cnt_null
+    100280: brow_l_cnt_null2
+    100282: brow_r_cnt
+    100284: brow_r_cnt_null
+    100286: brow_r_cnt_null2
+    100288: brow_r_trans_cnt
+    100290: brow_r_trans_cnt_null
+    100292: brow_r_trans_cnt_null2
+    100294: brow_trans_cnt
+    100296: brow_trans_cnt_null
+    100298: brow_trans_cnt_null2
+    100300: character_cnt
+    100302: character_cnt_null
+    100304: cheek_l_cnt
+    100306: cheek_l_cnt_null
+    100308: cheek_l_cnt_null2
+    100310: cheek_r_cnt
+    100312: cheek_r_cnt_null
+    100314: cheek_r_cnt_null2
+    100316: cheek_r_trans_cnt
+    100318: cheek_r_trans_cnt_null
+    100320: cheek_r_trans_cnt_null2
+    100322: cheek_trans_cnt
+    100324: cheek_trans_cnt_null
+    100326: cheek_trans_cnt_null2
+    100328: chest_cnt
+    100330: chest_cnt_null
+    100332: chest_fk_ik_trans_cnt
+    100334: chest_fk_ik_trans_cnt_null
+    100336: chest_trans_cnt
+    100338: chest_trans_cnt_null
+    100340: chest_trans_cnt_null2
+    100342: clavicle_l_cnt
+    100344: clavicle_l_cnt_null
+    100346: clavicle_l_cnt_null2
+    100348: clavicle_r_cnt
+    100350: clavicle_r_cnt_null
+    100352: clavicle_r_cnt_null2
+    100354: clavicle_r_trans_cnt
+    100356: clavicle_r_trans_cnt_null
+    100358: clavicle_r_trans_cnt_null2
+    100360: clavicle_trans_cnt
+    100362: clavicle_trans_cnt_null
+    100364: clavicle_trans_cnt_null2
+    100366: cluster100Handle
+    100368: cluster101Handle
+    100370: cluster102Handle
+    100372: cluster103Handle
+    100374: cluster104Handle
+    100376: cluster105Handle
+    100378: cluster106Handle
+    100380: cluster107Handle
+    100382: cluster108Handle
+    100384: cluster109Handle
+    100386: cluster10Handle
+    100388: cluster110Handle
+    100390: cluster111Handle
+    100392: cluster112Handle
+    100394: cluster113Handle
+    100396: cluster114Handle
+    100398: cluster115Handle
+    100400: cluster116Handle
+    100402: cluster117Handle
+    100404: cluster118Handle
+    100406: cluster119Handle
+    100408: cluster11Handle
+    100410: cluster120Handle
+    100412: cluster121Handle
+    100414: cluster122Handle
+    100416: cluster123Handle
+    100418: cluster124Handle
+    100420: cluster125Handle
+    100422: cluster126Handle
+    100424: cluster127Handle
+    100426: cluster128Handle
+    100428: cluster12Handle
+    100430: cluster13Handle
+    100432: cluster143Handle
+    100434: cluster144Handle
+    100436: cluster145Handle
+    100438: cluster146Handle
+    100440: cluster147Handle
+    100442: cluster148Handle
+    100444: cluster149Handle
+    100446: cluster14Handle
+    100448: cluster150Handle
+    100450: cluster151Handle
+    100452: cluster152Handle
+    100454: cluster153Handle
+    100456: cluster154Handle
+    100458: cluster155Handle
+    100460: cluster156Handle
+    100462: cluster157Handle
+    100464: cluster158Handle
+    100466: cluster159Handle
+    100468: cluster15Handle
+    100470: cluster160Handle
+    100472: cluster161Handle
+    100474: cluster162Handle
+    100476: cluster163Handle
+    100478: cluster16Handle
+    100480: cluster17Handle
+    100482: cluster18Handle
+    100484: cluster19Handle
+    100486: cluster1Handle
+    100488: cluster20Handle
+    100490: cluster21Handle
+    100492: cluster22Handle
+    100494: cluster23Handle
+    100496: cluster24Handle
+    100498: cluster25Handle
+    100500: cluster26Handle
+    100502: cluster27Handle
+    100504: cluster28Handle
+    100506: cluster29Handle
+    100508: cluster2Handle
+    100510: cluster30Handle
+    100512: cluster31Handle
+    100514: cluster32Handle
+    100516: cluster33Handle
+    100518: cluster34Handle
+    100520: cluster35Handle
+    100522: cluster36Handle
+    100524: cluster37Handle
+    100526: cluster38Handle
+    100528: cluster39Handle
+    100530: cluster3Handle
+    100532: cluster40Handle
+    100534: cluster41Handle
+    100536: cluster42Handle
+    100538: cluster43Handle
+    100540: cluster44Handle
+    100542: cluster45Handle
+    100544: cluster46Handle
+    100546: cluster47Handle
+    100548: cluster48Handle
+    100550: cluster49Handle
+    100552: cluster4Handle
+    100554: cluster50Handle
+    100556: cluster51Handle
+    100558: cluster52Handle
+    100560: cluster53Handle
+    100562: cluster54Handle
+    100564: cluster55Handle
+    100566: cluster56Handle
+    100568: cluster57Handle
+    100570: cluster58Handle
+    100572: cluster59Handle
+    100574: cluster5Handle
+    100576: cluster60Handle
+    100578: cluster61Handle
+    100580: cluster62Handle
+    100582: cluster63Handle
+    100584: cluster64Handle
+    100586: cluster65Handle
+    100588: cluster66Handle
+    100590: cluster67Handle
+    100592: cluster68Handle
+    100594: cluster69Handle
+    100596: cluster6Handle
+    100598: cluster70Handle
+    100600: cluster71Handle
+    100602: cluster72Handle
+    100604: cluster73Handle
+    100606: cluster74Handle
+    100608: cluster75Handle
+    100610: cluster76Handle
+    100612: cluster77Handle
+    100614: cluster78Handle
+    100616: cluster79Handle
+    100618: cluster7Handle
+    100620: cluster80Handle
+    100622: cluster81Handle
+    100624: cluster82Handle
+    100626: cluster83Handle
+    100628: cluster84Handle
+    100630: cluster85Handle
+    100632: cluster86Handle
+    100634: cluster87Handle
+    100636: cluster88Handle
+    100638: cluster89Handle
+    100640: cluster8Handle
+    100642: cluster90Handle
+    100644: cluster91Handle
+    100646: cluster92Handle
+    100648: cluster93Handle
+    100650: cluster94Handle
+    100652: cluster95Handle
+    100654: cluster96Handle
+    100656: cluster97Handle
+    100658: cluster98Handle
+    100660: cluster99Handle
+    100662: cluster9Handle
+    100664: cluster_grp
+    100666: control_cluster_grp
+    100668: curve1
+    100670: digits_l_anim_cnt_grp
+    100672: digits_l_trans_grp
+    100674: digits_l_trans_grp1
+    100676: digits_r_anim_cnt_grp
+    100678: elbow_l_cnt
+    100680: elbow_l_cnt_null
+    100682: elbow_l_cnt_null2
+    100684: elbow_l_fk_trans_cnt
+    100686: elbow_l_fk_trans_cnt_null
+    100688: elbow_r_cnt
+    100690: elbow_r_cnt_null
+    100692: elbow_r_cnt_null2
+    100694: elbow_r_fk_trans_cnt
+    100696: elbow_r_fk_trans_cnt_null
+    100698: elbow_r_trans_cnt
+    100700: elbow_r_trans_cnt_null
+    100702: elbow_trans_cnt
+    100704: elbow_trans_cnt_null
+    100706: eye_l_cnt
+    100708: eye_l_cnt_null
+    100710: eye_l_cnt_null2
+    100712: eye_r_cnt
+    100714: eye_r_cnt_null
+    100716: eye_r_cnt_null2
+    100718: eye_r_trans_cnt
+    100720: eye_r_trans_cnt_null
+    100722: eye_r_trans_cnt_null2
+    100724: eye_trans_cnt
+    100726: eye_trans_cnt_null
+    100728: eye_trans_cnt_null2
+    100730: eyes_cnt
+    100732: eyes_cnt_null
+    100734: eyes_cnt_null2
+    100736: face_cnt
+    100738: face_cnt_camera
+    100740: face_cnt_grp
+    100742: face_cnt_null
+    100744: face_cnt_null2
+    100746: face_trans_cnt_grp
+    100748: fibula_l_fk_ik_trans_cnt
+    100750: fibula_l_fk_ik_trans_cnt_null
+    100752: fibula_r_fk_ik_trans_cnt
+    100754: fibula_r_fk_ik_trans_cnt_null
+    100756: fibula_r_trans_cnt
+    100758: fibula_r_trans_cnt_null
+    100760: finger_middle_base_trans_cnt
+    100762: finger_middle_base_trans_cnt 1
+    100764: finger_middle_base_trans_cnt_null
+    100766: finger_middle_base_trans_cnt_null 1
+    100768: finger_middle_base_trans_cnt_null2
+    100770: finger_middle_base_trans_cnt_null2 1
+    100772: finger_middle_l_cnt
+    100774: finger_middle_l_cnt_null
+    100776: finger_middle_l_cnt_null2
+    100778: finger_middle_mid_l_cnt
+    100780: finger_middle_mid_l_cnt_null
+    100782: finger_middle_mid_l_cnt_null2
+    100784: finger_middle_mid_r_cnt
+    100786: finger_middle_mid_r_cnt_null
+    100788: finger_middle_mid_r_cnt_null2
+    100790: finger_middle_mid_trans_cnt
+    100792: finger_middle_mid_trans_cnt 1
+    100794: finger_middle_mid_trans_cnt_null
+    100796: finger_middle_mid_trans_cnt_null 1
+    100798: finger_middle_r_cnt
+    100800: finger_middle_r_cnt_null
+    100802: finger_middle_r_cnt_null2
+    100804: finger_middle_tip_l_cnt
+    100806: finger_middle_tip_l_cnt_null
+    100808: finger_middle_tip_l_cnt_null2
+    100810: finger_middle_tip_r_cnt
+    100812: finger_middle_tip_r_cnt_null
+    100814: finger_middle_tip_r_cnt_null2
+    100816: finger_middle_tip_trans_cnt
+    100818: finger_middle_tip_trans_cnt 1
+    100820: finger_middle_tip_trans_cnt_null
+    100822: finger_middle_tip_trans_cnt_null 1
+    100824: finger_pinky_base_trans_cnt
+    100826: finger_pinky_base_trans_cnt 1
+    100828: finger_pinky_base_trans_cnt_null
+    100830: finger_pinky_base_trans_cnt_null 1
+    100832: finger_pinky_base_trans_cnt_null2
+    100834: finger_pinky_base_trans_cnt_null2 1
+    100836: finger_pinky_l_cnt
+    100838: finger_pinky_l_cnt_null
+    100840: finger_pinky_l_cnt_null2
+    100842: finger_pinky_mid_l_cnt
+    100844: finger_pinky_mid_l_cnt_null
+    100846: finger_pinky_mid_l_cnt_null2
+    100848: finger_pinky_mid_r_cnt
+    100850: finger_pinky_mid_r_cnt_null
+    100852: finger_pinky_mid_r_cnt_null2
+    100854: finger_pinky_mid_trans_cnt
+    100856: finger_pinky_mid_trans_cnt 1
+    100858: finger_pinky_mid_trans_cnt_null
+    100860: finger_pinky_mid_trans_cnt_null 1
+    100862: finger_pinky_r_cnt
+    100864: finger_pinky_r_cnt_null
+    100866: finger_pinky_r_cnt_null2
+    100868: finger_pinky_tip_l_cnt
+    100870: finger_pinky_tip_l_cnt_null
+    100872: finger_pinky_tip_l_cnt_null2
+    100874: finger_pinky_tip_r_cnt
+    100876: finger_pinky_tip_r_cnt_null
+    100878: finger_pinky_tip_r_cnt_null2
+    100880: finger_pinky_tip_trans_cnt
+    100882: finger_pinky_tip_trans_cnt 1
+    100884: finger_pinky_tip_trans_cnt_null
+    100886: finger_pinky_tip_trans_cnt_null 1
+    100888: finger_pointer_base_trans_cnt
+    100890: finger_pointer_base_trans_cnt 1
+    100892: finger_pointer_base_trans_cnt_null
+    100894: finger_pointer_base_trans_cnt_null 1
+    100896: finger_pointer_base_trans_cnt_null2
+    100898: finger_pointer_base_trans_cnt_null2 1
+    100900: finger_pointer_l_cnt
+    100902: finger_pointer_l_cnt_null
+    100904: finger_pointer_l_cnt_null2
+    100906: finger_pointer_mid_l_cnt
+    100908: finger_pointer_mid_l_cnt_null
+    100910: finger_pointer_mid_l_cnt_null2
+    100912: finger_pointer_mid_r_cnt
+    100914: finger_pointer_mid_r_cnt_null
+    100916: finger_pointer_mid_r_cnt_null2
+    100918: finger_pointer_mid_trans_cnt
+    100920: finger_pointer_mid_trans_cnt 1
+    100922: finger_pointer_mid_trans_cnt_null
+    100924: finger_pointer_mid_trans_cnt_null 1
+    100926: finger_pointer_r_cnt
+    100928: finger_pointer_r_cnt_null
+    100930: finger_pointer_r_cnt_null2
+    100932: finger_pointer_tip_l_cnt
+    100934: finger_pointer_tip_l_cnt_null
+    100936: finger_pointer_tip_l_cnt_null2
+    100938: finger_pointer_tip_r_cnt
+    100940: finger_pointer_tip_r_cnt_null
+    100942: finger_pointer_tip_r_cnt_null2
+    100944: finger_pointer_tip_trans_cnt
+    100946: finger_pointer_tip_trans_cnt 1
+    100948: finger_pointer_tip_trans_cnt_null
+    100950: finger_pointer_tip_trans_cnt_null 1
+    100952: finger_ring_base_trans_cnt
+    100954: finger_ring_base_trans_cnt 1
+    100956: finger_ring_base_trans_cnt_null
+    100958: finger_ring_base_trans_cnt_null 1
+    100960: finger_ring_base_trans_cnt_null2
+    100962: finger_ring_base_trans_cnt_null2 1
+    100964: finger_ring_l_cnt
+    100966: finger_ring_l_cnt_null
+    100968: finger_ring_l_cnt_null2
+    100970: finger_ring_mid_l_cnt
+    100972: finger_ring_mid_l_cnt_null
+    100974: finger_ring_mid_l_cnt_null2
+    100976: finger_ring_mid_r_cnt
+    100978: finger_ring_mid_r_cnt_null
+    100980: finger_ring_mid_r_cnt_null2
+    100982: finger_ring_mid_trans_cnt
+    100984: finger_ring_mid_trans_cnt 1
+    100986: finger_ring_mid_trans_cnt_null
+    100988: finger_ring_mid_trans_cnt_null 1
+    100990: finger_ring_r_cnt
+    100992: finger_ring_r_cnt_null
+    100994: finger_ring_r_cnt_null2
+    100996: finger_ring_tip_l_cnt
+    100998: finger_ring_tip_l_cnt_null
+    101000: finger_ring_tip_l_cnt_null2
+    101002: finger_ring_tip_r_cnt
+    101004: finger_ring_tip_r_cnt_null
+    101006: finger_ring_tip_r_cnt_null2
+    101008: finger_ring_tip_trans_cnt
+    101010: finger_ring_tip_trans_cnt 1
+    101012: fk_bone_ankle_l
+    101014: fk_bone_ankle_r
+    101016: fk_bone_arm_l
+    101018: fk_bone_arm_l 1
+    101020: fk_bone_arm_r
+    101022: fk_bone_arm_r 1
+    101024: fk_bone_brow_l
+    101026: fk_bone_brow_r
+    101028: fk_bone_cheek_l
+    101030: fk_bone_cheek_r
+    101032: fk_bone_chest
+    101034: fk_bone_clavicle_l
+    101036: fk_bone_clavicle_l1
+    101038: fk_bone_clavicle_r
+    101040: fk_bone_clavicle_r1
+    101042: fk_bone_elbow_l
+    101044: fk_bone_elbow_l 1
+    101046: fk_bone_elbow_r
+    101048: fk_bone_elbow_r 1
+    101050: fk_bone_eye_l
+    101052: fk_bone_eye_r
+    101054: fk_bone_finger_index_l_base
+    101056: fk_bone_finger_index_l_base 1
+    101058: fk_bone_finger_index_l_mid
+    101060: fk_bone_finger_index_l_mid 1
+    101062: fk_bone_finger_index_l_tip
+    101064: fk_bone_finger_index_l_tip 1
+    101066: fk_bone_finger_index_r_base
+    101068: fk_bone_finger_index_r_base 1
+    101070: fk_bone_finger_index_r_mid
+    101072: fk_bone_finger_index_r_mid 1
+    101074: fk_bone_finger_index_r_tip
+    101076: fk_bone_finger_index_r_tip 1
+    101078: fk_bone_finger_middle_l_base
+    101080: fk_bone_finger_middle_l_base 1
+    101082: fk_bone_finger_middle_l_mid
+    101084: fk_bone_finger_middle_l_mid 1
+    101086: fk_bone_finger_middle_l_tip
+    101088: fk_bone_finger_middle_l_tip 1
+    101090: fk_bone_finger_middle_r_base
+    101092: fk_bone_finger_middle_r_base 1
+    101094: fk_bone_finger_middle_r_mid
+    101096: fk_bone_finger_middle_r_mid 1
+    101098: fk_bone_finger_middle_r_tip
+    101100: fk_bone_finger_middle_r_tip 1
+    101102: fk_bone_finger_pinky_l_base
+    101104: fk_bone_finger_pinky_l_base 1
+    101106: fk_bone_finger_pinky_l_mid
+    101108: fk_bone_finger_pinky_l_mid 1
+    101110: fk_bone_finger_pinky_l_tip
+    101112: fk_bone_finger_pinky_l_tip 1
+    101114: fk_bone_finger_pinky_r_base
+    101116: fk_bone_finger_pinky_r_base 1
+    101118: fk_bone_finger_pinky_r_mid
+    101120: fk_bone_finger_pinky_r_mid 1
+    101122: fk_bone_finger_pinky_r_tip
+    101124: fk_bone_finger_pinky_r_tip 1
+    101126: fk_bone_finger_ring_l_base
+    101128: fk_bone_finger_ring_l_base 1
+    101130: fk_bone_finger_ring_l_mid
+    101132: fk_bone_finger_ring_l_mid 1
+    101134: fk_bone_finger_ring_l_tip
+    101136: fk_bone_finger_ring_l_tip 1
+    101138: fk_bone_finger_ring_r_base
+    101140: fk_bone_finger_ring_r_base 1
+    101142: fk_bone_finger_ring_r_mid
+    101144: fk_bone_finger_ring_r_mid 1
+    101146: fk_bone_finger_ring_r_tip
+    101148: fk_bone_finger_ring_r_tip 1
+    101150: fk_bone_head
+    101152: fk_bone_jaw
+    101154: fk_bone_knee_l
+    101156: fk_bone_knee_r
+    101158: fk_bone_levator_l
+    101160: fk_bone_levator_r
+    101162: fk_bone_lid_l_bottom
+    101164: fk_bone_lid_l_top
+    101166: fk_bone_lid_r_bottom
+    101168: fk_bone_lid_r_top
+    101170: fk_bone_lips_bottom
+    101172: fk_bone_lips_l
+    101174: fk_bone_lips_r
+    101176: fk_bone_lips_top
+    101178: fk_bone_neck
+    101180: fk_bone_nose_l
+    101182: fk_bone_nose_r
+    101184: fk_bone_radius_l
+    101186: fk_bone_radius_l 1
+    101188: fk_bone_radius_r
+    101190: fk_bone_radius_r 1
+    101192: fk_bone_root
+    101194: fk_bone_shin_l
+    101196: fk_bone_shin_r
+    101198: fk_bone_spine_base
+    101200: fk_bone_spine_lower
+    101202: fk_bone_spine_mid
+    101204: fk_bone_spine_upper
+    101206: fk_bone_thigh_l
+    101208: fk_bone_thigh_r
+    101210: fk_bone_thumb_l_base
+    101212: fk_bone_thumb_l_base 1
+    101214: fk_bone_thumb_l_mid
+    101216: fk_bone_thumb_l_mid 1
+    101218: fk_bone_thumb_l_tip
+    101220: fk_bone_thumb_l_tip 1
+    101222: fk_bone_thumb_r_base
+    101224: fk_bone_thumb_r_base 1
+    101226: fk_bone_thumb_r_mid
+    101228: fk_bone_thumb_r_mid 1
+    101230: fk_bone_thumb_r_tip
+    101232: fk_bone_thumb_r_tip 1
+    101234: fk_bone_toe_l
+    101236: fk_bone_toe_l_end
+    101238: fk_bone_toe_r
+    101240: fk_bone_toe_r_end
+    101242: fk_bone_wrist_l
+    101244: fk_bone_wrist_l 1
+    101246: fk_bone_wrist_r
+    101248: fk_bone_wrist_r 1
+    101250: foot_l_ik_cnt
+    101252: foot_l_ik_cnt_null
+    101254: foot_l_ik_cnt_null2
+    101256: foot_r_ik_cnt
+    101258: foot_r_ik_cnt_null
+    101260: foot_r_ik_cnt_null2
+    101262: fringer_ring_tip_trans_cnt_null
+    101264: fringer_ring_tip_trans_cnt_null 1
+    101266: geometry_grp
+    101268: group10
+    101270: group11
+    101272: group12
+    101274: group13
+    101276: group14
+    101278: group15
+    101280: group16
+    101282: group17
+    101284: group18
+    101286: group19
+    101288: group20
+    101290: group3
+    101292: group3 1
+    101294: group3 10
+    101296: group3 11
+    101298: group3 12
+    101300: group3 13
+    101302: group3 14
+    101304: group3 15
+    101306: group3 16
+    101308: group3 17
+    101310: group3 18
+    101312: group3 19
+    101314: group3 2
+    101316: group3 20
+    101318: group3 21
+    101320: group3 22
+    101322: group3 23
+    101324: group3 24
+    101326: group3 25
+    101328: group3 26
+    101330: group3 27
+    101332: group3 28
+    101334: group3 29
+    101336: group3 3
+    101338: group3 30
+    101340: group3 31
+    101342: group3 32
+    101344: group3 33
+    101346: group3 34
+    101348: group3 35
+    101350: group3 36
+    101352: group3 4
+    101354: group3 5
+    101356: group3 6
+    101358: group3 7
+    101360: group3 8
+    101362: group3 9
+    101364: group38
+    101366: group39
+    101368: group4
+    101370: group40
+    101372: group41
+    101374: group42
+    101376: group43
+    101378: group44
+    101380: group45
+    101382: group46
+    101384: group47
+    101386: group48
+    101388: group49
+    101390: group5
+    101392: group50
+    101394: group51
+    101396: group52
+    101398: group53
+    101400: group54
+    101402: group55
+    101404: group57
+    101406: group6
+    101408: group7
+    101410: group8
+    101412: group82
+    101414: group83
+    101416: group9
+    101418: hand_ik_cnt_grp
+    101420: head_cnt
+    101422: head_cnt_null
+    101424: head_cnt_null2
+    101426: head_trans_cnt
+    101428: head_trans_cnt_null
+    101430: head_trans_cnt_null2
+    101432: heel_l_cnt
+    101434: heel_l_cnt 1
+    101436: heel_l_cnt_null
+    101438: heel_l_cnt_null1
+    101440: heel_r_cnt
+    101442: heel_r_cnt 1
+    101444: heel_r_cnt_null
+    101446: heel_r_cnt_null1
+    101448: helper_nodes_grp
+    101450: hips_cnt
+    101452: hips_cnt_null
+    101454: ik_bone_ankle_l
+    101456: ik_bone_ankle_l 1
+    101458: ik_bone_ankle_r
+    101460: ik_bone_ankle_r 1
+    101462: ik_bone_arm_l
+    101464: ik_bone_arm_r
+    101466: ik_bone_chest
+    101468: ik_bone_clavicle_l
+    101470: ik_bone_clavicle_r
+    101472: ik_bone_elbow_l
+    101474: ik_bone_elbow_r
+    101476: ik_bone_knee_l
+    101478: ik_bone_knee_l 1
+    101480: ik_bone_knee_r
+    101482: ik_bone_knee_r 1
+    101484: ik_bone_radius_l
+    101486: ik_bone_radius_r
+    101488: ik_bone_root
+    101490: ik_bone_shin_l
+    101492: ik_bone_shin_l 1
+    101494: ik_bone_shin_r
+    101496: ik_bone_shin_r 1
+    101498: ik_bone_spine_base
+    101500: ik_bone_spine_lower
+    101502: ik_bone_spine_mid
+    101504: ik_bone_spine_upper
+    101506: ik_bone_thigh_l
+    101508: ik_bone_thigh_l1
+    101510: ik_bone_thigh_l2
+    101512: ik_bone_thigh_r
+    101514: ik_bone_thigh_r1
+    101516: ik_bone_thigh_r2
+    101518: ik_bone_toe_l
+    101520: ik_bone_toe_l 1
+    101522: ik_bone_toe_l_end
+    101524: ik_bone_toe_l_end 1
+    101526: ik_bone_toe_r
+    101528: ik_bone_toe_r 1
+    101530: ik_bone_toe_r_end
+    101532: ik_bone_toe_r_end 1
+    101534: ik_bone_wrist_l
+    101536: ik_bone_wrist_r
+    101538: ik_trans_cnt_grp
+    101540: ikHandle11
+    101542: ikHandle13
+    101544: ikHandle15
+    101546: ikHandle16
+    101548: ikHandle17
+    101550: ikHandle18
+    101552: ikHandle19
+    101554: jaw_cnt
+    101556: jaw_cnt_null
+    101558: jaw_cnt_null2
+    101560: jaw_trans_cnt
+    101562: jaw_trans_cnt_null
+    101564: jaw_trans_cnt_null2
+    101566: joint1
+    101568: joint10
+    101570: joint11
+    101572: joint12
+    101574: joint13
+    101576: joint14
+    101578: joint2
+    101580: joint3
+    101582: joint4
+    101584: joint5
+    101586: joint6
+    101588: joint7
+    101590: joint8
+    101592: joint9
+    101594: knee_l_cnt
+    101596: knee_l_cnt_null
+    101598: knee_l_cnt_null2
+    101600: knee_l_fk_ik_trans_cnt
+    101602: knee_l_fk_ik_trans_cnt_null
+    101604: knee_r_cnt
+    101606: knee_r_cnt_null
+    101608: knee_r_cnt_null2
+    101610: knee_r_fk_ik_trans_cnt
+    101612: knee_r_fk_ik_trans_cnt_null
+    101614: knee_r_trans_cnt
+    101616: knee_r_trans_cnt_null
+    101618: knee_trans_cnt
+    101620: knee_trans_cnt_null
+    101622: leg_l_ikHandle
+    101624: leg_l_trans_grp
+    101626: leg_l_trans_orient
+    101628: leg_l_trans_orient_null
+    101630: leg_r_trans_grp
+    101632: levator_l_cnt
+    101634: levator_l_cnt_null
+    101636: levator_l_cnt_null2
+    101638: levator_r_cnt
+    101640: levator_r_cnt_null
+    101642: levator_r_cnt_null2
+    101644: levator_r_trans_cnt
+    101646: levator_r_trans_cnt_null
+    101648: levator_r_trans_cnt_null2
+    101650: levator_trans_cnt
+    101652: levator_trans_cnt_null
+    101654: levator_trans_cnt_null2
+    101656: lid_l_bottom_cnt
+    101658: lid_l_bottom_cnt_null
+    101660: lid_l_bottom_cnt_null2
+    101662: lid_l_top_cnt
+    101664: lid_l_top_cnt_null
+    101666: lid_l_top_cnt_null2
+    101668: lid_r_bottom_cnt
+    101670: lid_r_bottom_cnt_null
+    101672: lid_r_bottom_cnt_null2
+    101674: lid_r_top_cnt
+    101676: lid_r_top_cnt_null
+    101678: lid_r_top_cnt_null2
+    101680: lids_r_trans_cnt
+    101682: lids_r_trans_cnt_null
+    101684: lids_r_trans_cnt_null2
+    101686: lids_trans_cnt
+    101688: lids_trans_cnt_null
+    101690: lids_trans_cnt_null2
+    101692: lip_bottom_cnt
+    101694: lip_bottom_cnt_null
+    101696: lip_bottom_cnt_null2
+    101698: lip_top_cnt
+    101700: lip_top_cnt_null
+    101702: lip_top_cnt_null2
+    101704: lip_trans_bottom_cnt
+    101706: lip_trans_bottom_cnt_null
+    101708: lip_trans_bottom_cnt_null2
+    101710: lip_trans_top_cnt
+    101712: lip_trans_top_cnt_null
+    101714: lip_trans_top_cnt_null2
+    101716: lips_l_cnt
+    101718: lips_l_cnt_null
+    101720: lips_l_cnt_null2
+    101722: lips_l_trans_cnt
+    101724: lips_l_trans_cnt_null
+    101726: lips_l_trans_cnt_null2
+    101728: lips_r_cnt
+    101730: lips_r_cnt_null
+    101732: lips_r_cnt_null2
+    101734: lips_r_trans_cnt
+    101736: lips_r_trans_cnt_null
+    101738: lips_r_trans_cnt_null2
+    101740: locator2
+    101742: locator2 1
+    101744: locator2 10
+    101746: locator2 11
+    101748: locator2 12
+    101750: locator2 13
+    101752: locator2 14
+    101754: locator2 15
+    101756: locator2 16
+    101758: locator2 17
+    101760: locator2 18
+    101762: locator2 19
+    101764: locator2 2
+    101766: locator2 20
+    101768: locator2 21
+    101770: locator2 22
+    101772: locator2 23
+    101774: locator2 24
+    101776: locator2 25
+    101778: locator2 26
+    101780: locator2 27
+    101782: locator2 28
+    101784: locator2 29
+    101786: locator2 3
+    101788: locator2 30
+    101790: locator2 31
+    101792: locator2 32
+    101794: locator2 33
+    101796: locator2 34
+    101798: locator2 35
+    101800: locator2 36
+    101802: locator2 4
+    101804: locator2 5
+    101806: locator2 6
+    101808: locator2 7
+    101810: locator2 8
+    101812: locator2 9
+    101814: locator3
+    101816: locator9
+    101818: neck_cnt_null
+    101820: neck_cnt_null 1
+    101822: neck_cnt_null2
+    101824: neck_trans_cnt
+    101826: neck_trans_cnt_null
+    101828: neck_trans_cnt_null2
+    101830: nose_cnt
+    101832: nose_cnt_null
+    101834: nose_cnt_null2
+    101836: nose_r_trans_cnt
+    101838: nose_r_trans_cnt_null
+    101840: nose_r_trans_cnt_null2
+    101842: nose_trans_cnt
+    101844: nose_trans_cnt_null
+    101846: nose_trans_cnt_null2
+    101848: radiul_trans_cnt
+    101850: radius_l_cnt
+    101852: radius_l_cnt_null
+    101854: radius_l_cnt_null2
+    101856: radius_l_fk_trans_cnt
+    101858: radius_l_fk_trans_cnt_null
+    101860: radius_r_cnt
+    101862: radius_r_cnt_null
+    101864: radius_r_cnt_null2
+    101866: radius_r_fk_trans_cnt
+    101868: radius_r_fk_trans_cnt_null
+    101870: radius_r_trans_cnt
+    101872: radius_r_trans_cnt_null
+    101874: radius_trans_cnt_null
+    101876: retarget_cnt_cluster_grp
+    101878: root_cnt
+    101880: root_l_ik_cnt
+    101882: root_l_ik_cnt_null
+    101884: root_l_ik_cnt_null2
+    101886: root_r_ik_cnt
+    101888: root_r_ik_cnt_null
+    101890: root_r_ik_cnt_null2
+    101892: root_trans_cnt
+    101894: shin_l_cnt
+    101896: shin_l_cnt_null
+    101898: shin_l_cnt_null2
+    101900: shin_r_cnt
+    101902: shin_r_cnt_null
+    101904: shin_r_cnt_null2
+    101906: shin_trans_cnt
+    101908: shin_trans_cnt_null
+    101910: shoulder_l_trans_orient
+    101912: shoulder_l_trans_orient_null
+    101914: shoulder_r_trans_orient
+    101916: shoulder_r_trans_orient_null
+    101918: spine_base_cnt
+    101920: spine_base_cnt_null
+    101922: spine_base_fk_ik_trans_cnt
+    101924: spine_base_fk_ik_trans_cnt_null
+    101926: spine_base_trans_cnt
+    101928: spine_base_trans_cnt_null
+    101930: spine_base_trans_cnt_null2
+    101932: spine_low_cnt
+    101934: spine_low_cnt_null
+    101936: spine_low_fk_ik_trans_cnt
+    101938: spine_low_fk_ik_trans_cnt_null
+    101940: spine_low_trans_cnt
+    101942: spine_low_trans_cnt_null
+    101944: spine_low_trans_cnt_null 1
+    101946: spine_low_trans_cnt_null5
+    101948: spine_low_trans_cnt_null6
+    101950: spine_mid_cnt
+    101952: spine_mid_cnt_null
+    101954: spine_mid_fk_ik_trans_cnt
+    101956: spine_mid_fk_ik_trans_cnt_null
+    101958: spine_mid_trans_cnt
+    101960: spine_mid_trans_cnt_null
+    101962: spine_mid_trans_cnt_null2
+    101964: spine_trans_cnt_grp
+    101966: spine_trans_fk_ik_cnt_grp
+    101968: spine_upper_cnt
+    101970: spine_upper_cnt_null
+    101972: spine_upper_fk_ik_trans_cnt
+    101974: spine_upper_fk_ik_trans_cnt_null
+    101976: spine_upper_trans_cnt
+    101978: spine_upper_trans_cnt 1
+    101980: spine_upper_trans_cnt 2
+    101982: spine_upper_trans_cnt_null
+    101984: spine_upper_trans_cnt_null 1
+    101986: spine_upper_trans_cnt_null2
+    101988: spine_upper_trans_cnt_null5
+    101990: thigh_l_cnt
+    101992: thigh_l_cnt_null
+    101994: thigh_l_cnt_null2
+    101996: thigh_l_fk_ik_trans_cnt
+    101998: thigh_l_fk_ik_trans_cnt_null
+    102000: thigh_r_cnt
+    102002: thigh_r_cnt_null
+    102004: thigh_r_cnt_null3
+    102006: thigh_r_fk_ik_trans_cnt
+    102008: thigh_r_fk_ik_trans_cnt_null
+    102010: thigh_r_trans_cnt
+    102012: thigh_r_trans_cnt_null
+    102014: thigh_trans_cnt
+    102016: thigh_trans_cnt_null
+    102018: thumb_base_trans_cnt
+    102020: thumb_base_trans_cnt_null
+    102022: thumb_base_trans_cnt_null 1
+    102024: thumb_base_trans_cnt_null2
+    102026: thumb_base_trans_cnt_null2 1
+    102028: thumb_l_base_trans_cnt
+    102030: thumb_l_cnt
+    102032: thumb_l_cnt_null
+    102034: thumb_l_cnt_null2
+    102036: thumb_l_mid_trans_cnt
+    102038: thumb_l_tip_trans_cnt
+    102040: thumb_mid_l_cnt
+    102042: thumb_mid_l_cnt_null
+    102044: thumb_mid_l_cnt_null2
+    102046: thumb_mid_r_cnt
+    102048: thumb_mid_r_cnt_null
+    102050: thumb_mid_r_cnt_null3
+    102052: thumb_mid_trans_cnt
+    102054: thumb_mid_trans_cnt_null
+    102056: thumb_mid_trans_cnt_null 1
+    102058: thumb_r_cnt
+    102060: thumb_r_cnt_null
+    102062: thumb_r_cnt_null2
+    102064: thumb_tip_l_cnt
+    102066: thumb_tip_l_cnt_null
+    102068: thumb_tip_l_cnt_null2
+    102070: thumb_tip_r_cnt
+    102072: thumb_tip_r_cnt_null
+    102074: thumb_tip_r_cnt_null2
+    102076: thumb_tip_trans_cnt
+    102078: thumb_tip_trans_cnt_null
+    102080: thumb_tip_trans_cnt_null 1
+    102082: toe_trans_cnt
+    102084: toe_trans_cnt 1
+    102086: toe_trans_cnt_null1
+    102088: toe_trans_cnt_null2
+    102090: toes_l_cnt
+    102092: toes_l_cnt_null
+    102094: toes_l_cnt_null2
+    102096: toes_l_fk_ik_trans_cnt
+    102098: toes_l_fk_ik_trans_cnt_null
+    102100: toes_l_fk_ik_trans_cnt_null1
+    102102: toes_l_fk_ik_trans_cnt_null2
+    102104: toes_r_cnt
+    102106: toes_r_cnt_null
+    102108: toes_r_cnt_null2
+    102110: tongue_base_cnt
+    102112: tongue_base_cnt_null
+    102114: tongue_base_cnt_null2
+    102116: tongue_cnt1
+    102118: tongue_cnt10
+    102120: tongue_cnt11
+    102122: tongue_cnt12
+    102124: tongue_cnt13
+    102126: tongue_cnt2
+    102128: tongue_cnt3
+    102130: tongue_cnt4
+    102132: tongue_cnt5
+    102134: tongue_cnt6
+    102136: tongue_cnt7
+    102138: tongue_cnt8
+    102140: tongue_cnt9
+    102142: tongue_cnt_grp
+    102144: tongue_cnt_null10
+    102146: tongue_cnt_null11
+    102148: tongue_cnt_null12
+    102150: tongue_cnt_null13
+    102152: tongue_cnt_null14
+    102154: tongue_cnt_null15
+    102156: tongue_cnt_null16
+    102158: tongue_cnt_null17
+    102160: tongue_cnt_null18
+    102162: tongue_cnt_null19
+    102164: tongue_cnt_null20
+    102166: tongue_cnt_null21
+    102168: tongue_cnt_null22
+    102170: tongue_cnt_null23
+    102172: tongue_cnt_null24
+    102174: tongue_cnt_null25
+    102176: tongue_cnt_null26
+    102178: tongue_cnt_null27
+    102180: tongue_cnt_null28
+    102182: tongue_cnt_null3
+    102184: tongue_cnt_null4
+    102186: tongue_cnt_null5
+    102188: tongue_cnt_null6
+    102190: tongue_cnt_null7
+    102192: tongue_cnt_null8
+    102194: tongue_cnt_null9
+    102196: trans_cnt_grp
+    102198: upper_body_cnt_grp
+    102200: world_orient_null
+    102202: wrist_l_cnt
+    102204: wrist_l_cnt_null
+    102206: wrist_l_cnt_null2
+    102208: wrist_l_fk_trans_cnt
+    102210: wrist_l_fk_trans_cnt_null
+    102212: wrist_l_ik_cnt
+    102214: wrist_l_ik_cnt_null
+    102216: wrist_l_ik_cnt_null2
+    102218: wrist_r_cnt
+    102220: wrist_r_cnt_null
+    102222: wrist_r_cnt_null2
+    102224: wrist_r_fk_trans_cnt
+    102226: wrist_r_fk_trans_cnt_null
+    102228: wrist_r_ik_cnt
+    102230: wrist_r_ik_cnt_null
+    102232: wrist_r_ik_cnt_null2
+    102234: wrist_r_trans_cnt
+    102236: wrist_r_trans_cnt_null
+    102238: wrist_trans_cnt
+    102240: wrist_trans_cnt_null
+    102242: //RootNode
+    102244: zombie_spitter_geo
+    102246: zombie_spitter_geo_grp
+    400000: animation_cnt_cluster_grp
+    400002: ankle_l_cnt
+    400004: ankle_l_cnt_null
+    400006: ankle_l_cnt_null2
+    400008: ankle_l_fk_ik_trans_cnt
+    400010: ankle_l_fk_ik_trans_cnt_null
+    400012: ankle_r_cnt
+    400014: ankle_r_cnt_null
+    400016: ankle_r_cnt_null2
+    400018: ankle_r_fk_ik_trans_cnt
+    400020: ankle_r_fk_ik_trans_cnt 1
+    400022: ankle_r_fk_ik_trans_cnt 2
+    400024: ankle_r_fk_ik_trans_cnt_null
+    400026: ankle_r_fk_ik_trans_cnt_null1
+    400028: ankle_r_fk_ik_trans_cnt_null2
+    400030: ankle_r_trans_cnt
+    400032: ankle_r_trans_cnt_null
+    400034: ankle_trans_cnt
+    400036: ankle_trans_cnt_null
+    400038: arm_l_cnt
+    400040: arm_l_cnt_null
+    400042: arm_l_cnt_null2
+    400044: arm_l_cnt_null3
+    400046: arm_l_fk_trans_cnt
+    400048: arm_l_fk_trans_cnt_null
+    400050: arm_l_gimbal_cnt
+    400052: arm_l_gimbal_cnt_null
+    400054: arm_l_ik_trans_cnt
+    400056: arm_l_ik_trans_cnt 1
+    400058: arm_l_ik_trans_cnt_null
+    400060: arm_l_ik_trans_cnt_null1
+    400062: arm_l_trans_cnt_grp
+    400064: arm_r_cnt
+    400066: arm_r_cnt_null
+    400068: arm_r_cnt_null2
+    400070: arm_r_cnt_null3
+    400072: arm_r_fk_trans_cnt
+    400074: arm_r_fk_trans_cnt_null
+    400076: arm_r_gimbal_cnt
+    400078: arm_r_gimbal_cnt_null
+    400080: arm_r_ik_trans_cnt
+    400082: arm_r_ik_trans_cnt 1
+    400084: arm_r_ik_trans_cnt_null
+    400086: arm_r_ik_trans_cnt_null1
+    400088: arm_r_trans_cnt
+    400090: arm_r_trans_cnt_grp
+    400092: arm_r_trans_cnt_null
+    400094: arm_trans_cnt
+    400096: arm_trans_cnt_null
+    400098: base_trans_cnt_grp
+    400100: belly_cnt
+    400102: belly_cnt_null
+    400104: belly_cnt_null2
+    400106: belly_trans_cnt
+    400108: belly_trans_cnt 1
+    400110: belly_trans_cnt_null
+    400112: belly_trans_cnt_null2
+    400114: biped_rig_grp
+    400116: bone_ankle_l
+    400118: bone_ankle_r
+    400120: bone_arm_l
+    400122: bone_arm_r
+    400124: bone_belly
+    400126: bone_brow_l
+    400128: bone_brow_r
+    400130: bone_cheek_l
+    400132: bone_cheek_r
+    400134: bone_chest
+    400136: bone_clavicle_l
+    400138: bone_clavicle_r
+    400140: bone_elbow_l
+    400142: bone_elbow_r
+    400144: bone_eye_l
+    400146: bone_eye_r
+    400148: bone_finger_index_l_base
+    400150: bone_finger_index_l_mid
+    400152: bone_finger_index_l_tip
+    400154: bone_finger_index_r_base
+    400156: bone_finger_index_r_mid
+    400158: bone_finger_index_r_tip
+    400160: bone_finger_middle_l_base
+    400162: bone_finger_middle_l_mid
+    400164: bone_finger_middle_l_tip
+    400166: bone_finger_middle_r_base
+    400168: bone_finger_middle_r_mid
+    400170: bone_finger_middle_r_tip
+    400172: bone_finger_pinky_l_base
+    400174: bone_finger_pinky_l_mid
+    400176: bone_finger_pinky_l_tip
+    400178: bone_finger_pinky_r_base
+    400180: bone_finger_pinky_r_mid
+    400182: bone_finger_pinky_r_tip
+    400184: bone_finger_ring_l_base
+    400186: bone_finger_ring_l_mid
+    400188: bone_finger_ring_l_tip
+    400190: bone_finger_ring_r_base
+    400192: bone_finger_ring_r_mid
+    400194: bone_finger_ring_r_tip
+    400196: bone_head
+    400198: bone_jaw
+    400200: bone_knee_l
+    400202: bone_knee_r
+    400204: bone_levator_l
+    400206: bone_levator_r
+    400208: bone_lid_l_bottom
+    400210: bone_lid_l_top
+    400212: bone_lid_r_bottom
+    400214: bone_lid_r_top
+    400216: bone_lips_bottom
+    400218: bone_lips_l
+    400220: bone_lips_r
+    400222: bone_lips_top
+    400224: bone_neck
+    400226: bone_nose_l
+    400228: bone_nose_r
+    400230: bone_radius_l
+    400232: bone_radius_r
+    400234: bone_root
+    400236: bone_shin_l
+    400238: bone_shin_r
+    400240: bone_spine_base
+    400242: bone_spine_lower
+    400244: bone_spine_mid
+    400246: bone_spine_upper
+    400248: bone_thigh_l
+    400250: bone_thigh_r
+    400252: bone_thumb_l_base
+    400254: bone_thumb_l_mid
+    400256: bone_thumb_l_tip
+    400258: bone_thumb_r_base
+    400260: bone_thumb_r_mid
+    400262: bone_thumb_r_tip
+    400264: bone_toe_l
+    400266: bone_toe_l_end
+    400268: bone_toe_r
+    400270: bone_toe_r_end
+    400272: bone_wrist_l
+    400274: bone_wrist_r
+    400276: brow_l_cnt
+    400278: brow_l_cnt_null
+    400280: brow_l_cnt_null2
+    400282: brow_r_cnt
+    400284: brow_r_cnt_null
+    400286: brow_r_cnt_null2
+    400288: brow_r_trans_cnt
+    400290: brow_r_trans_cnt_null
+    400292: brow_r_trans_cnt_null2
+    400294: brow_trans_cnt
+    400296: brow_trans_cnt_null
+    400298: brow_trans_cnt_null2
+    400300: character_cnt
+    400302: character_cnt_null
+    400304: cheek_l_cnt
+    400306: cheek_l_cnt_null
+    400308: cheek_l_cnt_null2
+    400310: cheek_r_cnt
+    400312: cheek_r_cnt_null
+    400314: cheek_r_cnt_null2
+    400316: cheek_r_trans_cnt
+    400318: cheek_r_trans_cnt_null
+    400320: cheek_r_trans_cnt_null2
+    400322: cheek_trans_cnt
+    400324: cheek_trans_cnt_null
+    400326: cheek_trans_cnt_null2
+    400328: chest_cnt
+    400330: chest_cnt_null
+    400332: chest_fk_ik_trans_cnt
+    400334: chest_fk_ik_trans_cnt_null
+    400336: chest_trans_cnt
+    400338: chest_trans_cnt_null
+    400340: chest_trans_cnt_null2
+    400342: clavicle_l_cnt
+    400344: clavicle_l_cnt_null
+    400346: clavicle_l_cnt_null2
+    400348: clavicle_r_cnt
+    400350: clavicle_r_cnt_null
+    400352: clavicle_r_cnt_null2
+    400354: clavicle_r_trans_cnt
+    400356: clavicle_r_trans_cnt_null
+    400358: clavicle_r_trans_cnt_null2
+    400360: clavicle_trans_cnt
+    400362: clavicle_trans_cnt_null
+    400364: clavicle_trans_cnt_null2
+    400366: cluster100Handle
+    400368: cluster101Handle
+    400370: cluster102Handle
+    400372: cluster103Handle
+    400374: cluster104Handle
+    400376: cluster105Handle
+    400378: cluster106Handle
+    400380: cluster107Handle
+    400382: cluster108Handle
+    400384: cluster109Handle
+    400386: cluster10Handle
+    400388: cluster110Handle
+    400390: cluster111Handle
+    400392: cluster112Handle
+    400394: cluster113Handle
+    400396: cluster114Handle
+    400398: cluster115Handle
+    400400: cluster116Handle
+    400402: cluster117Handle
+    400404: cluster118Handle
+    400406: cluster119Handle
+    400408: cluster11Handle
+    400410: cluster120Handle
+    400412: cluster121Handle
+    400414: cluster122Handle
+    400416: cluster123Handle
+    400418: cluster124Handle
+    400420: cluster125Handle
+    400422: cluster126Handle
+    400424: cluster127Handle
+    400426: cluster128Handle
+    400428: cluster12Handle
+    400430: cluster13Handle
+    400432: cluster143Handle
+    400434: cluster144Handle
+    400436: cluster145Handle
+    400438: cluster146Handle
+    400440: cluster147Handle
+    400442: cluster148Handle
+    400444: cluster149Handle
+    400446: cluster14Handle
+    400448: cluster150Handle
+    400450: cluster151Handle
+    400452: cluster152Handle
+    400454: cluster153Handle
+    400456: cluster154Handle
+    400458: cluster155Handle
+    400460: cluster156Handle
+    400462: cluster157Handle
+    400464: cluster158Handle
+    400466: cluster159Handle
+    400468: cluster15Handle
+    400470: cluster160Handle
+    400472: cluster161Handle
+    400474: cluster162Handle
+    400476: cluster163Handle
+    400478: cluster16Handle
+    400480: cluster17Handle
+    400482: cluster18Handle
+    400484: cluster19Handle
+    400486: cluster1Handle
+    400488: cluster20Handle
+    400490: cluster21Handle
+    400492: cluster22Handle
+    400494: cluster23Handle
+    400496: cluster24Handle
+    400498: cluster25Handle
+    400500: cluster26Handle
+    400502: cluster27Handle
+    400504: cluster28Handle
+    400506: cluster29Handle
+    400508: cluster2Handle
+    400510: cluster30Handle
+    400512: cluster31Handle
+    400514: cluster32Handle
+    400516: cluster33Handle
+    400518: cluster34Handle
+    400520: cluster35Handle
+    400522: cluster36Handle
+    400524: cluster37Handle
+    400526: cluster38Handle
+    400528: cluster39Handle
+    400530: cluster3Handle
+    400532: cluster40Handle
+    400534: cluster41Handle
+    400536: cluster42Handle
+    400538: cluster43Handle
+    400540: cluster44Handle
+    400542: cluster45Handle
+    400544: cluster46Handle
+    400546: cluster47Handle
+    400548: cluster48Handle
+    400550: cluster49Handle
+    400552: cluster4Handle
+    400554: cluster50Handle
+    400556: cluster51Handle
+    400558: cluster52Handle
+    400560: cluster53Handle
+    400562: cluster54Handle
+    400564: cluster55Handle
+    400566: cluster56Handle
+    400568: cluster57Handle
+    400570: cluster58Handle
+    400572: cluster59Handle
+    400574: cluster5Handle
+    400576: cluster60Handle
+    400578: cluster61Handle
+    400580: cluster62Handle
+    400582: cluster63Handle
+    400584: cluster64Handle
+    400586: cluster65Handle
+    400588: cluster66Handle
+    400590: cluster67Handle
+    400592: cluster68Handle
+    400594: cluster69Handle
+    400596: cluster6Handle
+    400598: cluster70Handle
+    400600: cluster71Handle
+    400602: cluster72Handle
+    400604: cluster73Handle
+    400606: cluster74Handle
+    400608: cluster75Handle
+    400610: cluster76Handle
+    400612: cluster77Handle
+    400614: cluster78Handle
+    400616: cluster79Handle
+    400618: cluster7Handle
+    400620: cluster80Handle
+    400622: cluster81Handle
+    400624: cluster82Handle
+    400626: cluster83Handle
+    400628: cluster84Handle
+    400630: cluster85Handle
+    400632: cluster86Handle
+    400634: cluster87Handle
+    400636: cluster88Handle
+    400638: cluster89Handle
+    400640: cluster8Handle
+    400642: cluster90Handle
+    400644: cluster91Handle
+    400646: cluster92Handle
+    400648: cluster93Handle
+    400650: cluster94Handle
+    400652: cluster95Handle
+    400654: cluster96Handle
+    400656: cluster97Handle
+    400658: cluster98Handle
+    400660: cluster99Handle
+    400662: cluster9Handle
+    400664: cluster_grp
+    400666: control_cluster_grp
+    400668: curve1
+    400670: digits_l_anim_cnt_grp
+    400672: digits_l_trans_grp
+    400674: digits_l_trans_grp1
+    400676: digits_r_anim_cnt_grp
+    400678: elbow_l_cnt
+    400680: elbow_l_cnt_null
+    400682: elbow_l_cnt_null2
+    400684: elbow_l_fk_trans_cnt
+    400686: elbow_l_fk_trans_cnt_null
+    400688: elbow_r_cnt
+    400690: elbow_r_cnt_null
+    400692: elbow_r_cnt_null2
+    400694: elbow_r_fk_trans_cnt
+    400696: elbow_r_fk_trans_cnt_null
+    400698: elbow_r_trans_cnt
+    400700: elbow_r_trans_cnt_null
+    400702: elbow_trans_cnt
+    400704: elbow_trans_cnt_null
+    400706: eye_l_cnt
+    400708: eye_l_cnt_null
+    400710: eye_l_cnt_null2
+    400712: eye_r_cnt
+    400714: eye_r_cnt_null
+    400716: eye_r_cnt_null2
+    400718: eye_r_trans_cnt
+    400720: eye_r_trans_cnt_null
+    400722: eye_r_trans_cnt_null2
+    400724: eye_trans_cnt
+    400726: eye_trans_cnt_null
+    400728: eye_trans_cnt_null2
+    400730: eyes_cnt
+    400732: eyes_cnt_null
+    400734: eyes_cnt_null2
+    400736: face_cnt
+    400738: face_cnt_camera
+    400740: face_cnt_grp
+    400742: face_cnt_null
+    400744: face_cnt_null2
+    400746: face_trans_cnt_grp
+    400748: fibula_l_fk_ik_trans_cnt
+    400750: fibula_l_fk_ik_trans_cnt_null
+    400752: fibula_r_fk_ik_trans_cnt
+    400754: fibula_r_fk_ik_trans_cnt_null
+    400756: fibula_r_trans_cnt
+    400758: fibula_r_trans_cnt_null
+    400760: finger_middle_base_trans_cnt
+    400762: finger_middle_base_trans_cnt 1
+    400764: finger_middle_base_trans_cnt_null
+    400766: finger_middle_base_trans_cnt_null 1
+    400768: finger_middle_base_trans_cnt_null2
+    400770: finger_middle_base_trans_cnt_null2 1
+    400772: finger_middle_l_cnt
+    400774: finger_middle_l_cnt_null
+    400776: finger_middle_l_cnt_null2
+    400778: finger_middle_mid_l_cnt
+    400780: finger_middle_mid_l_cnt_null
+    400782: finger_middle_mid_l_cnt_null2
+    400784: finger_middle_mid_r_cnt
+    400786: finger_middle_mid_r_cnt_null
+    400788: finger_middle_mid_r_cnt_null2
+    400790: finger_middle_mid_trans_cnt
+    400792: finger_middle_mid_trans_cnt 1
+    400794: finger_middle_mid_trans_cnt_null
+    400796: finger_middle_mid_trans_cnt_null 1
+    400798: finger_middle_r_cnt
+    400800: finger_middle_r_cnt_null
+    400802: finger_middle_r_cnt_null2
+    400804: finger_middle_tip_l_cnt
+    400806: finger_middle_tip_l_cnt_null
+    400808: finger_middle_tip_l_cnt_null2
+    400810: finger_middle_tip_r_cnt
+    400812: finger_middle_tip_r_cnt_null
+    400814: finger_middle_tip_r_cnt_null2
+    400816: finger_middle_tip_trans_cnt
+    400818: finger_middle_tip_trans_cnt 1
+    400820: finger_middle_tip_trans_cnt_null
+    400822: finger_middle_tip_trans_cnt_null 1
+    400824: finger_pinky_base_trans_cnt
+    400826: finger_pinky_base_trans_cnt 1
+    400828: finger_pinky_base_trans_cnt_null
+    400830: finger_pinky_base_trans_cnt_null 1
+    400832: finger_pinky_base_trans_cnt_null2
+    400834: finger_pinky_base_trans_cnt_null2 1
+    400836: finger_pinky_l_cnt
+    400838: finger_pinky_l_cnt_null
+    400840: finger_pinky_l_cnt_null2
+    400842: finger_pinky_mid_l_cnt
+    400844: finger_pinky_mid_l_cnt_null
+    400846: finger_pinky_mid_l_cnt_null2
+    400848: finger_pinky_mid_r_cnt
+    400850: finger_pinky_mid_r_cnt_null
+    400852: finger_pinky_mid_r_cnt_null2
+    400854: finger_pinky_mid_trans_cnt
+    400856: finger_pinky_mid_trans_cnt 1
+    400858: finger_pinky_mid_trans_cnt_null
+    400860: finger_pinky_mid_trans_cnt_null 1
+    400862: finger_pinky_r_cnt
+    400864: finger_pinky_r_cnt_null
+    400866: finger_pinky_r_cnt_null2
+    400868: finger_pinky_tip_l_cnt
+    400870: finger_pinky_tip_l_cnt_null
+    400872: finger_pinky_tip_l_cnt_null2
+    400874: finger_pinky_tip_r_cnt
+    400876: finger_pinky_tip_r_cnt_null
+    400878: finger_pinky_tip_r_cnt_null2
+    400880: finger_pinky_tip_trans_cnt
+    400882: finger_pinky_tip_trans_cnt 1
+    400884: finger_pinky_tip_trans_cnt_null
+    400886: finger_pinky_tip_trans_cnt_null 1
+    400888: finger_pointer_base_trans_cnt
+    400890: finger_pointer_base_trans_cnt 1
+    400892: finger_pointer_base_trans_cnt_null
+    400894: finger_pointer_base_trans_cnt_null 1
+    400896: finger_pointer_base_trans_cnt_null2
+    400898: finger_pointer_base_trans_cnt_null2 1
+    400900: finger_pointer_l_cnt
+    400902: finger_pointer_l_cnt_null
+    400904: finger_pointer_l_cnt_null2
+    400906: finger_pointer_mid_l_cnt
+    400908: finger_pointer_mid_l_cnt_null
+    400910: finger_pointer_mid_l_cnt_null2
+    400912: finger_pointer_mid_r_cnt
+    400914: finger_pointer_mid_r_cnt_null
+    400916: finger_pointer_mid_r_cnt_null2
+    400918: finger_pointer_mid_trans_cnt
+    400920: finger_pointer_mid_trans_cnt 1
+    400922: finger_pointer_mid_trans_cnt_null
+    400924: finger_pointer_mid_trans_cnt_null 1
+    400926: finger_pointer_r_cnt
+    400928: finger_pointer_r_cnt_null
+    400930: finger_pointer_r_cnt_null2
+    400932: finger_pointer_tip_l_cnt
+    400934: finger_pointer_tip_l_cnt_null
+    400936: finger_pointer_tip_l_cnt_null2
+    400938: finger_pointer_tip_r_cnt
+    400940: finger_pointer_tip_r_cnt_null
+    400942: finger_pointer_tip_r_cnt_null2
+    400944: finger_pointer_tip_trans_cnt
+    400946: finger_pointer_tip_trans_cnt 1
+    400948: finger_pointer_tip_trans_cnt_null
+    400950: finger_pointer_tip_trans_cnt_null 1
+    400952: finger_ring_base_trans_cnt
+    400954: finger_ring_base_trans_cnt 1
+    400956: finger_ring_base_trans_cnt_null
+    400958: finger_ring_base_trans_cnt_null 1
+    400960: finger_ring_base_trans_cnt_null2
+    400962: finger_ring_base_trans_cnt_null2 1
+    400964: finger_ring_l_cnt
+    400966: finger_ring_l_cnt_null
+    400968: finger_ring_l_cnt_null2
+    400970: finger_ring_mid_l_cnt
+    400972: finger_ring_mid_l_cnt_null
+    400974: finger_ring_mid_l_cnt_null2
+    400976: finger_ring_mid_r_cnt
+    400978: finger_ring_mid_r_cnt_null
+    400980: finger_ring_mid_r_cnt_null2
+    400982: finger_ring_mid_trans_cnt
+    400984: finger_ring_mid_trans_cnt 1
+    400986: finger_ring_mid_trans_cnt_null
+    400988: finger_ring_mid_trans_cnt_null 1
+    400990: finger_ring_r_cnt
+    400992: finger_ring_r_cnt_null
+    400994: finger_ring_r_cnt_null2
+    400996: finger_ring_tip_l_cnt
+    400998: finger_ring_tip_l_cnt_null
+    401000: finger_ring_tip_l_cnt_null2
+    401002: finger_ring_tip_r_cnt
+    401004: finger_ring_tip_r_cnt_null
+    401006: finger_ring_tip_r_cnt_null2
+    401008: finger_ring_tip_trans_cnt
+    401010: finger_ring_tip_trans_cnt 1
+    401012: fk_bone_ankle_l
+    401014: fk_bone_ankle_r
+    401016: fk_bone_arm_l
+    401018: fk_bone_arm_l 1
+    401020: fk_bone_arm_r
+    401022: fk_bone_arm_r 1
+    401024: fk_bone_brow_l
+    401026: fk_bone_brow_r
+    401028: fk_bone_cheek_l
+    401030: fk_bone_cheek_r
+    401032: fk_bone_chest
+    401034: fk_bone_clavicle_l
+    401036: fk_bone_clavicle_l1
+    401038: fk_bone_clavicle_r
+    401040: fk_bone_clavicle_r1
+    401042: fk_bone_elbow_l
+    401044: fk_bone_elbow_l 1
+    401046: fk_bone_elbow_r
+    401048: fk_bone_elbow_r 1
+    401050: fk_bone_eye_l
+    401052: fk_bone_eye_r
+    401054: fk_bone_finger_index_l_base
+    401056: fk_bone_finger_index_l_base 1
+    401058: fk_bone_finger_index_l_mid
+    401060: fk_bone_finger_index_l_mid 1
+    401062: fk_bone_finger_index_l_tip
+    401064: fk_bone_finger_index_l_tip 1
+    401066: fk_bone_finger_index_r_base
+    401068: fk_bone_finger_index_r_base 1
+    401070: fk_bone_finger_index_r_mid
+    401072: fk_bone_finger_index_r_mid 1
+    401074: fk_bone_finger_index_r_tip
+    401076: fk_bone_finger_index_r_tip 1
+    401078: fk_bone_finger_middle_l_base
+    401080: fk_bone_finger_middle_l_base 1
+    401082: fk_bone_finger_middle_l_mid
+    401084: fk_bone_finger_middle_l_mid 1
+    401086: fk_bone_finger_middle_l_tip
+    401088: fk_bone_finger_middle_l_tip 1
+    401090: fk_bone_finger_middle_r_base
+    401092: fk_bone_finger_middle_r_base 1
+    401094: fk_bone_finger_middle_r_mid
+    401096: fk_bone_finger_middle_r_mid 1
+    401098: fk_bone_finger_middle_r_tip
+    401100: fk_bone_finger_middle_r_tip 1
+    401102: fk_bone_finger_pinky_l_base
+    401104: fk_bone_finger_pinky_l_base 1
+    401106: fk_bone_finger_pinky_l_mid
+    401108: fk_bone_finger_pinky_l_mid 1
+    401110: fk_bone_finger_pinky_l_tip
+    401112: fk_bone_finger_pinky_l_tip 1
+    401114: fk_bone_finger_pinky_r_base
+    401116: fk_bone_finger_pinky_r_base 1
+    401118: fk_bone_finger_pinky_r_mid
+    401120: fk_bone_finger_pinky_r_mid 1
+    401122: fk_bone_finger_pinky_r_tip
+    401124: fk_bone_finger_pinky_r_tip 1
+    401126: fk_bone_finger_ring_l_base
+    401128: fk_bone_finger_ring_l_base 1
+    401130: fk_bone_finger_ring_l_mid
+    401132: fk_bone_finger_ring_l_mid 1
+    401134: fk_bone_finger_ring_l_tip
+    401136: fk_bone_finger_ring_l_tip 1
+    401138: fk_bone_finger_ring_r_base
+    401140: fk_bone_finger_ring_r_base 1
+    401142: fk_bone_finger_ring_r_mid
+    401144: fk_bone_finger_ring_r_mid 1
+    401146: fk_bone_finger_ring_r_tip
+    401148: fk_bone_finger_ring_r_tip 1
+    401150: fk_bone_head
+    401152: fk_bone_jaw
+    401154: fk_bone_knee_l
+    401156: fk_bone_knee_r
+    401158: fk_bone_levator_l
+    401160: fk_bone_levator_r
+    401162: fk_bone_lid_l_bottom
+    401164: fk_bone_lid_l_top
+    401166: fk_bone_lid_r_bottom
+    401168: fk_bone_lid_r_top
+    401170: fk_bone_lips_bottom
+    401172: fk_bone_lips_l
+    401174: fk_bone_lips_r
+    401176: fk_bone_lips_top
+    401178: fk_bone_neck
+    401180: fk_bone_nose_l
+    401182: fk_bone_nose_r
+    401184: fk_bone_radius_l
+    401186: fk_bone_radius_l 1
+    401188: fk_bone_radius_r
+    401190: fk_bone_radius_r 1
+    401192: fk_bone_root
+    401194: fk_bone_shin_l
+    401196: fk_bone_shin_r
+    401198: fk_bone_spine_base
+    401200: fk_bone_spine_lower
+    401202: fk_bone_spine_mid
+    401204: fk_bone_spine_upper
+    401206: fk_bone_thigh_l
+    401208: fk_bone_thigh_r
+    401210: fk_bone_thumb_l_base
+    401212: fk_bone_thumb_l_base 1
+    401214: fk_bone_thumb_l_mid
+    401216: fk_bone_thumb_l_mid 1
+    401218: fk_bone_thumb_l_tip
+    401220: fk_bone_thumb_l_tip 1
+    401222: fk_bone_thumb_r_base
+    401224: fk_bone_thumb_r_base 1
+    401226: fk_bone_thumb_r_mid
+    401228: fk_bone_thumb_r_mid 1
+    401230: fk_bone_thumb_r_tip
+    401232: fk_bone_thumb_r_tip 1
+    401234: fk_bone_toe_l
+    401236: fk_bone_toe_l_end
+    401238: fk_bone_toe_r
+    401240: fk_bone_toe_r_end
+    401242: fk_bone_wrist_l
+    401244: fk_bone_wrist_l 1
+    401246: fk_bone_wrist_r
+    401248: fk_bone_wrist_r 1
+    401250: foot_l_ik_cnt
+    401252: foot_l_ik_cnt_null
+    401254: foot_l_ik_cnt_null2
+    401256: foot_r_ik_cnt
+    401258: foot_r_ik_cnt_null
+    401260: foot_r_ik_cnt_null2
+    401262: fringer_ring_tip_trans_cnt_null
+    401264: fringer_ring_tip_trans_cnt_null 1
+    401266: geometry_grp
+    401268: group10
+    401270: group11
+    401272: group12
+    401274: group13
+    401276: group14
+    401278: group15
+    401280: group16
+    401282: group17
+    401284: group18
+    401286: group19
+    401288: group20
+    401290: group3
+    401292: group3 1
+    401294: group3 10
+    401296: group3 11
+    401298: group3 12
+    401300: group3 13
+    401302: group3 14
+    401304: group3 15
+    401306: group3 16
+    401308: group3 17
+    401310: group3 18
+    401312: group3 19
+    401314: group3 2
+    401316: group3 20
+    401318: group3 21
+    401320: group3 22
+    401322: group3 23
+    401324: group3 24
+    401326: group3 25
+    401328: group3 26
+    401330: group3 27
+    401332: group3 28
+    401334: group3 29
+    401336: group3 3
+    401338: group3 30
+    401340: group3 31
+    401342: group3 32
+    401344: group3 33
+    401346: group3 34
+    401348: group3 35
+    401350: group3 36
+    401352: group3 4
+    401354: group3 5
+    401356: group3 6
+    401358: group3 7
+    401360: group3 8
+    401362: group3 9
+    401364: group38
+    401366: group39
+    401368: group4
+    401370: group40
+    401372: group41
+    401374: group42
+    401376: group43
+    401378: group44
+    401380: group45
+    401382: group46
+    401384: group47
+    401386: group48
+    401388: group49
+    401390: group5
+    401392: group50
+    401394: group51
+    401396: group52
+    401398: group53
+    401400: group54
+    401402: group55
+    401404: group57
+    401406: group6
+    401408: group7
+    401410: group8
+    401412: group82
+    401414: group83
+    401416: group9
+    401418: hand_ik_cnt_grp
+    401420: head_cnt
+    401422: head_cnt_null
+    401424: head_cnt_null2
+    401426: head_trans_cnt
+    401428: head_trans_cnt_null
+    401430: head_trans_cnt_null2
+    401432: heel_l_cnt
+    401434: heel_l_cnt 1
+    401436: heel_l_cnt_null
+    401438: heel_l_cnt_null1
+    401440: heel_r_cnt
+    401442: heel_r_cnt 1
+    401444: heel_r_cnt_null
+    401446: heel_r_cnt_null1
+    401448: helper_nodes_grp
+    401450: hips_cnt
+    401452: hips_cnt_null
+    401454: ik_bone_ankle_l
+    401456: ik_bone_ankle_l 1
+    401458: ik_bone_ankle_r
+    401460: ik_bone_ankle_r 1
+    401462: ik_bone_arm_l
+    401464: ik_bone_arm_r
+    401466: ik_bone_chest
+    401468: ik_bone_clavicle_l
+    401470: ik_bone_clavicle_r
+    401472: ik_bone_elbow_l
+    401474: ik_bone_elbow_r
+    401476: ik_bone_knee_l
+    401478: ik_bone_knee_l 1
+    401480: ik_bone_knee_r
+    401482: ik_bone_knee_r 1
+    401484: ik_bone_radius_l
+    401486: ik_bone_radius_r
+    401488: ik_bone_root
+    401490: ik_bone_shin_l
+    401492: ik_bone_shin_l 1
+    401494: ik_bone_shin_r
+    401496: ik_bone_shin_r 1
+    401498: ik_bone_spine_base
+    401500: ik_bone_spine_lower
+    401502: ik_bone_spine_mid
+    401504: ik_bone_spine_upper
+    401506: ik_bone_thigh_l
+    401508: ik_bone_thigh_l1
+    401510: ik_bone_thigh_l2
+    401512: ik_bone_thigh_r
+    401514: ik_bone_thigh_r1
+    401516: ik_bone_thigh_r2
+    401518: ik_bone_toe_l
+    401520: ik_bone_toe_l 1
+    401522: ik_bone_toe_l_end
+    401524: ik_bone_toe_l_end 1
+    401526: ik_bone_toe_r
+    401528: ik_bone_toe_r 1
+    401530: ik_bone_toe_r_end
+    401532: ik_bone_toe_r_end 1
+    401534: ik_bone_wrist_l
+    401536: ik_bone_wrist_r
+    401538: ik_trans_cnt_grp
+    401540: ikHandle11
+    401542: ikHandle13
+    401544: ikHandle15
+    401546: ikHandle16
+    401548: ikHandle17
+    401550: ikHandle18
+    401552: ikHandle19
+    401554: jaw_cnt
+    401556: jaw_cnt_null
+    401558: jaw_cnt_null2
+    401560: jaw_trans_cnt
+    401562: jaw_trans_cnt_null
+    401564: jaw_trans_cnt_null2
+    401566: joint1
+    401568: joint10
+    401570: joint11
+    401572: joint12
+    401574: joint13
+    401576: joint14
+    401578: joint2
+    401580: joint3
+    401582: joint4
+    401584: joint5
+    401586: joint6
+    401588: joint7
+    401590: joint8
+    401592: joint9
+    401594: knee_l_cnt
+    401596: knee_l_cnt_null
+    401598: knee_l_cnt_null2
+    401600: knee_l_fk_ik_trans_cnt
+    401602: knee_l_fk_ik_trans_cnt_null
+    401604: knee_r_cnt
+    401606: knee_r_cnt_null
+    401608: knee_r_cnt_null2
+    401610: knee_r_fk_ik_trans_cnt
+    401612: knee_r_fk_ik_trans_cnt_null
+    401614: knee_r_trans_cnt
+    401616: knee_r_trans_cnt_null
+    401618: knee_trans_cnt
+    401620: knee_trans_cnt_null
+    401622: leg_l_ikHandle
+    401624: leg_l_trans_grp
+    401626: leg_l_trans_orient
+    401628: leg_l_trans_orient_null
+    401630: leg_r_trans_grp
+    401632: levator_l_cnt
+    401634: levator_l_cnt_null
+    401636: levator_l_cnt_null2
+    401638: levator_r_cnt
+    401640: levator_r_cnt_null
+    401642: levator_r_cnt_null2
+    401644: levator_r_trans_cnt
+    401646: levator_r_trans_cnt_null
+    401648: levator_r_trans_cnt_null2
+    401650: levator_trans_cnt
+    401652: levator_trans_cnt_null
+    401654: levator_trans_cnt_null2
+    401656: lid_l_bottom_cnt
+    401658: lid_l_bottom_cnt_null
+    401660: lid_l_bottom_cnt_null2
+    401662: lid_l_top_cnt
+    401664: lid_l_top_cnt_null
+    401666: lid_l_top_cnt_null2
+    401668: lid_r_bottom_cnt
+    401670: lid_r_bottom_cnt_null
+    401672: lid_r_bottom_cnt_null2
+    401674: lid_r_top_cnt
+    401676: lid_r_top_cnt_null
+    401678: lid_r_top_cnt_null2
+    401680: lids_r_trans_cnt
+    401682: lids_r_trans_cnt_null
+    401684: lids_r_trans_cnt_null2
+    401686: lids_trans_cnt
+    401688: lids_trans_cnt_null
+    401690: lids_trans_cnt_null2
+    401692: lip_bottom_cnt
+    401694: lip_bottom_cnt_null
+    401696: lip_bottom_cnt_null2
+    401698: lip_top_cnt
+    401700: lip_top_cnt_null
+    401702: lip_top_cnt_null2
+    401704: lip_trans_bottom_cnt
+    401706: lip_trans_bottom_cnt_null
+    401708: lip_trans_bottom_cnt_null2
+    401710: lip_trans_top_cnt
+    401712: lip_trans_top_cnt_null
+    401714: lip_trans_top_cnt_null2
+    401716: lips_l_cnt
+    401718: lips_l_cnt_null
+    401720: lips_l_cnt_null2
+    401722: lips_l_trans_cnt
+    401724: lips_l_trans_cnt_null
+    401726: lips_l_trans_cnt_null2
+    401728: lips_r_cnt
+    401730: lips_r_cnt_null
+    401732: lips_r_cnt_null2
+    401734: lips_r_trans_cnt
+    401736: lips_r_trans_cnt_null
+    401738: lips_r_trans_cnt_null2
+    401740: locator2
+    401742: locator2 1
+    401744: locator2 10
+    401746: locator2 11
+    401748: locator2 12
+    401750: locator2 13
+    401752: locator2 14
+    401754: locator2 15
+    401756: locator2 16
+    401758: locator2 17
+    401760: locator2 18
+    401762: locator2 19
+    401764: locator2 2
+    401766: locator2 20
+    401768: locator2 21
+    401770: locator2 22
+    401772: locator2 23
+    401774: locator2 24
+    401776: locator2 25
+    401778: locator2 26
+    401780: locator2 27
+    401782: locator2 28
+    401784: locator2 29
+    401786: locator2 3
+    401788: locator2 30
+    401790: locator2 31
+    401792: locator2 32
+    401794: locator2 33
+    401796: locator2 34
+    401798: locator2 35
+    401800: locator2 36
+    401802: locator2 4
+    401804: locator2 5
+    401806: locator2 6
+    401808: locator2 7
+    401810: locator2 8
+    401812: locator2 9
+    401814: locator3
+    401816: locator9
+    401818: neck_cnt_null
+    401820: neck_cnt_null 1
+    401822: neck_cnt_null2
+    401824: neck_trans_cnt
+    401826: neck_trans_cnt_null
+    401828: neck_trans_cnt_null2
+    401830: nose_cnt
+    401832: nose_cnt_null
+    401834: nose_cnt_null2
+    401836: nose_r_trans_cnt
+    401838: nose_r_trans_cnt_null
+    401840: nose_r_trans_cnt_null2
+    401842: nose_trans_cnt
+    401844: nose_trans_cnt_null
+    401846: nose_trans_cnt_null2
+    401848: radiul_trans_cnt
+    401850: radius_l_cnt
+    401852: radius_l_cnt_null
+    401854: radius_l_cnt_null2
+    401856: radius_l_fk_trans_cnt
+    401858: radius_l_fk_trans_cnt_null
+    401860: radius_r_cnt
+    401862: radius_r_cnt_null
+    401864: radius_r_cnt_null2
+    401866: radius_r_fk_trans_cnt
+    401868: radius_r_fk_trans_cnt_null
+    401870: radius_r_trans_cnt
+    401872: radius_r_trans_cnt_null
+    401874: radius_trans_cnt_null
+    401876: retarget_cnt_cluster_grp
+    401878: root_cnt
+    401880: root_l_ik_cnt
+    401882: root_l_ik_cnt_null
+    401884: root_l_ik_cnt_null2
+    401886: root_r_ik_cnt
+    401888: root_r_ik_cnt_null
+    401890: root_r_ik_cnt_null2
+    401892: root_trans_cnt
+    401894: shin_l_cnt
+    401896: shin_l_cnt_null
+    401898: shin_l_cnt_null2
+    401900: shin_r_cnt
+    401902: shin_r_cnt_null
+    401904: shin_r_cnt_null2
+    401906: shin_trans_cnt
+    401908: shin_trans_cnt_null
+    401910: shoulder_l_trans_orient
+    401912: shoulder_l_trans_orient_null
+    401914: shoulder_r_trans_orient
+    401916: shoulder_r_trans_orient_null
+    401918: spine_base_cnt
+    401920: spine_base_cnt_null
+    401922: spine_base_fk_ik_trans_cnt
+    401924: spine_base_fk_ik_trans_cnt_null
+    401926: spine_base_trans_cnt
+    401928: spine_base_trans_cnt_null
+    401930: spine_base_trans_cnt_null2
+    401932: spine_low_cnt
+    401934: spine_low_cnt_null
+    401936: spine_low_fk_ik_trans_cnt
+    401938: spine_low_fk_ik_trans_cnt_null
+    401940: spine_low_trans_cnt
+    401942: spine_low_trans_cnt_null
+    401944: spine_low_trans_cnt_null 1
+    401946: spine_low_trans_cnt_null5
+    401948: spine_low_trans_cnt_null6
+    401950: spine_mid_cnt
+    401952: spine_mid_cnt_null
+    401954: spine_mid_fk_ik_trans_cnt
+    401956: spine_mid_fk_ik_trans_cnt_null
+    401958: spine_mid_trans_cnt
+    401960: spine_mid_trans_cnt_null
+    401962: spine_mid_trans_cnt_null2
+    401964: spine_trans_cnt_grp
+    401966: spine_trans_fk_ik_cnt_grp
+    401968: spine_upper_cnt
+    401970: spine_upper_cnt_null
+    401972: spine_upper_fk_ik_trans_cnt
+    401974: spine_upper_fk_ik_trans_cnt_null
+    401976: spine_upper_trans_cnt
+    401978: spine_upper_trans_cnt 1
+    401980: spine_upper_trans_cnt 2
+    401982: spine_upper_trans_cnt_null
+    401984: spine_upper_trans_cnt_null 1
+    401986: spine_upper_trans_cnt_null2
+    401988: spine_upper_trans_cnt_null5
+    401990: thigh_l_cnt
+    401992: thigh_l_cnt_null
+    401994: thigh_l_cnt_null2
+    401996: thigh_l_fk_ik_trans_cnt
+    401998: thigh_l_fk_ik_trans_cnt_null
+    402000: thigh_r_cnt
+    402002: thigh_r_cnt_null
+    402004: thigh_r_cnt_null3
+    402006: thigh_r_fk_ik_trans_cnt
+    402008: thigh_r_fk_ik_trans_cnt_null
+    402010: thigh_r_trans_cnt
+    402012: thigh_r_trans_cnt_null
+    402014: thigh_trans_cnt
+    402016: thigh_trans_cnt_null
+    402018: thumb_base_trans_cnt
+    402020: thumb_base_trans_cnt_null
+    402022: thumb_base_trans_cnt_null 1
+    402024: thumb_base_trans_cnt_null2
+    402026: thumb_base_trans_cnt_null2 1
+    402028: thumb_l_base_trans_cnt
+    402030: thumb_l_cnt
+    402032: thumb_l_cnt_null
+    402034: thumb_l_cnt_null2
+    402036: thumb_l_mid_trans_cnt
+    402038: thumb_l_tip_trans_cnt
+    402040: thumb_mid_l_cnt
+    402042: thumb_mid_l_cnt_null
+    402044: thumb_mid_l_cnt_null2
+    402046: thumb_mid_r_cnt
+    402048: thumb_mid_r_cnt_null
+    402050: thumb_mid_r_cnt_null3
+    402052: thumb_mid_trans_cnt
+    402054: thumb_mid_trans_cnt_null
+    402056: thumb_mid_trans_cnt_null 1
+    402058: thumb_r_cnt
+    402060: thumb_r_cnt_null
+    402062: thumb_r_cnt_null2
+    402064: thumb_tip_l_cnt
+    402066: thumb_tip_l_cnt_null
+    402068: thumb_tip_l_cnt_null2
+    402070: thumb_tip_r_cnt
+    402072: thumb_tip_r_cnt_null
+    402074: thumb_tip_r_cnt_null2
+    402076: thumb_tip_trans_cnt
+    402078: thumb_tip_trans_cnt_null
+    402080: thumb_tip_trans_cnt_null 1
+    402082: toe_trans_cnt
+    402084: toe_trans_cnt 1
+    402086: toe_trans_cnt_null1
+    402088: toe_trans_cnt_null2
+    402090: toes_l_cnt
+    402092: toes_l_cnt_null
+    402094: toes_l_cnt_null2
+    402096: toes_l_fk_ik_trans_cnt
+    402098: toes_l_fk_ik_trans_cnt_null
+    402100: toes_l_fk_ik_trans_cnt_null1
+    402102: toes_l_fk_ik_trans_cnt_null2
+    402104: toes_r_cnt
+    402106: toes_r_cnt_null
+    402108: toes_r_cnt_null2
+    402110: tongue_base_cnt
+    402112: tongue_base_cnt_null
+    402114: tongue_base_cnt_null2
+    402116: tongue_cnt1
+    402118: tongue_cnt10
+    402120: tongue_cnt11
+    402122: tongue_cnt12
+    402124: tongue_cnt13
+    402126: tongue_cnt2
+    402128: tongue_cnt3
+    402130: tongue_cnt4
+    402132: tongue_cnt5
+    402134: tongue_cnt6
+    402136: tongue_cnt7
+    402138: tongue_cnt8
+    402140: tongue_cnt9
+    402142: tongue_cnt_grp
+    402144: tongue_cnt_null10
+    402146: tongue_cnt_null11
+    402148: tongue_cnt_null12
+    402150: tongue_cnt_null13
+    402152: tongue_cnt_null14
+    402154: tongue_cnt_null15
+    402156: tongue_cnt_null16
+    402158: tongue_cnt_null17
+    402160: tongue_cnt_null18
+    402162: tongue_cnt_null19
+    402164: tongue_cnt_null20
+    402166: tongue_cnt_null21
+    402168: tongue_cnt_null22
+    402170: tongue_cnt_null23
+    402172: tongue_cnt_null24
+    402174: tongue_cnt_null25
+    402176: tongue_cnt_null26
+    402178: tongue_cnt_null27
+    402180: tongue_cnt_null28
+    402182: tongue_cnt_null3
+    402184: tongue_cnt_null4
+    402186: tongue_cnt_null5
+    402188: tongue_cnt_null6
+    402190: tongue_cnt_null7
+    402192: tongue_cnt_null8
+    402194: tongue_cnt_null9
+    402196: trans_cnt_grp
+    402198: upper_body_cnt_grp
+    402200: world_orient_null
+    402202: wrist_l_cnt
+    402204: wrist_l_cnt_null
+    402206: wrist_l_cnt_null2
+    402208: wrist_l_fk_trans_cnt
+    402210: wrist_l_fk_trans_cnt_null
+    402212: wrist_l_ik_cnt
+    402214: wrist_l_ik_cnt_null
+    402216: wrist_l_ik_cnt_null2
+    402218: wrist_r_cnt
+    402220: wrist_r_cnt_null
+    402222: wrist_r_cnt_null2
+    402224: wrist_r_fk_trans_cnt
+    402226: wrist_r_fk_trans_cnt_null
+    402228: wrist_r_ik_cnt
+    402230: wrist_r_ik_cnt_null
+    402232: wrist_r_ik_cnt_null2
+    402234: wrist_r_trans_cnt
+    402236: wrist_r_trans_cnt_null
+    402238: wrist_trans_cnt
+    402240: wrist_trans_cnt_null
+    402242: //RootNode
+    402244: zombie_spitter_geo
+    402246: zombie_spitter_geo_grp
+    4300000: zombie_spitter_geo
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: zombie_spitter_geo
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
