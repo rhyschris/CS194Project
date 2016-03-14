@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	private float blockPercentage;
 	public bool player1;
 	public bool isAI;
+	public bool isJoyStick;
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
 	public float runningVelocityFactor;
@@ -102,11 +103,11 @@ public class PlayerController : MonoBehaviour {
 			 * 
 			 * TODO: clean up player key intent (hierarchial enum)?
 			 */
-		bool running;
+		bool running = false;
 		bool movingLeft = false;
-		bool movingRight;
-		bool movingAway;
-		bool moving;
+		bool movingRight = false;
+		bool movingAway = false;
+		bool moving = false;
 
 		if (isAI) {
 
@@ -122,49 +123,90 @@ public class PlayerController : MonoBehaviour {
 
 		} else {
 			if (!inputHold) {
-				// QUERY KEYBOARD INPUT
-				bool lowMod = Input.GetKey (Down);
+				if (!isJoyStick) {
+					// QUERY KEYBOARD INPUT
+					bool lowMod = Input.GetKey (Down);
 
-				/*Do a block */
-				if (Input.GetKey (Block)){
-					action.actionType |= lowMod? ActionType.blockDown:ActionType.blockUp;
-				}
-				/*Do a weak attack*/
-				else if (Input.GetKeyDown (Attack1)){
-					action.actionType |= lowMod? ActionType.attack3:ActionType.attack1;
-				}
-				/*Do a strong attack */
-				else if (Input.GetKeyDown (Attack2)){
-					action.actionType |= lowMod? ActionType.attack4:ActionType.attack2;
-				}
-				else if (Input.GetKeyDown (Up)){
-					action.actionType |= ActionType.jump;
-				}				
-				/* Crouch */
-				else if (lowMod) {
-					action.actionType |= ActionType.crouch;
-				} 
-				else {
-
-					float otherPlayerXPos = (player1) ? curState.getP2XPos() :  curState.getP1XPos();
-					running = Input.GetKey (Run);
-					movingLeft = Input.GetKey (Left);
-					movingRight = Input.GetKey (Right);
-					movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
-					moving = movingLeft || movingRight;
-					if ( (movingLeft && movingRight) || lowMod) {
-						movingLeft = false;
-						movingRight = false;
-						running = false;
+					/*Do a block */
+					if (Input.GetKey (Block)) {
+						action.actionType |= lowMod ? ActionType.blockDown : ActionType.blockUp;
 					}
+					/*Do a weak attack*/
+					else if (Input.GetKeyDown (Attack1)) {
+						action.actionType |= lowMod ? ActionType.attack3 : ActionType.attack1;
+					}
+					/*Do a strong attack */
+					else if (Input.GetKeyDown (Attack2)) {
+						action.actionType |= lowMod ? ActionType.attack4 : ActionType.attack2;
+					} else if (Input.GetKeyDown (Up)) {
+						action.actionType |= ActionType.jump;
+					}				
+					/* Crouch */
+					else if (lowMod) {
+						action.actionType |= ActionType.crouch;
+					} else {
 
-					if (moving) {
-						if (movingAway) {
-							action.actionType |= ActionType.moveAway;
-						} else if (running) {
-							action.actionType |= ActionType.runTowards;
-						} else {
-							action.actionType |= ActionType.walkTowards;	
+						float otherPlayerXPos = (player1) ? curState.getP2XPos () : curState.getP1XPos ();
+						running = Input.GetKey (Run);
+						movingLeft = Input.GetKey (Left);
+						movingRight = Input.GetKey (Right);
+						movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+						moving = movingLeft || movingRight;
+						if ((movingLeft && movingRight) || lowMod) {
+							movingLeft = false;
+							movingRight = false;
+							running = false;
+						}
+
+						if (moving) {
+							if (movingAway) {
+								action.actionType |= ActionType.moveAway;
+							} else if (running) {
+								action.actionType |= ActionType.runTowards;
+							} else {
+								action.actionType |= ActionType.walkTowards;	
+							}
+						}
+					}
+				} else {
+					// HANDLE CONTROLLER INPUT
+					float yaxis = Input.GetAxis ("Vertical");
+					float xaxis = Input.GetAxis ("Horizontal");
+					float blocking = Input.GetAxis ("Trigger");
+					bool lowMod = false;
+					Debug.Log ("yaxis: "+yaxis);
+					if (yaxis > 0.9f) {
+						lowMod = true;
+					}
+					if (Mathf.Abs (blocking) > 0.05f) {
+						action.actionType |= lowMod ? ActionType.blockDown : ActionType.blockUp;
+					} else if (Input.GetButtonDown ("XButton")) {
+						action.actionType |= lowMod ? ActionType.attack3 : ActionType.attack1;
+					} else if (Input.GetButtonDown ("YButton")) {
+						action.actionType |= lowMod ? ActionType.attack4 : ActionType.attack2;
+					} else if (Input.GetButtonDown ("AButton")) {
+						action.actionType |= ActionType.jump;
+					} else {
+						float otherPlayerXPos = (player1) ? curState.getP2XPos () : curState.getP1XPos ();
+						if (Mathf.Abs (xaxis) >= 1.0f) {
+							running = true;
+						}
+						if (xaxis < -0.1f) {
+							movingLeft = true;
+						}
+						if (xaxis > 0.1f) {
+							movingRight = true;
+						}
+						movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+						moving = movingLeft || movingRight;
+						if (moving) {
+							if (movingAway) {
+								action.actionType |= ActionType.moveAway;
+							} else if (running) {
+								action.actionType |= ActionType.runTowards;
+							} else {
+								action.actionType |= ActionType.walkTowards;	
+							}
 						}
 					}
 				}
