@@ -169,42 +169,85 @@ public class PlayerController : MonoBehaviour {
 					}
 				} else {
 					// HANDLE CONTROLLER INPUT
-					float yaxis = Input.GetAxis ("Vertical");
-					float xaxis = Input.GetAxis ("Horizontal");
-					float blocking = Input.GetAxis ("Trigger");
-					bool lowMod = false;
-					Debug.Log ("xaxis: "+xaxis);
-					if (yaxis > 0.9f) {
-						lowMod = true;
-					}
-					if (Mathf.Abs (blocking) > 0.05f) {
-						action.actionType |= lowMod ? ActionType.blockDown : ActionType.blockUp;
-					} else if (Input.GetButtonDown ("XButton")) {
-						action.actionType |= lowMod ? ActionType.attack3 : ActionType.attack1;
-					} else if (Input.GetButtonDown ("YButton")) {
-						action.actionType |= lowMod ? ActionType.attack4 : ActionType.attack2;
-					} else if (Input.GetButtonDown ("AButton")) {
-						action.actionType |= ActionType.jump;
+					if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
+						float yaxis = Input.GetAxis ("Vertical");
+						float xaxis = Input.GetAxis ("Horizontal");
+						float blocking = Input.GetAxis ("Trigger");
+						bool lowMod = false;
+						if (yaxis > 0.9f) {
+							lowMod = true;
+						}
+						if (Mathf.Abs (blocking) > 0.05f) {
+							action.actionType |= lowMod ? ActionType.blockDown : ActionType.blockUp;
+						} else if (Input.GetButtonDown ("XButton")) {
+							action.actionType |= lowMod ? ActionType.attack3 : ActionType.attack1;
+						} else if (Input.GetButtonDown ("YButton")) {
+							action.actionType |= lowMod ? ActionType.attack4 : ActionType.attack2;
+						} else if (Input.GetButtonDown ("AButton")) {
+							action.actionType |= ActionType.jump;
+						} else {
+							float otherPlayerXPos = (player1) ? curState.getP2XPos () : curState.getP1XPos ();
+							if (Mathf.Abs (xaxis) >= 1.0f) {
+								running = true;
+							}
+							if (xaxis < -0.5f) {
+								movingLeft = true;
+							}
+							if (xaxis > 0.5f) {
+								movingRight = true;
+							}
+							movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+							moving = movingLeft || movingRight;
+							if (moving) {
+								if (movingAway) {
+									action.actionType |= ActionType.moveAway;
+								} else if (running) {
+									action.actionType |= ActionType.runTowards;
+								} else {
+									action.actionType |= ActionType.walkTowards;	
+								}
+							}
+						}
 					} else {
-						float otherPlayerXPos = (player1) ? curState.getP2XPos () : curState.getP1XPos ();
-						if (Mathf.Abs (xaxis) >= 1.0f) {
-							running = true;
+						float yaxis = Input.GetAxis ("Vertical");
+						float xaxis = Input.GetAxis ("Horizontal");
+						float blocking = Input.GetAxis ("TriggerMac");
+						if (blocking < 0.0f) {
+							blocking = 0.0f;
 						}
-						if (xaxis < -0.5f) {
-							movingLeft = true;
+						bool lowMod = false;
+						if (yaxis > 0.9f) {
+							lowMod = true;
 						}
-						if (xaxis > 0.5f) {
-							movingRight = true;
-						}
-						movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
-						moving = movingLeft || movingRight;
-						if (moving) {
-							if (movingAway) {
-								action.actionType |= ActionType.moveAway;
-							} else if (running) {
-								action.actionType |= ActionType.runTowards;
-							} else {
-								action.actionType |= ActionType.walkTowards;	
+						if (Mathf.Abs (blocking) > 0.05f) {
+							action.actionType |= lowMod ? ActionType.blockDown : ActionType.blockUp;
+						} else if (Input.GetButtonDown ("XButtonMac")) {
+							action.actionType |= lowMod ? ActionType.attack3 : ActionType.attack1;
+						} else if (Input.GetButtonDown ("YButtonMac")) {
+							action.actionType |= lowMod ? ActionType.attack4 : ActionType.attack2;
+						} else if (Input.GetButtonDown ("AButtonMac")) {
+							action.actionType |= ActionType.jump;
+						} else {
+							float otherPlayerXPos = (player1) ? curState.getP2XPos () : curState.getP1XPos ();
+							if (Mathf.Abs (xaxis) >= 1.0f) {
+								running = true;
+							}
+							if (xaxis < -0.5f) {
+								movingLeft = true;
+							}
+							if (xaxis > 0.5f) {
+								movingRight = true;
+							}
+							movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
+							moving = movingLeft || movingRight;
+							if (moving) {
+								if (movingAway) {
+									action.actionType |= ActionType.moveAway;
+								} else if (running) {
+									action.actionType |= ActionType.runTowards;
+								} else {
+									action.actionType |= ActionType.walkTowards;	
+								}
 							}
 						}
 					}

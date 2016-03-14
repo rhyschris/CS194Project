@@ -1328,7 +1328,7 @@ MonoBehaviour:
   blockDamageModifier: 0
   player1: 1
   isAI: 0
-  isJoyStick: 0
+  isJoyStick: 1
   forwardVelocity: 8
   backwardVelocityFactor: 0.75
   runningVelocityFactor: 1.5
@@ -3030,7 +3030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockDamageModifier: 0
   player1: 0
-  isAI: 0
+  isAI: 1
   isJoyStick: 0
   forwardVelocity: 6
   backwardVelocityFactor: 0.9
