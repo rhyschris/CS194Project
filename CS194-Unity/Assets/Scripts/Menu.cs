@@ -6,15 +6,18 @@ public class Menu : MonoBehaviour {
 
 	bool hva = false;
 	bool ava = false;
+	private KeyCode Quit;
 
 	// Use this for initialization
 	void Start () {
-	
+		Quit = KeyCode.Escape;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKeyDown (Quit)) {
+			Application.Quit ();
+		}
 	}
 
 
@@ -32,4 +35,5 @@ public class Menu : MonoBehaviour {
 		// flag for two AI
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
+		
 }

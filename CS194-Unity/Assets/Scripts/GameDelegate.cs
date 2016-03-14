@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 using AssemblyCSharp;
 
@@ -55,7 +56,7 @@ public class GameDelegate : MonoBehaviour {
 		//Debug.Log ("Sending state at time " + Time.time.ToString ());
 		// QUIT THE GAME
 		if (Input.GetKeyDown (Quit)) {
-			Application.Quit ();
+			SceneManager.LoadScene ("Scenes/Menu");
 		}
 		// ENTER DEBUGGING MODE
 		if (Input.GetKeyDown (TogglePause)) {
