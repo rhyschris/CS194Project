@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour {
 					float xaxis = Input.GetAxis ("Horizontal");
 					float blocking = Input.GetAxis ("Trigger");
 					bool lowMod = false;
-					Debug.Log ("yaxis: "+yaxis);
+					Debug.Log ("xaxis: "+xaxis);
 					if (yaxis > 0.9f) {
 						lowMod = true;
 					}
@@ -190,10 +190,10 @@ public class PlayerController : MonoBehaviour {
 						if (Mathf.Abs (xaxis) >= 1.0f) {
 							running = true;
 						}
-						if (xaxis < -0.1f) {
+						if (xaxis < -0.5f) {
 							movingLeft = true;
 						}
-						if (xaxis > 0.1f) {
+						if (xaxis > 0.5f) {
 							movingRight = true;
 						}
 						movingAway = (movingLeft && (playerBodyBox.transform.position.x < otherPlayerXPos)) || (movingRight && (playerBodyBox.transform.position.x >= otherPlayerXPos));
