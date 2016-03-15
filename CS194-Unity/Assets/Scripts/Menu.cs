@@ -33,7 +33,7 @@ public class Menu : MonoBehaviour {
 	public void loadhvaLevel() {
 		MI.p2isAI ();
 		//player2.setPlayerAI ();
-		launchSingleAIScript ("");
+		//launchSingleAIScript ("5998");
 
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
@@ -55,7 +55,7 @@ public class Menu : MonoBehaviour {
 		process.Start();
 	}
 	private void launchTwoAIScripts(){
-		launchSingleAIScript ("");
-		launchSingleAIScript ("5998");
+		//launchSingleAIScript ("");
+		//launchSingleAIScript ("5998");
 	}
 }

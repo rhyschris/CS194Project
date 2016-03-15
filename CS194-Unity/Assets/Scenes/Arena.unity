@@ -3030,7 +3030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockDamageModifier: 0
   player1: 0
-  isAI: 0
+  isAI: 1
   isJoyStick: 0
   forwardVelocity: 6
   backwardVelocityFactor: 0.9
