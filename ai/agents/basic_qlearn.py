@@ -8,7 +8,7 @@ import random
 import sys
 import signal
 import cPickle as pickle
-from plotter import Plotter
+#from plotter import Plotter
 import socket
 
 HOST = '127.0.0.1'
@@ -17,7 +17,7 @@ HOST = '127.0.0.1'
 class BasicQlearnAgent(Agent):
 
 	def __init__(self,isPlayer1=False, loadOldTable=False, overwriteFile = False, 
-				 epsilon=.75, name="Qlearner", plot_freq=0):
+				 epsilon=.75, name="Qlearner", plot_freq=0, trainingMode=False):
 		super(BasicQlearnAgent, self).__init__(name)
 		self.p1 = isPlayer1
 
@@ -27,7 +27,7 @@ class BasicQlearnAgent(Agent):
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
 		self.prevAction = Actions.doNothing
 		self.bodywidth = 1.0;
-
+		self.isTraining = False
 		self.possibleXdists = [0, 1, 2, 3, 4,5, 6]
 
 		if (overwriteFile):
@@ -61,8 +61,8 @@ class BasicQlearnAgent(Agent):
 		self.plot_freq = (60/plot_freq) + 1
 		self.plot_counter = 0
 
-		if plot_freq > 0:
-			self.plotter = Plotter()
+		#if plot_freq > 0:
+		#	self.plotter = Plotter()
 
 		print("Done initializing!")
 
@@ -157,29 +157,31 @@ class BasicQlearnAgent(Agent):
 
 
 		self.prevGamestate = gameState
-		if (p1win):
-			self.prevGamestate = GameState(-4,0,100,4,0,100)
-			if (self.p1):
-				dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
-				data = bytearray()
-				data.append(255)
-				print("sending ipc")
-				self.ipc_client.sendto(data, (HOST, self.bindport+10))	#let other player know file is ready
-			else:
-				data, addr = self.ipc_server.recvfrom(1) 
-				print('retrieved ipc')
-				retrieveQtableFromFile('geneticQtableFile.txt')
-		if (p2win):
-			self.prevGamestate = GameState(-4,0,100,4,0,100)
-			if (not self.p1):
-				dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
-				data = bytearray()
-				data.append(255)
-				self.ipc_client.sendto(data, (HOST, self.bindport-10))	#let other player know file is ready
-			else:
-				data, addr = self.ipc_server.recvfrom(1) 
-				print('got ipc')
-				retrieveQtableFromFile('geneticQtableFile.txt')
+
+		if (self.isTraining):
+			if (p1win):
+				self.prevGamestate = GameState(-4,0,100,4,0,100)
+				if (self.p1):
+					dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
+					data = bytearray()
+					data.append(255)
+					print("sending ipc")
+					self.ipc_client.sendto(data, (HOST, self.bindport+10))	#let other player know file is ready
+				else:
+					data, addr = self.ipc_server.recvfrom(1) 
+					print('retrieved ipc')
+					retrieveQtableFromFile('geneticQtableFile.txt')
+			if (p2win):
+				self.prevGamestate = GameState(-4,0,100,4,0,100)
+				if (not self.p1):
+					dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
+					data = bytearray()
+					data.append(255)
+					self.ipc_client.sendto(data, (HOST, self.bindport-10))	#let other player know file is ready
+				else:
+					data, addr = self.ipc_server.recvfrom(1) 
+					print('got ipc')
+					retrieveQtableFromFile('geneticQtableFile.txt')
 
 
 	def chooseAction(self):
@@ -188,8 +190,8 @@ class BasicQlearnAgent(Agent):
 		# update plot according to frequency
 		self.plot_counter = (self.plot_counter + 1) % (self.plot_freq + 1)
 
-		if self.plot_counter == 1:
-			self.plotter.updateGraph(qRow)
+		#if self.plot_counter == 1:
+		#	self.plotter.updateGraph(qRow)
 
 		count = qRow.count(maxQ)
 		action = None

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 public class PlayerController : MonoBehaviour {
 	// AI
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour {
 	public float blockDamageModifier;
 	private float blockPercentage;
 	public bool player1;
-	public bool isAI;
+	private bool isAI;
 	public bool isJoyStick;
 	public float forwardVelocity;
 	public float backwardVelocityFactor;
@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour {
 	private ActionType lastAction;
 
 	//public float upwardVelocity;
-	public float gravity;
-	public float initialJumpVelocity;	
+	private float gravity;
+	private float initialJumpVelocity;	
 	// KEYBOARD INPUT
 	private KeyCode Up; 
 	private KeyCode Down;
@@ -110,11 +110,28 @@ public class PlayerController : MonoBehaviour {
 		bool moving = false;
 
 		if (isAI) {
-
 			action = playerAI.queryAction (curState);
 			if (inputHold) {
+				Debug.Log ("in input hold");
 				action = new Action ();
-			} 
+			} else {
+				switch (action.actionType & Action.HMOVE_MASK) {
+				case (ActionType.walkTowards):
+					Debug.Log("AI: walking towards");
+					break;
+				case (ActionType.runTowards):
+					Debug.Log ("Walking towards");
+					break;
+				case (ActionType.moveAway):
+					Debug.Log ("Moving away");
+					break;
+				default:
+					Debug.Log ("Not moving");
+					break;
+				}
+				Debug.Log ("action: " + (byte)action.actionType);
+			}
+				
 			/* Assuming AI is player 2 - he will face left */
 			if (this.player1)
 				movingRight = (action.actionType & Action.HMOVE_MASK) != ActionType.moveAway; 
@@ -174,7 +191,7 @@ public class PlayerController : MonoBehaviour {
 					float xaxis = Input.GetAxis ("Horizontal");
 					float blocking = Input.GetAxis ("Trigger");
 					bool lowMod = false;
-					Debug.Log ("yaxis: "+yaxis);
+					//Debug.Log ("yaxis: "+yaxis);
 					if (yaxis > 0.9f) {
 						lowMod = true;
 					}
@@ -511,13 +528,15 @@ public class PlayerController : MonoBehaviour {
 
 	public void setPlayerAI(){
 		isAI = true;
-		Process process = new Process();
+		/*Process process = new Process();
 		// Configure the process using the StartInfo properties.
 		process.StartInfo.FileName = "CMD.EXE";
 		process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
+		if (player1)
+			process.StartInfo.Arguments += " 5998";
 		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
-		process.Start();
+		//process.Start();*/
 	}
 	public void resetPlayer(){
 		int xpos = 4;
@@ -525,6 +544,10 @@ public class PlayerController : MonoBehaviour {
 			xpos = -4;
 		playerBodyBox.transform.position = new Vector3 (xpos, getHalfHeight (), 0);
 		health = maxHealth; // Debug for animation
+		inputHold = false;
+	}
+	void Awaken(){
+		isAI = false;
 	}
 	void Start () {
 		// fighter is the model, fighterAnimator is the animation controller, we need access to it here in order
@@ -533,8 +556,10 @@ public class PlayerController : MonoBehaviour {
 		// Capture the animation behaviors that underlie each state.  
 		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
 
-		health = 2000.0f; // Debug for animation
+		health = 1000.0f; // Debug for animation
 		maxHealth = health;
+		gravity = 0.07f;
+		initialJumpVelocity = 1.01f;
 		blockPercentage = 1.0f;
 		timeEnds = 0.0f;
 		timeAttackBegins = 0.0f;
@@ -549,7 +574,11 @@ public class PlayerController : MonoBehaviour {
 		blocking = false;
 		lowBlocking = false;
 
+		GameObject MIObj = GameObject.Find ("Info");
+		MenuInfo MI_gd = MIObj.GetComponent<MenuInfo> ();
 		if (player1) {
+			if (MI_gd.isp1AI ())
+				isAI = true;
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
@@ -572,6 +601,10 @@ public class PlayerController : MonoBehaviour {
 			}
 
 		} else { // player 2
+			if (MI_gd.isp2AI ()) {
+				isAI = true;
+				//gravity *= 5;
+			}
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");
 			playerBlockBox = GameObject.Find ("Player2BlockBox");
