@@ -270,7 +270,8 @@ public class PlayerController : MonoBehaviour {
 						}
 					}
 				}
-			}
+			} else
+				Debug.Log ("fucling input hold");
 		}
 
 		action.oldXPosition = playerBodyBox.transform.position.x;
