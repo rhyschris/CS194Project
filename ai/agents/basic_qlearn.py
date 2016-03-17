@@ -8,7 +8,7 @@ import random
 import sys
 import signal
 import cPickle as pickle
-#from plotter import Plotter
+from plotter import Plotter
 import socket
 
 HOST = '127.0.0.1'
@@ -17,18 +17,22 @@ HOST = '127.0.0.1'
 class BasicQlearnAgent(Agent):
 
 	def __init__(self,isPlayer1=False, loadOldTable=False, overwriteFile = False, 
-				 epsilon=.75, name="Qlearner", plot_freq=0, trainingMode=False):
+				 epsilon=.20, alpha=0.5, name="Qlearner", plot_freq=0, trainingMode=False):
+
 		super(BasicQlearnAgent, self).__init__(name)
 		self.p1 = isPlayer1
 
 		self.epsilon = epsilon
 
-		self.alpha = .5
+		self.discount = 0.90
+
+		# high 
+		self.alpha = 0.1
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
 		self.prevAction = Actions.doNothing
 		self.bodywidth = 1.0;
 		self.isTraining = False
-		self.possibleXdists = [0, 1, 2, 3, 4,5, 6]
+		self.possibleXdists = [0, 1, 2, 3, 4, 5, 6]
 
 		if (overwriteFile):
 			signal.signal(signal.SIGINT, self.signalHandler)
@@ -38,6 +42,9 @@ class BasicQlearnAgent(Agent):
 		self.makeActionDic()
 		self.Qtable = dict()
 
+		# sparse feature extractor
+		self.w = {}
+		self.initW()
 
 		self.fn = 'savedQTablep1.txt'
 		self.bindport = 5555
@@ -61,8 +68,8 @@ class BasicQlearnAgent(Agent):
 		self.plot_freq = (60/plot_freq) + 1
 		self.plot_counter = 0
 
-		#if plot_freq > 0:
-		#	self.plotter = Plotter()
+		if plot_freq > 0:
+			self.plotter = Plotter()
 
 		print("Done initializing!")
 
@@ -74,6 +81,11 @@ class BasicQlearnAgent(Agent):
 	def makeActionDic(self):
 		for i in range(0,self.numActions):
 			self.actionDic[self.actions[i]] = i
+
+	def initW(self):
+		''' Initialize w to random weights '''
+		for elem in self.featureExtractor ((0, 0, 0)):
+			self.w[elem] = 0.01 * random.random()
 
 
 	def initializeTable(self):
@@ -89,9 +101,9 @@ class BasicQlearnAgent(Agent):
 							self.Qtable[Gamestate][self.actionDic[Actions.walkTowards]]+=.5
 							self.Qtable[Gamestate][self.actionDic[Actions.runTowards]]+=.5
 
-
-
-
+	# TODO: 
+	# Temporal information
+	# 
 	def getGSTuple(self,gamestate):
 		xdist = abs(int(gamestate.p1Xpos-gamestate.p2Xpos-self.bodywidth))
 
@@ -108,19 +120,71 @@ class BasicQlearnAgent(Agent):
 
 		return (tupXdist,tupYdist,gamestate.actionFlags)
 
+
+	def featureExtractor (self, gsTuple):
+		''' 
+		Extracts a sparse feature vector phi from the gamestate.
+
+		'''
+		tup = gsTuple
+		features = {}
+		features['x'], features['y'] = tup[0], tup[1]
+		features['1/x'], features['1/y'] = 1.0 / (abs(tup[0]) + 1.0), (1.0/ (abs(tup[1]) + 1.0))
+
+		# indicator feature for each action
+		actionFlags = tup[2]
+
+		for elem in self.actions:
+			if actionFlags & elem.value:
+				features[elem.name] = 1
+			else:
+				features[elem.name] = 0
+
+		return features
+
+	def dot(self, w, x):
+		''' fast and dirty dot product '''
+		total = 0.0
+		for elem in x:
+			total += x[elem] * \
+				w[elem]
+		return total
+
+
+	def allActionMasks(self):
+		''' Generator for all the action flags '''
+		for p2flags in [0b00000000,0b10010000,0b00010000, 0b01000000,0b10100000,0b00100000]:
+			for p1flags in [0b0000,0b1001,0b0001, 0b0010,0b1010,0b0100]: 
+				yield p1flags | p2flags
+
+
 	def getQRow(self,gamestate):	
 		tup = self.getGSTuple(gamestate)
-
-		return self.Qtable[tup]
+		row = [(tup[0], tup[1], action.value) for action in self.actions ]
+		''' weights version '''
+		values = [ self.dot(self.w, self.featureExtractor(cell)) for cell in row ]
+		
+		return values
+		#return self.Qtable[tup]
 
 	def updateQForStateAction(self,prevGS,curGS,prevAction,reward):
+		
 		prevtup = self.getGSTuple(prevGS)
 		index = self.actionDic[prevAction]
 
+		x = self.featureExtractor(prevtup)
+
 		curqRow = self.getQRow(curGS)
 		maxCurQ = max(curqRow)
+		prevQ = self.dot(self.w, x)
 
-		self.Qtable[prevtup][index]+= self.alpha*(reward + maxCurQ - self.Qtable[prevtup][index])
+		r = reward + (self.discount * maxCurQ) - prevQ
+
+		# Gradient descent
+		for feat in x:
+			self.w[feat] += (self.alpha	 * r * x[feat])
+
+		# self.Qtable[prevtup][index]+= self.alpha*(reward + maxCurQ - self.Qtable[prevtup][index])
 
 	def ingestState(self, data):
 		args = struct.unpack('!ffffffB',data)
@@ -148,12 +212,21 @@ class BasicQlearnAgent(Agent):
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
 			else:
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
+			self.epsilon -= 0.0002
 
 		if (p2damage and (p2damage>0)):
 			if (self.p1):
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
 			else:
 				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
+			self.epsilon -= 0.0002
+
+		reward = -0.01
+		if (gameState.p1Attacking and self.p1) or \
+			gameState.p2Attacking and not self.p1:
+			reward -= 0.01
+
+		self.updateQForStateAction(self.prevGamestate, gameState, self.prevAction, reward)
 
 
 		self.prevGamestate = gameState
@@ -186,29 +259,32 @@ class BasicQlearnAgent(Agent):
 
 	def chooseAction(self):
 		qRow = self.getQRow(self.prevGamestate)
+		print "row: ", qRow
 		maxQ = max(qRow)
 		# update plot according to frequency
 		self.plot_counter = (self.plot_counter + 1) % (self.plot_freq + 1)
 
-		#if self.plot_counter == 1:
-		#	self.plotter.updateGraph(qRow)
+		if self.plot_counter == 1:
+			self.plotter.updateGraph(qRow)
 
-		count = qRow.count(maxQ)
+		count = sum([1 for elem in qRow if elem > 0.95 * maxQ])
 		action = None
 	 	
 		if random.random() < self.epsilon: # exploration 
 			print("exploring!!!!!")
 			action = random.choice(self.actions) 
 		elif count > 1:
-			best = [i for i in range(len(self.actions)) if qRow[i] == maxQ]
+
+			best = [i for i in xrange(len(self.actions)) if qRow[i] >= (0.8 * maxQ) ]
 			print("randomly chose an action out of best possible")
+			print "best: ", best
+
 			action = self.actions[random.choice(best)]
 		else:
 			print("maxq = ",maxQ)
 			action = self.actions[qRow.index(maxQ)]
 	 
 		self.prevAction = action
-		self.epsilon-=0.00001
 		return action
 
 	def dumpQtableToFile(self,filename):

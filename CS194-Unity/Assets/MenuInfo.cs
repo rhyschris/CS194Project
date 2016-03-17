@@ -11,12 +11,13 @@ public class MenuInfo : MonoBehaviour {
 		p2AI = false;
 	}
 
-	public void p1isAI(){
-		p1AI = true;
+	public void p1setAI(bool flag){
+		p1AI = flag;
 	}
-	public void p2isAI(){
-		p2AI = true;
+	public void p2setAI(bool flag){
+		p2AI = flag;
 	}
+
 	public bool isp1AI(){
 		return p1AI;
 	}

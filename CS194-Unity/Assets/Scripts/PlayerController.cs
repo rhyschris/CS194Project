@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -83,7 +84,6 @@ public class PlayerController : MonoBehaviour {
 				}
 
 			} else if (bhvr.isTriggered ()) {
-				// Not active + recently changed
 				finishAttack();
 			}
 		}
@@ -403,6 +403,13 @@ public class PlayerController : MonoBehaviour {
 			} else {										
 				playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x + myAction.distanceMoved, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
 			}
+			// Move hitbox if applicable.
+			if( attackHandle()){
+				playerHitBox.transform.position = new Vector3 (playerHitBox.transform.position.x + myAction.distanceMoved, 
+					playerHitBox.transform.position.y, 
+					playerHitBox.transform.position.z);
+			}
+
 		} else{
 
 		}
@@ -445,6 +452,12 @@ public class PlayerController : MonoBehaviour {
 				newY = this.getHalfHeight();
 			}
 			playerBodyBox.transform.position = new Vector3 (playerBodyBox.transform.position.x, newY, playerBodyBox.transform.position.z);
+
+			if (attackHandle ()) {
+				playerHitBox.transform.position = new Vector3 (playerHitBox.transform.position.x, 
+					playerHitBox.transform.position.y + jumpVelocity,
+					playerHitBox.transform.position.z);
+			}
 			jumpVelocity = jumpVelocity - gravity; 
 
 		}
@@ -492,6 +505,9 @@ public class PlayerController : MonoBehaviour {
 		 * should define the behavior a player goes through when they are hit by an attack.
 		 */
 	public void receiveAttack(float damage, bool blocked) {
+		
+		AudioSource audio = GetComponent<AudioSource>();
+		audio.Play();
 		if (blocked) {
 			damage = damage * (1.0f - blockPercentage) + damage * blockPercentage * blockDamageModifier;
 			health = health - damage;
@@ -532,7 +548,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void moveToX(float x){
+
 		playerBodyBox.transform.position = new Vector3 (x, playerBodyBox.transform.position.y, playerBodyBox.transform.position.z);
+	
 	}
 	public float getHalfHeight() {
 		return playerBodyBox.transform.localScale.y * 0.5f;
@@ -629,7 +647,7 @@ public class PlayerController : MonoBehaviour {
 		health = 1000.0f; // Debug for animation
 		maxHealth = health;
 		gravity = 0.07f;
-		initialJumpVelocity = 1.01f;
+		initialJumpVelocity = 0.75f;
 		blockPercentage = 1.0f;
 
 		reach = 0.0f;
@@ -697,4 +715,4 @@ public class PlayerController : MonoBehaviour {
 
 		}
 	}
-}
+}	

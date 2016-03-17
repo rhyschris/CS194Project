@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour {
 
-	bool hva = false;
-	bool ava = false;
-
 	private PlayerController player1;
 	private PlayerController player2;
 
@@ -27,11 +24,15 @@ public class Menu : MonoBehaviour {
 
 	// need to figure out how to set hva and ava too
 	public void loadhvhLevel() {
+		MI.p1setAI (false);
+		MI.p1setAI (false);
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
 
 	public void loadhvaLevel() {
-		MI.p2isAI ();
+		MI.p1setAI (false);
+		MI.p2setAI (true);
+
 		//player2.setPlayerAI ();
 		//launchSingleAIScript ("5998");
 
@@ -40,8 +41,8 @@ public class Menu : MonoBehaviour {
 
 	public void loadavaLevel() {
 		// flag for two AI
-		MI.p1isAI();
-		MI.p2isAI ();
+		MI.p1setAI(true);
+		MI.p2setAI (true);
 		launchTwoAIScripts ();
 		SceneManager.LoadScene ("Scenes/Arena");
 	}

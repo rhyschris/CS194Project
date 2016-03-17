@@ -59,8 +59,7 @@ public class GameDelegate : MonoBehaviour {
 	}
 	void Update()
 	{
-		//Debug.Log ("Sending state at time " + Time.time.ToString ());
-		// QUIT THE GAME
+
 		if (Input.GetKeyDown (Quit)) {
 			SceneManager.LoadScene ("Scenes/Menu");
 		}
