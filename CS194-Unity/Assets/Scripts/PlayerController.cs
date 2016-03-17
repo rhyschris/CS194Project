@@ -628,8 +628,8 @@ public class PlayerController : MonoBehaviour {
 
 		health = 1000.0f; // Debug for animation
 		maxHealth = health;
-		gravity = 0.07f;
-		initialJumpVelocity = 1.01f;
+		gravity = 0.05f;
+		initialJumpVelocity = .61f;
 		blockPercentage = 1.0f;
 
 		reach = 0.0f;
