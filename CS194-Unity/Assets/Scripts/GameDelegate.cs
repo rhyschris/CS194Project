@@ -10,6 +10,7 @@ using AssemblyCSharp;
 public class GameDelegate : MonoBehaviour {
 	private bool paused;
 	private bool firstTime;
+	private bool gameOver;
 	private bool wait_for_start;
 	private float stageEnd_left;
 	private float stageEnd_right;
@@ -33,6 +34,7 @@ public class GameDelegate : MonoBehaviour {
 		wait_for_start = true;
 		firstTime = true;
 		paused = false;
+		gameOver = false;
 		GameObject mainCameraObj = GameObject.Find ("Camera");
 		GameObject healthBars = GameObject.Find ("HealthBars");
 		GameObject player1Obj = GameObject.Find ("Player1");
@@ -61,7 +63,7 @@ public class GameDelegate : MonoBehaviour {
 	{
 		//Debug.Log ("Sending state at time " + Time.time.ToString ());
 		// QUIT THE GAME
-		if (Input.GetKeyDown (Quit)) {
+		if (gameOver){//Input.GetKeyDown (Quit)) {
 			SceneManager.LoadScene ("Scenes/Menu");
 		}
 		// ENTER DEBUGGING MODE
@@ -89,30 +91,7 @@ public class GameDelegate : MonoBehaviour {
 			if (Input.GetKeyDown (mainCamera.getWidthMinimumMinus())) {
 				mainCamera.modWidthMinimum (0.5f);
 			}
-
-		} else if (wait_for_start){
-			if (firstTime) {
-				winText.text = "Press G to start game!";
-			}
-			if (Input.GetKeyDown(start_game) && firstTime){
-				firstTime = false;
-				wait_for_start = false;
-				winText.text = "";
-				/*
-				player1.resetPlayer();
-				player2.resetPlayer();
-				healthbarcontroller.setPercent (true, 1.0f);
-				healthbarcontroller.setPercent (false, 1.0f);
-				GameObject p1Fighter = player1.fighter;
-				Animator p1Anim;
-				p1Anim = p1Fighter.GetComponent<Animator> ();
-				p1Anim.SetBool ("start_game", true);
-				GameObject p2Fighter = player2.fighter;
-				Animator p2Anim;
-				p2Anim = p2Fighter.GetComponent<Animator> ();
-				p2Anim.SetBool ("start_game", true);
-				*/
-			}
+				
 		}
 			else{
 				if (Input.GetKeyDown (ToggleDebugText)) {
@@ -201,6 +180,7 @@ public class GameDelegate : MonoBehaviour {
 
 					winText.text = "Victory for "+(defender.player1?"player2!":"player1!")+ "\n PRESS ESC TO RETURN TO MENU";
 						wait_for_start = true;
+					gameOver = true;
 					}
 				}
 			}

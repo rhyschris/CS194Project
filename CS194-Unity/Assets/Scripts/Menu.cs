@@ -17,6 +17,7 @@ public class Menu : MonoBehaviour {
 		GameObject MIObj = GameObject.Find ("Info");
 		MI = MIObj.GetComponent<MenuInfo> ();
 		DontDestroyOnLoad (MI);
+		loadavaLevel ();
 	}
 	
 	// Update is called once per frame
@@ -42,7 +43,7 @@ public class Menu : MonoBehaviour {
 		// flag for two AI
 		MI.p1isAI();
 		MI.p2isAI ();
-		launchTwoAIScripts ();
+	//	launchTwoAIScripts ();
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
 

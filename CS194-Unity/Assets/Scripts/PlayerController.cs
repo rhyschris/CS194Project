@@ -582,7 +582,7 @@ public class PlayerController : MonoBehaviour {
 	public void setPlayerAI(){
 		isAI = true;
 
-		Process process = new Process ();
+		/*Process process = new Process ();
 		
 		// Detect if Windows
 		if (Application.platform == RuntimePlatform.WindowsPlayer) {
@@ -603,7 +603,7 @@ public class PlayerController : MonoBehaviour {
 		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 		process.Start();
 		UnityEngine.Debug.Log("Launched process");
-
+*/
 			
 	}
 	public void resetPlayer(){
