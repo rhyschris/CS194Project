@@ -52,6 +52,7 @@ class BasicQlearnAgent(Agent):
 		
 		if (not loadOldTable):
 			self.initializeTable()
+			self.epsilon = .1
 		else:
 			self.retrieveQtableFromFile(self.fn)
 
@@ -78,9 +79,7 @@ class BasicQlearnAgent(Agent):
 
 	def initializeTable(self):
 		for xdist in self.possibleXdists:
-			for ydist in [-3, -1, 0, 1, 3]:
-				#for p1h in [0,1]: #low and high
-					#for p2h in [0,1]: #low and high
+			for ydist in [-1.0, .5, 0, .5, 1.0]:
 				for p2flags in [0b00000000,0b10010000,0b00010000, 0b01000000,0b10100000,0b00100000]:
 					for p1flags in [0b0000,0b1001,0b0001, 0b0010,0b1010,0b0100]:
 						Gamestate = (xdist,ydist,p1flags|p2flags)
@@ -101,10 +100,10 @@ class BasicQlearnAgent(Agent):
 
 		ydist = int(gamestate.p1Ypos-gamestate.p2Ypos)
 		tupYdist =ydist
-		if (ydist<-1):
-			tupYdist = -3
-		elif(ydist>1):
-			tupYdist = 3
+		if (ydist<-.5):
+			tupYdist = -1
+		elif(ydist>.5):
+			tupYdist = 1
 
 		return (tupXdist,tupYdist,gamestate.actionFlags)
 
@@ -236,7 +235,7 @@ if __name__ == '__main__':
     
         p1 = False
 
-    agent = BasicQlearnAgent(p1, loadOldTable=False,epsilon=.15, 
+    agent = BasicQlearnAgent(p1, loadOldTable=True,epsilon=.15, 
     						overwriteFile=True, plot_freq=20)
 
     print "Agent {0} reporting for duty".format(agent.name)

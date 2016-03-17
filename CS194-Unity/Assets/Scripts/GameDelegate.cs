@@ -28,8 +28,8 @@ public class GameDelegate : MonoBehaviour {
 	private KeyCode ToggleDebugText;
 	void Start ()
 	{
-		stageEnd_left = -20.0f;
-		stageEnd_right = 20.0f;
+		stageEnd_left = -30.0f;
+		stageEnd_right = 30.0f;
 		wait_for_start = true;
 		firstTime = true;
 		paused = false;
