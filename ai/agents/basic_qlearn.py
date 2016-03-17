@@ -207,22 +207,23 @@ class BasicQlearnAgent(Agent):
 			print("maxq = ",maxQ)
 			action = self.actions[qRow.index(maxQ)]
 	 
+	 	if (self.xdist(self.prevGamestate)<=2.0 and action ==Actions.jump):
+	 		if (random.random()<0.70):
+	 			return self.chooseAction()
+
 		self.prevAction = action
 		self.epsilon-=0.00001
 		return action
 
+	def xdist(self,gs):
+		return abs(gs.p1Xpos-gs.p2Xpos)
+
 	def dumpQtableToFile(self,filename):
-		#filename = "savedQTablep2.txt"
-		#if self.p1:
-		#	filename="savedQTablep1.txt"
 		with open(filename, "wb") as myFile:
 			pickle.dump(self.Qtable, myFile)
 
 
 	def retrieveQtableFromFile(self,filename):
-		#filename = "savedQTablep2.txt"
-		#if self.p1:
-		#	filename="savedQTablep1.txt"
 		with open(filename, "rb") as myFile:
 			self.Qtable = pickle.load(myFile)
 
