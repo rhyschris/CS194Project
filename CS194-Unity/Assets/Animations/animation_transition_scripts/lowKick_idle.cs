@@ -19,7 +19,7 @@ public class lowKick_idle : BufferedStateMachineBehaviour {
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool ("lowKick", false);
 		animator.SetBool ("inAnimation", false);
-
+		this.active = false;
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

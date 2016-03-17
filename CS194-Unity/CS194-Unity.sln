@@ -1,9 +1,9 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{098833BD-F8DD-1E4A-72FA-1B235F3B78D7}") = "CS194-Unity", "Assembly-CSharp.csproj", "{2121F923-01F5-EF7D-392D-4D711C375AC8}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{2121F923-01F5-EF7D-392D-4D711C375AC8}"
 EndProject
-Project("{098833BD-F8DD-1E4A-72FA-1B235F3B78D7}") = "CS194-Unity", "Assembly-CSharp-Editor.csproj", "{2CF22A17-9CD8-5797-EF9B-F2920E03AE72}"
+Project("{098833BD-F8DD-1E4A-72FA-1B235F3B78D7}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{2CF22A17-9CD8-5797-EF9B-F2920E03AE72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +19,6 @@ Global
 		{2CF22A17-9CD8-5797-EF9B-F2920E03AE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CF22A17-9CD8-5797-EF9B-F2920E03AE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CF22A17-9CD8-5797-EF9B-F2920E03AE72}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -39,5 +36,8 @@ Global
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
