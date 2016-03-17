@@ -32,4 +32,3 @@ public class lowKick_idle : BufferedStateMachineBehaviour {
 	//
 	//}
 }
-

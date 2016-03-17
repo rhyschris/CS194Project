@@ -94,14 +94,15 @@ public class GameDelegate : MonoBehaviour {
 			if (firstTime) {
 				winText.text = "Press G to start game!";
 			}
-			if (Input.GetKeyDown(start_game)){
+			if (Input.GetKeyDown(start_game) && firstTime){
 				firstTime = false;
 				wait_for_start = false;
+				winText.text = "";
+				/*
 				player1.resetPlayer();
 				player2.resetPlayer();
 				healthbarcontroller.setPercent (true, 1.0f);
 				healthbarcontroller.setPercent (false, 1.0f);
-				winText.text = "";
 				GameObject p1Fighter = player1.fighter;
 				Animator p1Anim;
 				p1Anim = p1Fighter.GetComponent<Animator> ();
@@ -110,6 +111,7 @@ public class GameDelegate : MonoBehaviour {
 				Animator p2Anim;
 				p2Anim = p2Fighter.GetComponent<Animator> ();
 				p2Anim.SetBool ("start_game", true);
+				*/
 			}
 		}
 			else{
@@ -197,7 +199,7 @@ public class GameDelegate : MonoBehaviour {
 						attackerAnimator = attackerFighter.GetComponent<Animator> ();
 						attackerAnimator.SetBool ("won_game", true);
 
-						winText.text = "Victory for "+(defender.player1?"player2!":"player1!\nPRESS G TO PLAY AGAIN");
+					winText.text = "Victory for "+(defender.player1?"player2!":"player1!")+ "\n PRESS ESC TO RETURN TO MENU";
 						wait_for_start = true;
 					}
 				}

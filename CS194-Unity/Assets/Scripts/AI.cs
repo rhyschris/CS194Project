@@ -85,7 +85,7 @@ public class AI {
 		byte[] actionPacket = new byte[PACKET_LENGTH];
 
 		Buffer.BlockCopy(buffer, read_loc, actionPacket, 0, PACKET_LENGTH);
-		//Debug.Log ("actionPacket: " + actionPacket[0]);
+		Debug.Log ("actionPacket: " + actionPacket[0]);
 		/* least significant byte contains all of the bitwise or'ed action flags */
 
 		action.actionType = (ActionType) actionPacket[0];
