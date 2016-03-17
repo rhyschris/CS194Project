@@ -7,6 +7,7 @@ public class knock_out_once : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool ("lost_game", false);
 		animator.SetBool ("start_game", false);
+		Debug.Log ("Starting game again: LOSAR");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Diagnostics;
+using System.IO;
+
 
 public class PlayerController : MonoBehaviour {
 	// AI
@@ -39,9 +41,7 @@ public class PlayerController : MonoBehaviour {
 	private KeyCode Attack2;
 	private KeyCode Block;
 	// ANIMATION VARIABLES
-	private float timeEnds;
-	private float timeAttackBegins;
-	private float timeAttackEnds;
+
 	private float jumpVelocity;
 	private float reach;
 	private float attackDamage;
@@ -112,24 +112,24 @@ public class PlayerController : MonoBehaviour {
 		if (isAI) {
 			action = playerAI.queryAction (curState);
 			if (inputHold) {
-				Debug.Log ("in input hold");
+				//Debug.Log ("in input hold");
 				action = new Action ();
 			} else {
 				switch (action.actionType & Action.HMOVE_MASK) {
 				case (ActionType.walkTowards):
-					Debug.Log("AI: walking towards");
+					//Debug.Log("AI: walking towards");
 					break;
 				case (ActionType.runTowards):
-					Debug.Log ("Walking towards");
+					//Debug.Log ("Walking towards");
 					break;
 				case (ActionType.moveAway):
-					Debug.Log ("Moving away");
+					//Debug.Log ("Moving away");
 					break;
 				default:
-					Debug.Log ("Not moving");
+				//	Debug.Log ("Not moving");
 					break;
 				}
-				Debug.Log ("action: " + (byte)action.actionType);
+				//Debug.Log ("action: " + (byte)action.actionType);
 			}
 				
 			/* Assuming AI is player 2 - he will face left */
@@ -270,8 +270,7 @@ public class PlayerController : MonoBehaviour {
 						}
 					}
 				}
-			} else
-				Debug.Log ("fucling input hold");
+			}
 		}
 
 		action.oldXPosition = playerBodyBox.transform.position.x;
@@ -582,15 +581,30 @@ public class PlayerController : MonoBehaviour {
 
 	public void setPlayerAI(){
 		isAI = true;
-		/*Process process = new Process();
-		// Configure the process using the StartInfo properties.
-		process.StartInfo.FileName = "CMD.EXE";
-		process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
-		if (player1)
-			process.StartInfo.Arguments += " 5998";
-		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
-		//process.Start();*/
+		Process process = new Process ();
+		
+		// Detect if Windows
+		if (Application.platform == RuntimePlatform.WindowsPlayer) {
+			// Configure the process using the StartInfo properties.
+			process.StartInfo.FileName = "CMD.EXE";
+			process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
+		
+		} else { //Assume Unix-like system with shell
+			process.StartInfo.FileName = "python";
+			process.StartInfo.WorkingDirectory = Directory.GetParent (Directory.GetCurrentDirectory ()).FullName + "/ai/agents";
+
+
+			process.StartInfo.Arguments = "basic_qlearn.py ";
+		}
+		if (!player1)
+			process.StartInfo.Arguments += " 5998";
+	
+		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+		process.Start();
+		UnityEngine.Debug.Log("Launched process");
+
+			
 	}
 	public void resetPlayer(){
 		int xpos = 4;
@@ -610,14 +624,14 @@ public class PlayerController : MonoBehaviour {
 		// Capture the animation behaviors that underlie each state.  
 		animatedBehaviours = fighterAnimator.GetBehaviours<BufferedStateMachineBehaviour>();
 
+		UnityEngine.Debug.Log ("PWD: " + Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
+
 		health = 1000.0f; // Debug for animation
 		maxHealth = health;
 		gravity = 0.07f;
 		initialJumpVelocity = 1.01f;
 		blockPercentage = 1.0f;
-		timeEnds = 0.0f;
-		timeAttackBegins = 0.0f;
-		timeAttackEnds = 0.0f;
+
 		reach = 0.0f;
 		attackDamage = 0.0f;
 		lowAttack = false;
@@ -631,8 +645,11 @@ public class PlayerController : MonoBehaviour {
 		GameObject MIObj = GameObject.Find ("Info");
 		MenuInfo MI_gd = MIObj.GetComponent<MenuInfo> ();
 		if (player1) {
-			if (MI_gd.isp1AI ())
-				isAI = true;
+			if (MI_gd.isp1AI ()) {
+				setPlayerAI ();
+			}
+				
+
 			playerBodyBox = GameObject.Find ("Player1BodyBox");
 			playerHitBox = GameObject.Find ("Player1HitBox");
 			playerBlockBox = GameObject.Find ("Player1BlockBox");
@@ -656,8 +673,7 @@ public class PlayerController : MonoBehaviour {
 
 		} else { // player 2
 			if (MI_gd.isp2AI ()) {
-				isAI = true;
-				//gravity *= 5;
+				setPlayerAI ();
 			}
 			playerBodyBox = GameObject.Find ("Player2BodyBox");
 			playerHitBox = GameObject.Find ("Player2HitBox");

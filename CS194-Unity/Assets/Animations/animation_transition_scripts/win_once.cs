@@ -7,6 +7,7 @@ public class win_once : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool ("won_game", false);
 		animator.SetBool ("start_game", false);
+		Debug.Log ("Starting game again: WINRAR");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

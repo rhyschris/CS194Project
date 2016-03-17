@@ -54,10 +54,8 @@ public class GameDelegate : MonoBehaviour {
 		ToggleDebugText = KeyCode.Quote;
 		winText.text = "";
 		winText.color = Color.white;
-		//if (MI_gd.isp1AI())
-		//	player1.setPlayerAI ();
-		//if (MI_gd.isp2AI())
-		//	player2.setPlayerAI ();
+
+
 	}
 	void Update()
 	{

@@ -20,7 +20,6 @@ public class lowKick_idle : BufferedStateMachineBehaviour {
 		animator.SetBool ("lowKick", false);
 		animator.SetBool ("inAnimation", false);
 		this.active = false;
-
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
@@ -33,4 +32,3 @@ public class lowKick_idle : BufferedStateMachineBehaviour {
 	//
 	//}
 }
-
