@@ -646,7 +646,7 @@ public class PlayerController : MonoBehaviour {
 
 		UnityEngine.Debug.Log ("PWD: " + Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
 
-		health = 110.0f; // Debug for animation
+		health = 1000.0f; // Debug for animation
 		maxHealth = health;
 
 		gravity = 0.05f;
