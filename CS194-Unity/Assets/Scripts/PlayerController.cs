@@ -493,8 +493,6 @@ public class PlayerController : MonoBehaviour {
 		 */
 	private void finishAttack() {
 		if (!attackWasFinished) {
-			//playerHitBox.SetActive (false);
-			playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
 			playerHitBox.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
 			attackWasFinished = true;
 		}
@@ -533,7 +531,7 @@ public class PlayerController : MonoBehaviour {
 		attackDamage = newDamage;
 		lowAttack = newLow;
 		//playerHitBox.SetActive (true);
-		playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
+		//playerHitBox.transform.position = new Vector3 (0.0f, -10.0f, 0.0f);
 		playerHitBox.transform.localScale = new Vector3 (reach, 1.0f, 1.0f);
 		// set animation bool
 	}
