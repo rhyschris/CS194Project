@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour {
 		 */
 
 	public void handleAutomaticUpdates(float otherPlayerXPos) {
+
 		bool shouldHold = false;
 
 		foreach (BufferedStateMachineBehaviour bhvr in animatedBehaviours) { 

@@ -244,7 +244,8 @@ public class GameDelegate : MonoBehaviour {
 			return state;
 		}
 	void onApplicationQuit(){
+		
 		player1.killProcess ();
 		player2.killProcess ();
 	}
-	}
+}

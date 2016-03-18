@@ -16,6 +16,11 @@ public class CameraController : MonoBehaviour {
 	private KeyCode xPaddingMinus;
 	private KeyCode widthMinimumPlus;
 	private KeyCode widthMinimumMinus;
+
+	private float xmoment;
+	private float ymoment;
+	private float zmoment;
+
 	void Start () {
 		mainCamera = Camera.main;
 		GameObject healthBars = GameObject.Find ("HealthBars");
@@ -31,6 +36,10 @@ public class CameraController : MonoBehaviour {
 		xPaddingMinus = KeyCode.J;
 		widthMinimumPlus = KeyCode.Period;
 		widthMinimumMinus = KeyCode.Comma;
+
+		xmoment = 0.0f;
+		ymoment = 0.0f;
+		zmoment = 0.0f;
 	}
 	void LateUpdate() {
 		float xTransformRad = transform.eulerAngles.x * Mathf.Deg2Rad;
@@ -44,7 +53,12 @@ public class CameraController : MonoBehaviour {
 		float x = (player1.getXPos() + player2.getXPos()) *.5f;
 		float y = yAboveHeight + yheight;
 		float z = zAbsolute * -1.0f;
-		transform.position = new Vector3 (x, y, z);
+
+		xmoment = 0.8f * xmoment + 0.2f * x;
+		ymoment = 0.8f * ymoment + 0.2f* y;
+		zmoment = 0.8f * zmoment + 0.2f * z;
+
+		transform.position = new Vector3 (xmoment, ymoment, zmoment);
 		healthbarcontroller.remoteUpdate ();
 	}
 	public void modAngle(float modBy) {
