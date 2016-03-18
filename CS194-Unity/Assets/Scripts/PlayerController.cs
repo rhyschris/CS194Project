@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 	// STAT VARIABLES
 	private float health;
 	private float maxHealth;
-
+	private Process myProcess;
 	public float blockDamageModifier;
 	private float blockPercentage;
 	public bool player1;
@@ -493,7 +493,6 @@ public class PlayerController : MonoBehaviour {
 		 */
 	private void finishAttack() {
 		if (!attackWasFinished) {
-			playerHitBox.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
 			attackWasFinished = true;
 		}
 	}
@@ -557,6 +556,7 @@ public class PlayerController : MonoBehaviour {
 		return playerBodyBox.transform.localScale.x * 0.5f;
 	}
 
+
 	public float getHitHalfWidth() {
 		return playerHitBox.transform.localScale.x * 0.5f;
 	}
@@ -595,29 +595,33 @@ public class PlayerController : MonoBehaviour {
 		return (blocking && lowBlocking);
 	}
 
+	public void killProcess(){
+		if (isAI)
+			myProcess.Kill ();
+	}
 	public void setPlayerAI(){
 		isAI = true;
 
-		Process process = new Process ();
+		myProcess = new Process ();
 		
 		// Detect if Windows
 		if (Application.platform == RuntimePlatform.WindowsPlayer) {
 			// Configure the process using the StartInfo properties.
-			process.StartInfo.FileName = "CMD.EXE";
-			process.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
+			myProcess.StartInfo.FileName = "CMD.EXE";
+			myProcess.StartInfo.Arguments = "/K cd ..\\ai\\agents && C:\\Python27\\python basic_qlearn.py";
 		
 		} else { //Assume Unix-like system with shell
-			process.StartInfo.FileName = "python";
-			process.StartInfo.WorkingDirectory = Directory.GetParent (Directory.GetCurrentDirectory ()).FullName + "/ai/agents";
+			myProcess.StartInfo.FileName = "python";
+			myProcess.StartInfo.WorkingDirectory = Directory.GetParent (Directory.GetCurrentDirectory ()).FullName + "/ai/agents";
 
 
-			process.StartInfo.Arguments = "basic_qlearn.py ";
+			myProcess.StartInfo.Arguments = "basic_qlearn.py ";
 		}
 		if (!player1)
-			process.StartInfo.Arguments += " 5998";
+			myProcess.StartInfo.Arguments += " 5998";
 	
-		process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
-		process.Start();
+		myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+		myProcess.Start();
 		UnityEngine.Debug.Log("Launched process");
 
 			
