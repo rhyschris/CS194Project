@@ -26,6 +26,10 @@ class BasicQlearnAgent(Agent):
 
 		self.discount = 0.90
 
+		# queue of previous states 
+		self.prevStates = []
+		self.counter = 0
+
 		# high 
 		self.alpha = 0.1
 		self.prevGamestate = GameState(-4,0,100,4,0,100)
@@ -204,29 +208,48 @@ class BasicQlearnAgent(Agent):
 
 		p2damageval = p2damage/100
 
+		reward = -0.01
 		if (p1damage and (p1damage>0)):#end of game, don't count negative
+
 			if (self.p1):
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
+				reward -= p1damageval
+				# self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p1damageval)
 			else:
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
+				reward += p1damageval
+				# self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p1damageval)
 			self.epsilon -= 0.0002
 
 		if (p2damage and (p2damage>0)):
 			if (self.p1):
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
+				reward += p2damageval
+				#self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,p2damageval)
 			else:
-				self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
+				reward -= p2damageval
+				#self.updateQForStateAction(self.prevGamestate,gameState,self.prevAction,-1*p2damageval)
 			self.epsilon -= 0.0002
 
-		reward = -0.01
+		# Penalize attacking 
 		if (gameState.p1Attacking and self.p1) or \
 			gameState.p2Attacking and not self.p1:
 			reward -= 0.01
 
+		# Set temporal counter to sparsely track previous states
+		self.counter += 1
+		if counter % 50 == 0:
+			# Add state
+			self.prevStates.insert(0, gameState)
+			if len(self.prevStates) > 10:
+				# remove old 
+				self.prevStates.pop()
+			r = reward
+			for elem in prevStates:
+				r *= (self.discount * self.discount)
+				self.updateQForStateAction(self.prevGamestate, elem, r)
+
 		self.updateQForStateAction(self.prevGamestate, gameState, self.prevAction, reward)
 
-
 		self.prevGamestate = gameState
+
 
 		if (self.isTraining):
 			if (p1win):

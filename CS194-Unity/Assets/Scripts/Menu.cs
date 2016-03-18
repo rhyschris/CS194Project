@@ -32,10 +32,7 @@ public class Menu : MonoBehaviour {
 	public void loadhvaLevel() {
 		MI.p1setAI (false);
 		MI.p2setAI (true);
-
-		//player2.setPlayerAI ();
-		//launchSingleAIScript ("5998");
-
+		
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
 
