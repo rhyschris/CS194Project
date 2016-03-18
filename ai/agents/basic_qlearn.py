@@ -235,16 +235,16 @@ class BasicQlearnAgent(Agent):
 
 		# Set temporal counter to sparsely track previous states
 		self.counter += 1
-		if counter % 50 == 0:
+		if self.counter % 50 == 0:
 			# Add state
 			self.prevStates.insert(0, gameState)
 			if len(self.prevStates) > 10:
 				# remove old 
 				self.prevStates.pop()
 			r = reward
-			for elem in prevStates:
+			for elem in self.prevStates:
 				r *= (self.discount * self.discount)
-				self.updateQForStateAction(self.prevGamestate, elem, r)
+				self.updateQForStateAction(self.prevGamestate, elem, self.prevAction, r)
 
 		self.updateQForStateAction(self.prevGamestate, gameState, self.prevAction, reward)
 
@@ -264,6 +264,7 @@ class BasicQlearnAgent(Agent):
 					data, addr = self.ipc_server.recvfrom(1) 
 					print('retrieved ipc')
 					retrieveWeightsFromFile('geneticQtableFile.txt')
+
 			if (p2win):
 				self.prevGamestate = GameState(-4,0,100,4,0,100)
 				if (not self.p1):
@@ -293,9 +294,10 @@ class BasicQlearnAgent(Agent):
 		if random.random() < self.epsilon: # exploration 
 			print("exploring!!!!!")
 			action = random.choice(self.actions) 
+
 		elif count > 1:
 
-			best = [i for i in xrange(len(self.actions)) if qRow[i] >= (0.9 * maxQ) ]
+			best = [i for i in xrange(len(self.actions)) if qRow[i] >= (0.99 * maxQ) ]
 			print("randomly chose an action out of best possible")
 			print "best: ", best
 
