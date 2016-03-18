@@ -136,73 +136,75 @@ public class GameDelegate : MonoBehaviour {
 				if ((player1.getXPos () + player1.getHalfWidth() * 2) > player2.getXPos ())
 					player1.moveToX (player2.getXPos () - player1.getHalfWidth () * 2);
 				// DO HIT DETECTION
-				handlePlayerHit (player1, player2, true);
-				handlePlayerHit (player2, player1, false);
+			handlePlayerHit (player1, player2, true);
+					handlePlayerHit (player2, player1, false);
 			}
 			debugText.setMessage (player1.getHealth(), player2.getHealth());
 		}
-
-		private void handlePlayerHit(PlayerController attacker, PlayerController defender, bool player1Attacker) {
+		
+		//returns false if game is over
+		private bool handlePlayerHit(PlayerController attacker, PlayerController defender, bool player1Attacker) {
 			// If the attacker is engaged in an attack that needs to be handled:
-			if (attacker.attackHandle ()) {
-				// See if the attack box is in the body box.
-				float xdistance = Mathf.Abs(defender.getXPos() - attacker.getHitXPos());
-				xdistance -= (attacker.getHitHalfWidth() + defender.getHalfWidth());
-				float ydistance = attacker.getHitYPos()-attacker.getHitHalfHeight();
-				ydistance -= (defender.getYPos()+defender.getHalfHeight());
-				if (xdistance <= 0.0f && ydistance<=0.0f) {
-					// This was a hit. Handle it.
-					if((attacker.isHighAttack() && defender.isHighBlocking()) || (!attacker.isHighAttack() && defender.isLowBlocking())) {
-						Debug.Log ("Blocked!");
-						attacker.tellHit ();
-						defender.receiveAttack (attacker.getAttackDamage (), true);
-					} else {
-						Debug.Log ("Hit!!");
-						Debug.Log("Health: "+defender.getHealth().ToString());
-						attacker.tellHit ();
-						defender.receiveAttack (attacker.getAttackDamage (), false);
+		if (attacker.attackHandle ()) {
+			// See if the attack box is in the body box.
+			bool blocked = false;
+			float xdistance = Mathf.Abs (defender.getXPos () - attacker.getHitXPos ());
+			xdistance -= (attacker.getHitHalfWidth () + defender.getHalfWidth ());
+			float ydistance = attacker.getHitYPos () - attacker.getHitHalfHeight ();
+			ydistance -= (defender.getYPos () + defender.getHalfHeight ());
+			if (xdistance <= 0.0f && ydistance <= 0.0f) {
+				// This was a hit. Handle it.
+				if ((attacker.isHighAttack () && defender.isHighBlocking ()) || (!attacker.isHighAttack () && defender.isLowBlocking ())) {
+					blocked = true;
+					Debug.Log ("Blocked!");
+					attacker.tellHit ();
+					defender.receiveAttack (attacker.getAttackDamage (), true);
+				} else {
+					Debug.Log ("Hit!!");
+					Debug.Log ("Health: " + defender.getHealth ().ToString ());
+					attacker.tellHit ();
+					defender.receiveAttack (attacker.getAttackDamage (), false);
+				}
+	
+				healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
+				if (defender.getHealth () <= 0.0f) {
+					GameObject defenderFighter = defender.fighter;
+					Animator defenderAnimator;
+					defenderAnimator = defenderFighter.GetComponent<Animator> ();
+					defenderAnimator.SetBool ("lost_game", true);
 
+					GameObject attackerFighter = attacker.fighter;
+					Animator attackerAnimator;
+					attackerAnimator = attackerFighter.GetComponent<Animator> ();
+					attackerAnimator.SetBool ("won_game", true);
 
-						// set animation for punch
-						GameObject defenderFighter = defender.fighter;
-						Animator defenderAnimator;
-						defenderAnimator = defenderFighter.GetComponent<Animator> ();
+					winText.text = "Victory for " + (defender.player1 ? "player2!" : "player1!") + "\n PRESS ESC TO RETURN TO MENU";
+					wait_for_start = true;
+					return false;
+				} else if (!blocked) {
+					// set animation for punch
+					GameObject defenderFighter = defender.fighter;
+					Animator defenderAnimator;
+					defenderAnimator = defenderFighter.GetComponent<Animator> ();
 
-						Debug.Log (attacker.lastAttackThrown());
-						if (attacker.lastAttackThrown() == ActionType.attack1) {
-							defenderAnimator.SetBool ("facePunched", true);
-						}
-						if (attacker.lastAttackThrown () == ActionType.attack2) {
-							defenderAnimator.SetBool ("faceKicked", true);
-						}
-						if (attacker.lastAttackThrown () == ActionType.attack3) {
-							Debug.Log ("shin kicked");
-							defenderAnimator.SetBool ("shinKicked", true);
-						}
-						if (attacker.lastAttackThrown () == ActionType.attack4){
-							defenderAnimator.SetBool("isTripped", true);
-						}
-
-
-
+					Debug.Log (attacker.lastAttackThrown ());
+					if (attacker.lastAttackThrown () == ActionType.attack1) {
+						defenderAnimator.SetBool ("facePunched", true);
 					}
-					healthbarcontroller.setPercent (player1Attacker, defender.getHealthPercent ());
-					if(defender.getHealth() <= 0.0f) {
-						GameObject defenderFighter = defender.fighter;
-						Animator defenderAnimator;
-						defenderAnimator = defenderFighter.GetComponent<Animator> ();
-						defenderAnimator.SetBool ("lost_game", true);
-
-						GameObject attackerFighter = attacker.fighter;
-						Animator attackerAnimator;
-						attackerAnimator = attackerFighter.GetComponent<Animator> ();
-						attackerAnimator.SetBool ("won_game", true);
-
-					winText.text = "Victory for "+(defender.player1?"player2!":"player1!")+ "\n PRESS ESC TO RETURN TO MENU";
-						wait_for_start = true;
+					if (attacker.lastAttackThrown () == ActionType.attack2) {
+						defenderAnimator.SetBool ("faceKicked", true);
+					}
+					if (attacker.lastAttackThrown () == ActionType.attack3) {
+						Debug.Log ("shin kicked");
+						defenderAnimator.SetBool ("shinKicked", true);
+					}
+					if (attacker.lastAttackThrown () == ActionType.attack4) {
+						defenderAnimator.SetBool ("isTripped", true);
 					}
 				}
 			}
+		}
+		return true;
 		}
 
 		private GameState createGameState(){
