@@ -40,16 +40,14 @@ class BasicQlearnAgent(Agent):
 		self.numActions = len(self.actions)
 		self.actionDic = dict()
 		self.makeActionDic()
-		self.Qtable = dict()
 
 		# sparse feature extractor
 		self.w = {}
-		self.initW()
 
-		self.fn = 'savedQTablep1.txt'
+		self.fn = 'savedWeightsp1.txt'
 		self.bindport = 5555
 		if (not self.p1):
-			self.fn = 'savedQTablep2.txt'
+			self.fn = 'savedWeightsp2.txt'
 			self.bindport=5565
 
 		self.ipc_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)    
@@ -58,15 +56,15 @@ class BasicQlearnAgent(Agent):
 		self.ipc_client =  socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
 		
 		if (not loadOldTable):
-			self.initializeTable()
+			self.initW()
 			self.epsilon = .1
 		else:
-			self.retrieveQtableFromFile(self.fn)
+			self.retrieveWeightsFromFile(self.fn)
 
 		# times per second to plot
 		# 0 is 'off', but we add modulo plot_freq + 1, and update
 		# when counter = 1
-		self.plot_freq = (60/plot_freq) + 1
+		self.plot_freq = (60/(plot_freq + 1))
 		self.plot_counter = 0
 
 		if plot_freq > 0:
@@ -76,7 +74,7 @@ class BasicQlearnAgent(Agent):
 
 	def signalHandler(self,err,ernum):
 		print("dumping to file!")
-		self.dumpQtableToFile(self.fn)
+		self.dumpWeightsToFile(self.fn)
 		sys.exit(0)
 
 	def makeActionDic(self):
@@ -89,16 +87,16 @@ class BasicQlearnAgent(Agent):
 			self.w[elem] = 0.01 * random.random()
 
 
-	def initializeTable(self):
-		for xdist in self.possibleXdists:
-			for ydist in [-1.0, .5, 0, .5, 1.0]:
-				for p2flags in [0b00000000,0b10010000,0b00010000, 0b01000000,0b10100000,0b00100000]:
-					for p1flags in [0b0000,0b1001,0b0001, 0b0010,0b1010,0b0100]:
-						Gamestate = (xdist,ydist,p1flags|p2flags)
-						self.Qtable[Gamestate] = [0]*self.numActions
-						if (abs(xdist)>2):
-							self.Qtable[Gamestate][self.actionDic[Actions.walkTowards]]+=.5
-							self.Qtable[Gamestate][self.actionDic[Actions.runTowards]]+=.5
+	# def initializeTable(self):
+	# 	for xdist in self.possibleXdists:
+	# 		for ydist in [-1.0, .5, 0, .5, 1.0]:
+	# 			for p2flags in [0b00000000,0b10010000,0b00010000, 0b01000000,0b10100000,0b00100000]:
+	# 				for p1flags in [0b0000,0b1001,0b0001, 0b0010,0b1010,0b0100]:
+	# 					Gamestate = (xdist,ydist,p1flags|p2flags)
+	# 					self.Qtable[Gamestate] = [0]*self.numActions
+	# 					if (abs(xdist)>2):
+	# 						self.Qtable[Gamestate][self.actionDic[Actions.walkTowards]]+=.5
+	# 						self.Qtable[Gamestate][self.actionDic[Actions.runTowards]]+=.5
 
 	# TODO: 
 	# Temporal information
@@ -234,7 +232,7 @@ class BasicQlearnAgent(Agent):
 			if (p1win):
 				self.prevGamestate = GameState(-4,0,100,4,0,100)
 				if (self.p1):
-					dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
+					dumpWeightsToFile('geneticQtableFile.txt') #dump to mutual file
 					data = bytearray()
 					data.append(255)
 					print("sending ipc")
@@ -242,18 +240,18 @@ class BasicQlearnAgent(Agent):
 				else:
 					data, addr = self.ipc_server.recvfrom(1) 
 					print('retrieved ipc')
-					retrieveQtableFromFile('geneticQtableFile.txt')
+					retrieveWeightsFromFile('geneticQtableFile.txt')
 			if (p2win):
 				self.prevGamestate = GameState(-4,0,100,4,0,100)
 				if (not self.p1):
-					dumpQtableToFile('geneticQtableFile.txt') #dump to mutual file
+					dumpWeightsToFile('geneticQtableFile.txt') #dump to mutual file
 					data = bytearray()
 					data.append(255)
 					self.ipc_client.sendto(data, (HOST, self.bindport-10))	#let other player know file is ready
 				else:
 					data, addr = self.ipc_server.recvfrom(1) 
 					print('got ipc')
-					retrieveQtableFromFile('geneticQtableFile.txt')
+					retrieveWeightsFromFile('geneticQtableFile.txt')
 
 
 	def chooseAction(self):
@@ -263,10 +261,10 @@ class BasicQlearnAgent(Agent):
 		# update plot according to frequency
 		self.plot_counter = (self.plot_counter + 1) % (self.plot_freq + 1)
 
-		if self.plot_counter == 1:
+		if self.plot_counter == 1 and hasattr(self, 'plotter'):
 			self.plotter.updateGraph(qRow)
 
-		count = sum([1 for elem in qRow if elem > 0.95 * maxQ])
+		count = sum([1 for elem in qRow if elem > (0.99 * maxQ)])
 		action = None
 	 	
 		if random.random() < self.epsilon: # exploration 
@@ -274,7 +272,7 @@ class BasicQlearnAgent(Agent):
 			action = random.choice(self.actions) 
 		elif count > 1:
 
-			best = [i for i in xrange(len(self.actions)) if qRow[i] >= (0.8 * maxQ) ]
+			best = [i for i in xrange(len(self.actions)) if qRow[i] >= (0.9 * maxQ) ]
 			print("randomly chose an action out of best possible")
 			print "best: ", best
 
@@ -293,14 +291,14 @@ class BasicQlearnAgent(Agent):
 	def xdist(self,gs):
 		return abs(gs.p1Xpos-gs.p2Xpos)
 
-	def dumpQtableToFile(self,filename):
+	def dumpWeightsToFile(self,filename):
 		with open(filename, "wb") as myFile:
-			pickle.dump(self.Qtable, myFile)
+			pickle.dump(self.w, myFile)
 
 
-	def retrieveQtableFromFile(self,filename):
+	def retrieveWeightsFromFile(self,filename):
 		with open(filename, "rb") as myFile:
-			self.Qtable = pickle.load(myFile)
+			self.w = pickle.load(myFile)
 
 
 if __name__ == '__main__':
@@ -311,8 +309,8 @@ if __name__ == '__main__':
     
         p1 = False
 
-    agent = BasicQlearnAgent(p1, loadOldTable=True,epsilon=.15, 
-    						overwriteFile=True, plot_freq=20)
+    agent = BasicQlearnAgent(p1, loadOldTable=False,epsilon=.15, 
+    						overwriteFile=True, plot_freq=0)
 
     print "Agent {0} reporting for duty".format(agent.name)
     hermes.main(port, debug=False, agent=agent)

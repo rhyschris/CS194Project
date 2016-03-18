@@ -25,7 +25,7 @@ public class Menu : MonoBehaviour {
 	// need to figure out how to set hva and ava too
 	public void loadhvhLevel() {
 		MI.p1setAI (false);
-		MI.p1setAI (false);
+		MI.p2setAI (false);
 		SceneManager.LoadScene ("Scenes/Arena");
 	}
 
